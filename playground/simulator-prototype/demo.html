@@ -59,30 +59,33 @@ function init() {
 
     // Create walls, all measurements are in meters.
     // Trying to create a room 16ft by 12ft, 4.87 by 3.65 in meters
-    
+
+    var leftOffset = 2.1;
+
     fixDef.shape = new b2PolygonShape;
+    
     // Set as box measurments are half the desired measurements.
-    fixDef.shape.SetAsBox(1.82, 0.01);
+    fixDef.shape.SetAsBox(1.81, 0.01);
 
     // positoned from mid point, so a 0 means half is off screen.
     
-    bodyDef.position.Set(1.82, 0);
+    bodyDef.position.Set(leftOffset, 0);
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-    bodyDef.position.Set(1.82, 4.87);
+    bodyDef.position.Set(leftOffset, 4.87);
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
     fixDef.shape.SetAsBox(0.01, 2.435);
 
-    bodyDef.position.Set(0, 2.435);
+    bodyDef.position.Set(0.5, 2.435);
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-    bodyDef.position.Set(3.65, 2.435);
+    bodyDef.position.Set(4.65, 2.435);
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
 
     //create some objects, hang over from original demo
-    /*bodyDef.type = b2Body.b2_dynamicBody;
+    bodyDef.type = b2Body.b2_dynamicBody;
     for(var i = 0; i < 10; ++i) {
     if(Math.random() > 0.5) {
 
@@ -94,7 +97,7 @@ function init() {
     bodyDef.position.x = Math.random() * 10;
     bodyDef.position.y = Math.random() * 10;
     world.CreateBody(bodyDef).CreateFixture(fixDef);
-    }*/
+    }
 
     /*bodyDef.type = b2Body.b2_dynamicBody;
     fixDef.shape = new b2PolygonShape;
@@ -216,15 +219,24 @@ function init() {
 
         world.Step(1 / 60, 10, 10);
         world.DrawDebugData();
-        var carX = car1.m_body.GetPosition().x*scale;
-        var carY = car1.m_body.GetPosition().y*scale; 
+        var carX = car1.m_body.GetPosition().x;
+        var carY = car1.m_body.GetPosition().y; 
         var angle = car1.m_body.GetAngle();
-        var rayLength = 120; //long enough to hit the walls
-        var p1 =  new b2Vec2(carX, carY);
+        var rayStartLength = 1;
+        var rayLength = 2; //long enough to hit the walls
+        var p1 =  new b2Vec2(carX + rayStartLength*Math.sin(-angle), carY + rayStartLength*Math.cos(-angle));
         var p2 =  new b2Vec2(carX + rayLength*Math.sin(-angle), carY + rayLength*Math.cos(-angle)); 
+        
+        //console.log(p1.x+","+p1.y);
+        world.RayCast(function(fixture, point, normal, fraction){
+            console.log(point.x, point.y);
+            console.log(fraction);
+            return 1;
+        }, p1, p2);
+
         context.beginPath();
-        context.moveTo(carX, carY);
-        context.lineTo(p2.x, p2.y);
+        context.moveTo(p1.x*scale, p1.y*scale);
+        context.lineTo(p2.x*scale, p2.y*scale);
         context.stroke();
 
         /*context.save();
