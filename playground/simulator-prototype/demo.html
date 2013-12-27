@@ -216,9 +216,17 @@ function init() {
 
         world.Step(1 / 60, 10, 10);
         world.DrawDebugData();
-        /*var carX = car1.m_body.GetPosition().x*scale;
+        var carX = car1.m_body.GetPosition().x*scale;
         var carY = car1.m_body.GetPosition().y*scale; 
         var angle = car1.m_body.GetAngle();
+        var rayLength = 120; //long enough to hit the walls
+        var p1 =  new b2Vec2(carX, carY);
+        var p2 =  new b2Vec2(carX + rayLength*Math.sin(-angle), carY + rayLength*Math.cos(-angle)); 
+        context.beginPath();
+        context.moveTo(carX, carY);
+        context.lineTo(p2.x, p2.y);
+        context.stroke();
+
         /*context.save();
         context.translate(carX, carY);
         context.rotate(angle);
