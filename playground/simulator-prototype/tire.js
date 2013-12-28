@@ -17,6 +17,7 @@
 
         // Set type to dynamic unlike static default.
         bodyDef.type = b2Body.b2_dynamicBody;
+        bodyDef.angle = 0;
         
         // Add to simulation.
         that.m_body = world.CreateBody(bodyDef);

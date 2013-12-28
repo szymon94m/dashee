@@ -8,6 +8,7 @@
         var bodyDef = new b2BodyDef;
         bodyDef.type = b2Body.b2_dynamicBody;
         bodyDef.position.Set(2, 2);
+        bodyDef.angle = 0;
         that.m_body = world.CreateBody(bodyDef);
 
         var vertices= [];
@@ -15,10 +16,6 @@
         vertices[1] =  new b2Vec2(   0.2, 0.6);
         vertices[2] =  new b2Vec2( -0.2, 0.6);
         vertices[3] =  new b2Vec2(   -0.2,  0);
-        //vertices[4] =  new b2Vec2(  -1,  10);
-        /*vertices[5] =  new b2Vec2(-2.8, 5.5);
-        vertices[6] =  new b2Vec2(  -3, 2.5);
-        vertices[7] =  new b2Vec2(-1.5,   0);*/
         var polygonShape = new b2PolygonShape;
         polygonShape.SetAsArray( vertices, 4 );
 
@@ -34,9 +31,10 @@
         var jointDef = new b2RevoluteJointDef;
         jointDef.bodyA = that.m_body;
         jointDef.enableLimit = true;
+        jointDef.collideConnected = false;
         jointDef.lowerAngle = 0;
         jointDef.upperAngle = 0;
-        jointDef.localAnchorB.SetZero();//center of tire
+        //jointDef.localAnchorB.SetZero();//center of tire
 
         var maxForwardSpeed = 250;
         var maxBackwardSpeed = -40;
@@ -50,6 +48,7 @@
         //tire.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
         jointDef.bodyB = tireLeft.m_body;
         jointDef.localAnchorA.Set( -0.2, 0 );
+        jointDef.localAnchorB.Set( 0, 0 );
         world.CreateJoint( jointDef );
         that.m_tires.push(tireLeft);
 
@@ -58,6 +57,7 @@
         //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
         jointDef.bodyB = tireRgt.m_body;
         jointDef.localAnchorA.Set( 0.2, 0 );
+        jointDef.localAnchorB.Set( 0, 0 );
         world.CreateJoint( jointDef );
         that.m_tires.push(tireRgt);
 
@@ -66,6 +66,7 @@
         //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
         jointDef.bodyB = tireFLeft.m_body;
         jointDef.localAnchorA.Set( -0.2, 0.6 );
+        jointDef.localAnchorB.Set( 0, 0 );
         var flJoint = world.CreateJoint( jointDef );
         that.m_tires.push(tireFLeft);
 
@@ -74,6 +75,7 @@
         //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
         jointDef.bodyB = tireFRgt.m_body;
         jointDef.localAnchorA.Set( 0.2, 0.6 );
+        jointDef.localAnchorB.Set( 0, 0 );
         var frJoint = world.CreateJoint( jointDef );
         that.m_tires.push(tireFRgt);
 
@@ -100,6 +102,9 @@
             var angleToTurn = desiredAngle - angleNow;
             angleToTurn = b2Math.Clamp( angleToTurn, -turnPerTimeStep, turnPerTimeStep );
             var newAngle = angleNow + angleToTurn;
+            // Set limits would constain a joint movement, so by setting upper and lower limits,
+            // you essentially for newAngle to be the angle of the joint, in this case
+            // causing a turned wheel effect.
             flJoint.SetLimits( newAngle, newAngle );
             frJoint.SetLimits( newAngle, newAngle );
         }

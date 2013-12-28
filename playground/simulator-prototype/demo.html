@@ -89,7 +89,7 @@ function init() {
 
 
     //create some objects, hang over from original demo
-    bodyDef.type = b2Body.b2_dynamicBody;
+   /* bodyDef.type = b2Body.b2_dynamicBody;
     for(var i = 0; i < 10; ++i) {
     if(Math.random() > 0.5) {
 
@@ -112,7 +112,7 @@ function init() {
 
     world.CreateBody(bodyDef).CreateFixture(fixDef);*/
 
-    var car1 = car(world);
+    
 
     //setup debug draw
     var debugDraw = new b2DebugDraw();
@@ -124,7 +124,7 @@ function init() {
     debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
     world.SetDebugDraw(debugDraw);
 
-    window.setInterval(update, 1000 / 60);
+    var car1 = car(world);
 
     //mouse
 
@@ -189,8 +189,9 @@ function init() {
     var carProximity = document.getElementById('range-finder');
 
     //update
-
-    function update() {
+    
+    
+    window.update = function() {
 
         // update object friction;
         car1.update();
@@ -241,13 +242,22 @@ function init() {
         context.lineTo(p2.x*scale, p2.y*scale);
         context.stroke();*/
 
-        /*context.save();
-        context.translate(carX, carY);
+        context.save();
+        
+        // Calculate image position
+        // it moves along from the middle of the car 0.2 meters at an angle perpendicular to the cars angle
+        var offsetAngle = ( 128) * DEGTORAD;
+        var carImgPos =  new b2Vec2(carX + 0.44*Math.sin(-angle - offsetAngle ), carY + 0.44*Math.cos(-angle -offsetAngle)); 
+
+        context.translate((carImgPos.x)*scale, carImgPos.y*scale);
         context.rotate(angle);
         context.drawImage(carImg, 0, 0);
-        context.restore();*/
+        context.restore();
         world.ClearForces();
     };
+
+    //update();
+    window.setInterval(update, 1000 / 60);
 
     //helpers
 
