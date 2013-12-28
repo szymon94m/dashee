@@ -26,6 +26,8 @@ var keypressed;
 var DEGTORAD = 0.0174532925199432957;
 var RADTODEG = 57.295779513082320876;
 var scale = 100.0;
+var canvasWidth = 900;
+var canvasHeight = 600;
 
 var b2Vec2 = Box2D.Common.Math.b2Vec2
 , b2AABB = Box2D.Collision.b2AABB
@@ -65,22 +67,24 @@ function init() {
     fixDef.shape = new b2PolygonShape;
     
     // Set as box measurments are half the desired measurements.
-    fixDef.shape.SetAsBox(1.81, 0.01);
+    fixDef.shape.SetAsBox(canvasWidth/scale/2, 0.01);
 
     // positoned from mid point, so a 0 means half is off screen.
     
-    bodyDef.position.Set(leftOffset, 0);
+    // Top wall    
+    bodyDef.position.Set(canvasWidth/scale/2, 0);
+    world.CreateBody(bodyDef).CreateFixture(fixDef);
+    
+    // Bottom wall
+    bodyDef.position.Set(canvasWidth/scale/2, canvasHeight/scale);
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-    bodyDef.position.Set(leftOffset, 4.87);
+    fixDef.shape.SetAsBox(0.01, canvasHeight/scale/2);
+
+    bodyDef.position.Set(0.0, canvasHeight/scale/2);
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-    fixDef.shape.SetAsBox(0.01, 2.435);
-
-    bodyDef.position.Set(0.5, 2.435);
-    world.CreateBody(bodyDef).CreateFixture(fixDef);
-
-    bodyDef.position.Set(4.65, 2.435);
+    bodyDef.position.Set(canvasWidth/scale, canvasHeight/scale/2);
     world.CreateBody(bodyDef).CreateFixture(fixDef);
 
 
@@ -222,15 +226,13 @@ function init() {
         var carX = car1.m_body.GetPosition().x;
         var carY = car1.m_body.GetPosition().y; 
         var angle = car1.m_body.GetAngle();
-        var rayStartLength = 1;
-        var rayLength = 2; //long enough to hit the walls
+        var rayStartLength =0.6;
+        var rayLength = 1.6; //long enough to hit the walls
         var p1 =  new b2Vec2(carX + rayStartLength*Math.sin(-angle), carY + rayStartLength*Math.cos(-angle));
         var p2 =  new b2Vec2(carX + rayLength*Math.sin(-angle), carY + rayLength*Math.cos(-angle)); 
         
-        //console.log(p1.x+","+p1.y);
         world.RayCast(function(fixture, point, normal, fraction){
-            console.log(point.x, point.y);
-            console.log(fraction);
+            console.log(fraction + " meters away from an object");
             return 1;
         }, p1, p2);
 
