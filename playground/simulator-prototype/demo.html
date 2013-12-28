@@ -3,7 +3,7 @@
 <title>Box2dWeb Demo</title>
 </head>
 <body onload="init();" style="margin:0">
-<canvas id="canvas" width="900" height="600" style="background-color:#333333;" ></canvas>
+<canvas id="canvas" width="900" height="600" style="background-color:#333333; float:left" ></canvas>
 </body>
 <script type="text/javascript" src="Box2dWeb-2.1.a.3.js"></script>
 <script type="text/javascript" src="car.js"></script>
@@ -184,12 +184,9 @@ function init() {
     }
 
     var carImg = document.getElementById('car-img');
-    /*if(carImg && carImg.style) {
-    carImg.style.height = '340px';
-    carImg.style.width = '210px';
-    }*/
 
     var carRotation = document.getElementById('car-rotation');
+    var carProximity = document.getElementById('range-finder');
 
     //update
 
@@ -226,20 +223,23 @@ function init() {
         var carX = car1.m_body.GetPosition().x;
         var carY = car1.m_body.GetPosition().y; 
         var angle = car1.m_body.GetAngle();
+        carRotation.innerHTML = "Orientation: " + angle.toFixed(2) + " Radians";
         var rayStartLength =0.6;
         var rayLength = 1.6; //long enough to hit the walls
         var p1 =  new b2Vec2(carX + rayStartLength*Math.sin(-angle), carY + rayStartLength*Math.cos(-angle));
         var p2 =  new b2Vec2(carX + rayLength*Math.sin(-angle), carY + rayLength*Math.cos(-angle)); 
-        
+        carProximity.innerHTML = "Radar: Clear path";
+        var closestItem = false;
         world.RayCast(function(fixture, point, normal, fraction){
-            console.log(fraction + " meters away from an object");
+            if(!closestItem || fraction < closestItem) closestItem = fraction;
             return 1;
         }, p1, p2);
-
-        context.beginPath();
+        if(closestItem !== false)
+            carProximity.innerHTML = "Radar: " + (closestItem-0.16).toFixed(2) + " meters away from an object";
+        /*context.beginPath();
         context.moveTo(p1.x*scale, p1.y*scale);
         context.lineTo(p2.x*scale, p2.y*scale);
-        context.stroke();
+        context.stroke();*/
 
         /*context.save();
         context.translate(carX, carY);
@@ -275,6 +275,9 @@ function init() {
 };
 
 </script>
+<div style="float:left; padding:20px">
 <div id="car-rotation"></div>
+<div id="range-finder"></div>
+</div>
 <img id="car-img" src="car.png" style="position:absolute; left:0; top:0; border:1px solid white; display:none"/>
 </html>
