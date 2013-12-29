@@ -70,7 +70,7 @@
            var y = -speed * Math.sin(radians);
            var x = -speed * Math.cos(radians);
            direction.set(x,y);
-           //console.log(" x: "+direction.x+" y: "+direction.y);
+           console.log(" x: "+direction.x+" y: "+direction.y);
         }
 
         setTargetDirection();
