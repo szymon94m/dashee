@@ -54,13 +54,19 @@
             currentRightNormal);
         }
 
+
         that.updateFriction = function() {
             // Kill lateral velocity, optionally allow some to get skid effect.
-            var impulse = b2Math.MulFV(that.m_body.GetMass(), getLateralVelocity().GetNegative());
-            // 3 becomes maxLateralImpulse and don't use stupid math operators that dont work
-            //if ( impulse.Length() > 3 )
-            //   impulse *= 3 / impulse.Length();
-            that.m_body.ApplyImpulse( impulse, that.m_body.GetWorldCenter() );
+            var negativeLateralImpulse = b2Math.MulFV(that.m_body.GetMass(), getLateralVelocity().GetNegative());
+            // The impluses are less in our model than they are on 
+            var maxLateralImpulse = 0.025;
+            if ( negativeLateralImpulse.Length() > maxLateralImpulse ){
+                // Anything over our max lateral negativeLateralImpulse should be applied, so in effect we need to reduce the impluse
+                // to be cancelled out.
+                negativeLateralImpulse = b2Math.MulFV(maxLateralImpulse / negativeLateralImpulse.Length(), negativeLateralImpulse);
+            }
+            var currentTraction = 1;
+            that.m_body.ApplyImpulse( b2Math.MulFV(currentTraction, negativeLateralImpulse), that.m_body.GetWorldCenter() );
             
             // Kill angular velocity
             that.m_body.ApplyAngularImpulse( 0.1 * that.m_body.GetInertia() * -that.m_body.GetAngularVelocity() );
