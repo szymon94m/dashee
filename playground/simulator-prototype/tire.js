@@ -61,7 +61,7 @@
             // The impluses are less in our model than they are on 
             var maxLateralImpulse = 0.025;
             if ( negativeLateralImpulse.Length() > maxLateralImpulse ){
-                // Anything over our max lateral negativeLateralImpulse should be applied, so in effect we need to reduce the impluse
+                // Anything over our max lateral impulse should be applied, so in effect we need to reduce the impluse
                 // to be cancelled out.
                 negativeLateralImpulse = b2Math.MulFV(maxLateralImpulse / negativeLateralImpulse.Length(), negativeLateralImpulse);
             }
