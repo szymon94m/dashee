@@ -7,19 +7,24 @@
         var that = {};
         opts = opts || {};
 
-
-
         /*var c=document.getElementById("stage");
         var ctx=c.getContext("2d");*/
 
         var server;
         var vehicle;
         var curAutomation = automationForward();
+        var simStarted = false;
 
         window.addEventListener("load", function() {
             console.log(" --- Create UDP Server");
             server = UDPServer();
             vehicle = Vehicle();
+            
+            if(!simStarted){
+                var sim = Simulator();
+                simStarted = true;
+            }
+                
             console.log(" --- Start Main Animation Loop");
             animloop();
         });
@@ -30,7 +35,6 @@
             var packetsPerSec = document.getElementById('packets-per-sec');
             var throttleLabel = document.getElementById('throttle-val');
             var steerLabel = document.getElementById('steer-val');
-            
         }
 
         var startTime = new Date().getTime();
@@ -47,9 +51,18 @@
             commandsServer.steering = (serverBuffer[1]);
             commandsServer.throttle = (serverBuffer[2]);*/
 
-            var commandsServer = curAutomation.update();         
 
-            vehicle.update(commandsServer);
+            //1
+            if (serverBuffer){
+                serverBuffer.steering = (serverBuffer[1]);
+                serverBuffer.throttle = (serverBuffer[2]);
+                vehicle.read(serverBuffer);
+            }else{
+                serverBuffer = curAutomation.update();
+                vehicle.read(serverBuffer);
+            }
+
+            vehicle.update();
         }
 
         function animloop(){
