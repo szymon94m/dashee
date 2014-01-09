@@ -1,0 +1,105 @@
+// World1 definition.
+(function(){
+    var world1 = function(world){
+        var that = {};
+        
+        var gravity = new b2Vec2(0, 0);
+        var world = new b2World(gravity,  true);
+
+        var fixDef = new b2FixtureDef;
+        fixDef.density = 1.0;
+        fixDef.friction = 0.5;
+        fixDef.restitution = 0.2;
+
+        var bodyDef = new b2BodyDef;
+
+        // Create walls, all measurements are in meters.
+        // Trying to create a room 16ft by 12ft, 4.87 by 3.65 in meters
+
+        var leftOffset = 2.1;
+
+        fixDef.shape = new b2PolygonShape;
+        
+        // Set as box measurments are half the desired measurements.
+        fixDef.shape.SetAsBox(canvasWidth/scale/2, 0.01);
+
+        // positoned from mid point, so a 0 means half is off screen.
+        
+        // Top wall    
+        bodyDef.position.Set(canvasWidth/scale/2, 0);
+        world.CreateBody(bodyDef).CreateFixture(fixDef);
+        
+        // Bottom wall
+        bodyDef.position.Set(canvasWidth/scale/2, canvasHeight/scale);
+        world.CreateBody(bodyDef).CreateFixture(fixDef);
+
+        fixDef.shape.SetAsBox(0.01, canvasHeight/scale/2);
+
+        bodyDef.position.Set(0.0, canvasHeight/scale/2);
+        world.CreateBody(bodyDef).CreateFixture(fixDef);
+
+        bodyDef.position.Set(canvasWidth/scale, canvasHeight/scale/2);
+        world.CreateBody(bodyDef).CreateFixture(fixDef);
+
+        //setup debug draw
+        var debugDraw = new b2DebugDraw();
+        var context = document.getElementById("world1").getContext("2d");
+        debugDraw.SetSprite(context);
+        debugDraw.SetDrawScale(scale);
+        debugDraw.SetFillAlpha(0.5);
+        debugDraw.SetLineThickness(1.0);
+        debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+        world.SetDebugDraw(debugDraw);
+
+        var car1 = car(world);
+
+        var carRotation = document.getElementById('car-rotation');
+        var carProximity = document.getElementById('range-finder');
+
+        var update = function() {
+
+            // update object friction;
+            car1.update();
+            world.Step(1 / 60, 10, 10);
+            world.DrawDebugData();
+            var carX = car1.m_body.GetPosition().x;
+            var carY = car1.m_body.GetPosition().y; 
+            var angle = car1.m_body.GetAngle();
+            //carRotation.innerHTML = "Orientation: " + angle.toFixed(2) + " Radians";
+            var rayStartLength =0.6;
+            var rayLength = 1.6; //long enough to hit the walls
+            var p1 =  new b2Vec2(carX + rayStartLength*Math.sin(-angle), carY + rayStartLength*Math.cos(-angle));
+            var p2 =  new b2Vec2(carX + rayLength*Math.sin(-angle), carY + rayLength*Math.cos(-angle)); 
+            //carProximity.innerHTML = "Radar: Clear path";
+            var closestItem = false;
+            world.RayCast(function(fixture, point, normal, fraction){
+                if(!closestItem || fraction < closestItem) closestItem = fraction;
+                return 1;
+            }, p1, p2);
+            //if(closestItem !== false)
+                //carProximity.innerHTML = "Radar: " + (closestItem-0.16).toFixed(2) + " meters away from an object";
+            /*context.beginPath();
+            context.moveTo(p1.x*scale, p1.y*scale);
+            context.lineTo(p2.x*scale, p2.y*scale);
+            context.stroke();*/
+
+            context.save();
+            
+            // Calculate image position
+            // it moves along from the middle of the car 0.2 meters at an angle perpendicular to the cars angle
+            var offsetAngle = ( 128) * DEGTORAD;
+            var carImgPos =  new b2Vec2(carX + 0.44*Math.sin(-angle - offsetAngle ), carY + 0.44*Math.cos(-angle -offsetAngle)); 
+
+            context.translate((carImgPos.x)*scale, carImgPos.y*scale);
+            context.rotate(angle);
+            //context.drawImage(carImg, 0, 0);
+            context.restore();
+            world.ClearForces();
+        }
+
+        window.setInterval(update, 1000 / 60);
+
+        return that;
+    }
+    World1 = world1;
+})();

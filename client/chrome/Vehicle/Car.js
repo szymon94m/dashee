@@ -19,9 +19,14 @@
         var steerRightMapping = rangeMapping(128,255,0,.8);
         var steerLeftMapping = rangeMapping(0,128,-.8,0);
         var powerMapping = rangeMapping(0,255,-3.5,3.5);
+        var commands;
+        
+        that.read = function(in_commands){
+            commands = in_commands;
+        }
 
         //given commands update your position
-        that.update = function(commands){
+        that.update = function(){
             turnWheels(commands);
             that.adjustPosition();
             speed = powerMapping(commands.throttle);
@@ -29,8 +34,8 @@
             
             setTargetDirection();
             //console.log(position.x);
-            vehicleElement.style.left = position.x+"px";
-            vehicleElement.style.top = position.y+"px";
+            /*vehicleElement.style.left = position.x+"px";
+            vehicleElement.style.top = position.y+"px";*/
         }
 
         // Given the current velocity adjust the vehicles position.
@@ -52,11 +57,11 @@
             if(speed<0) changeOfOrientation = changeOfOrientation * -1;
             carOrientation = carOrientation + changeOfOrientation;
 
-            vehicleElement.style.webkitTransform="rotate("+(carOrientation-90)+"deg)";
+            /*vehicleElement.style.webkitTransform="rotate("+(carOrientation-90)+"deg)";
             
             var rotateWheelsBy = steerMapping(commands.steering)-30;
             frontLeftWheel.style.webkitTransform="rotate("+(rotateWheelsBy)+"deg)";
-            frontRightWheel.style.webkitTransform="rotate("+(rotateWheelsBy)+"deg)";
+            frontRightWheel.style.webkitTransform="rotate("+(rotateWheelsBy)+"deg)";*/
         }
 
         // Throttle will move the car forward based on it's current
@@ -70,7 +75,6 @@
            var y = -speed * Math.sin(radians);
            var x = -speed * Math.cos(radians);
            direction.set(x,y);
-           console.log(" x: "+direction.x+" y: "+direction.y);
         }
 
         setTargetDirection();
