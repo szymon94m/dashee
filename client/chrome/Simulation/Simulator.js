@@ -42,6 +42,10 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
     var sim = function(world){
         var that = {};
         var world = World1();
+        // Return current world vehicle in this case a car.
+        that.getVehicle = function(){
+            return world.getVehicle();
+        }
         return that;
     }
     Simulator = sim;

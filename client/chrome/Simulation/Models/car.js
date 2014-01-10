@@ -4,6 +4,10 @@
     var carDef = function(world){
         var that = {};
         that.m_tires = [];
+        var desiredAngle = 0;
+        var lockAngle = 35 * DEGTORAD;
+        var steerMapping = rangeMapping(0,255,-lockAngle,lockAngle);
+
         //create car body
         var bodyDef = new b2BodyDef;
         bodyDef.type = b2Body.b2_dynamicBody;
@@ -79,25 +83,23 @@
         var frJoint = world.CreateJoint( jointDef );
         that.m_tires.push(tireFRgt);
 
+        that.setSteer = function(in_val){
+            desiredAngle = steerMapping(in_val);
+        }
 
+        that.setPower = function(in_val){
+            for (var i = 0; i < that.m_tires.length; i++)
+                that.m_tires[i].setPower(in_val);
+        }
 
         that.update = function() {
             for (var i = 0; i < that.m_tires.length; i++)
                 that.m_tires[i].update();
 
             //control steering
-            var lockAngle = 35 * DEGTORAD;
             var turnSpeedPerSec = 160 * DEGTORAD;//from lock to lock in 0.5 sec
             var turnPerTimeStep = turnSpeedPerSec / 60.0;
-            var desiredAngle = 0;
 
-            if( keys[37] || keys[39]) {
-                if(keys[37]){
-                    desiredAngle = -lockAngle; 
-                }else{
-                    desiredAngle = lockAngle; 
-                }
-            }
             var angleNow = flJoint.GetJointAngle();
             var angleToTurn = desiredAngle - angleNow;
             angleToTurn = b2Math.Clamp( angleToTurn, -turnPerTimeStep, turnPerTimeStep );

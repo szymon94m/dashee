@@ -99,6 +99,11 @@
 
         window.setInterval(update, 1000 / 60);
 
+        // Return the current vehicle
+        that.getVehicle = function(){
+            return car1;
+        }
+
         return that;
     }
     World1 = world1;

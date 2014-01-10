@@ -10,24 +10,13 @@
         /*var c=document.getElementById("stage");
         var ctx=c.getContext("2d");*/
 
-        var server;
-        var vehicle;
-        var curAutomation = automationForward();
-        var simStarted = false;
-
-        window.addEventListener("load", function() {
-            console.log(" --- Create UDP Server");
-            server = UDPServer();
-            vehicle = Vehicle();
-            
-            if(!simStarted){
-                var sim = Simulator();
-                simStarted = true;
-            }
-                
-            console.log(" --- Start Main Animation Loop");
-            animloop();
-        });
+        console.log(" --- Create UDP Server");
+        var server = UDPServer();
+        console.log(" --- Starting Simulator");
+        window.simulator = Simulator();
+        var vehicle = Vehicle();
+        var curAutomation = automationForward();        
+        console.log(" --- Start Main Animation Loop");
 
         // Update feedback on server commands and packet rate.
         function updateHudFields(){
@@ -70,9 +59,11 @@
             that.applyStep();
         };
 
+        animloop();
+
         return that;
       };
       
-      controller = mainControl();
+      Controller = mainControl;
 
 })();

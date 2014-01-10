@@ -20,6 +20,8 @@
         var steerLeftMapping = rangeMapping(0,128,-.8,0);
         var powerMapping = rangeMapping(0,255,-3.5,3.5);
         var commands;
+
+        var simCar = simulator.getVehicle();
         
         that.read = function(in_commands){
             commands = in_commands;
@@ -27,57 +29,9 @@
 
         //given commands update your position
         that.update = function(){
-            turnWheels(commands);
-            that.adjustPosition();
-            speed = powerMapping(commands.throttle);
-            if(speed<0.1 && speed>-0.1) speed =0;
-            
-            setTargetDirection();
-            //console.log(position.x);
-            /*vehicleElement.style.left = position.x+"px";
-            vehicleElement.style.top = position.y+"px";*/
+            simCar.setSteer(commands.steering);
+            simCar.setPower(commands.throttle);
         }
-
-        // Given the current velocity adjust the vehicles position.
-        that.adjustPosition = function(){
-            position = position.add(direction);
-        }
-
-        // Depending on the severity of the steer adjust the orientation
-        // of the car, only if there forward thrust.`
-        function applyThrottle(){
-
-        }
-
-        // Rotate the steering wheels to desired steer direction.
-        function turnWheels(commands){
-            var changeOfOrientation = 0;
-            if(speed && commands.steering>136) changeOfOrientation = steerRightMapping(commands.steering);
-            if(speed && commands.steering<120) changeOfOrientation = steerLeftMapping(commands.steering);
-            if(speed<0) changeOfOrientation = changeOfOrientation * -1;
-            carOrientation = carOrientation + changeOfOrientation;
-
-            /*vehicleElement.style.webkitTransform="rotate("+(carOrientation-90)+"deg)";
-            
-            var rotateWheelsBy = steerMapping(commands.steering)-30;
-            frontLeftWheel.style.webkitTransform="rotate("+(rotateWheelsBy)+"deg)";
-            frontRightWheel.style.webkitTransform="rotate("+(rotateWheelsBy)+"deg)";*/
-        }
-
-        // Throttle will move the car forward based on it's current
-        // orientation.
-        function applyThrottle(){
-
-        }
-
-        function setTargetDirection(){
-           var radians = carOrientation * (Math.PI/180);
-           var y = -speed * Math.sin(radians);
-           var x = -speed * Math.cos(radians);
-           direction.set(x,y);
-        }
-
-        setTargetDirection();
 
         return that;
       };
