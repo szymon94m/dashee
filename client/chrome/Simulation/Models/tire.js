@@ -12,7 +12,8 @@
         that.m_maxBackwardSpeed = -3;
         that.m_maxDriveForce = .5;
         var desiredSpeed = 0;
-        var powerMapping = rangeMapping(0,255,that.m_maxBackwardSpeed,that.m_maxForwardSpeed);
+        var powerMappingReverse = rangeMapping(0,128,that.m_maxBackwardSpeed,0);
+        var powerMappingForward = rangeMapping(128,255,0,that.m_maxForwardSpeed);
 
         // Create the box 2D body.
         var bodyDef = new b2BodyDef;
@@ -80,7 +81,11 @@
         }
 
         that.setPower = function(in_power_val){
-            desiredSpeed = powerMapping(in_power_val);
+            if(in_power_val>128){
+                desiredSpeed = powerMappingForward(in_power_val);
+            }else{
+                desiredSpeed = powerMappingReverse(in_power_val);
+            }
         }
 
         that.updateDrive = function() {
@@ -95,7 +100,7 @@
             }else{
                 return;
             }*/
-            
+
             //find current speed in forward direction
             var currentForwardNormal = that.m_body.GetWorldVector(new b2Vec2(0,1) );
             var currentSpeed = b2Math.Dot( getForwardVelocity(), currentForwardNormal );
