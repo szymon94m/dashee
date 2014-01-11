@@ -5,7 +5,7 @@
         var that = {};
         that.m_tires = [];
         var desiredAngle = 0;
-        var lockAngle = 35 * DEGTORAD;
+        var lockAngle = 35 * b2D.DEGTORAD;
         var steerMapping = rangeMapping(0,255,-lockAngle,lockAngle);
 
         //create car body
@@ -97,7 +97,7 @@
                 that.m_tires[i].update();
 
             //control steering
-            var turnSpeedPerSec = 160 * DEGTORAD;//from lock to lock in 0.5 sec
+            var turnSpeedPerSec = 160 * b2D.DEGTORAD;//from lock to lock in 0.5 sec
             var turnPerTimeStep = turnSpeedPerSec / 60.0;
 
             var angleNow = flJoint.GetJointAngle();

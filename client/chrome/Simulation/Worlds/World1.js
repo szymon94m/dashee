@@ -21,31 +21,31 @@
         fixDef.shape = new b2PolygonShape;
         
         // Set as box measurments are half the desired measurements.
-        fixDef.shape.SetAsBox(canvasWidth/scale/2, 0.01);
+        fixDef.shape.SetAsBox(b2D.canvasWidth/b2D.scale/2, 0.01);
 
         // positoned from mid point, so a 0 means half is off screen.
         
         // Top wall    
-        bodyDef.position.Set(canvasWidth/scale/2, 0);
+        bodyDef.position.Set(b2D.canvasWidth/b2D.scale/2, 0);
         world.CreateBody(bodyDef).CreateFixture(fixDef);
         
         // Bottom wall
-        bodyDef.position.Set(canvasWidth/scale/2, canvasHeight/scale);
+        bodyDef.position.Set(b2D.canvasWidth/b2D.scale/2, b2D.canvasHeight/b2D.scale);
         world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-        fixDef.shape.SetAsBox(0.01, canvasHeight/scale/2);
+        fixDef.shape.SetAsBox(0.01, b2D.canvasHeight/b2D.scale/2);
 
-        bodyDef.position.Set(0.0, canvasHeight/scale/2);
+        bodyDef.position.Set(0.0, b2D.canvasHeight/b2D.scale/2);
         world.CreateBody(bodyDef).CreateFixture(fixDef);
 
-        bodyDef.position.Set(canvasWidth/scale, canvasHeight/scale/2);
+        bodyDef.position.Set(b2D.canvasWidth/b2D.scale, b2D.canvasHeight/b2D.scale/2);
         world.CreateBody(bodyDef).CreateFixture(fixDef);
 
         //setup debug draw
         var debugDraw = new b2DebugDraw();
         var context = document.getElementById("world1").getContext("2d");
         debugDraw.SetSprite(context);
-        debugDraw.SetDrawScale(scale);
+        debugDraw.SetDrawScale(b2D.scale);
         debugDraw.SetFillAlpha(0.5);
         debugDraw.SetLineThickness(1.0);
         debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
@@ -55,12 +55,16 @@
 
         var carRotation = document.getElementById('car-rotation');
         var carProximity = document.getElementById('range-finder');
+        var prevTime = new Date().getTime();
+        var curTime = new Date().getTime();
 
         var update = function() {
 
             // update object friction;
             car1.update();
-            world.Step(1 / 60, 10, 10);
+            curTime = new Date().getTime();
+            world.Step((curTime - prevTime)/1000, 10, 10);
+            prevTime = curTime;
             world.DrawDebugData();
             var carX = car1.m_body.GetPosition().x;
             var carY = car1.m_body.GetPosition().y; 
@@ -87,17 +91,17 @@
             
             // Calculate image position
             // it moves along from the middle of the car 0.2 meters at an angle perpendicular to the cars angle
-            var offsetAngle = ( 128) * DEGTORAD;
+            var offsetAngle = ( 128) * b2D.DEGTORAD;
             var carImgPos =  new b2Vec2(carX + 0.44*Math.sin(-angle - offsetAngle ), carY + 0.44*Math.cos(-angle -offsetAngle)); 
 
-            context.translate((carImgPos.x)*scale, carImgPos.y*scale);
+            context.translate((carImgPos.x)*b2D.scale, carImgPos.y*b2D.scale);
             context.rotate(angle);
             //context.drawImage(carImg, 0, 0);
             context.restore();
             world.ClearForces();
         }
-
-        window.setInterval(update, 1000 / 60);
+        that.update =  update;
+        //window.setInterval(update, 1000 / 60);
 
         // Return the current vehicle
         that.getVehicle = function(){

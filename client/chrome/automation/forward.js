@@ -9,7 +9,7 @@
         // return dashee commands.
         that.update = function(){
             return {
-                'throttle':200,
+                'throttle':255,
                 'steering':50,
             };
         }

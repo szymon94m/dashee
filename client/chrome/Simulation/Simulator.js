@@ -3,23 +3,14 @@
  */
 
 /* Globals @TODO: Make these not global, due to copying from playground */
-var keys = {};
-var keypresses = {
-    '38':'DRIVE',
-    '87':'DRIVE',
-    '40':'REVERSE',
-    '83':'REVERSE',
-    '39':'RIGHT',
-    '68':'RIGHT',
-    '37':'LEFT',
-    '65':'LEFT'
-};
-var keypressed;
-var DEGTORAD = 0.0174532925199432957;
-var RADTODEG = 57.295779513082320876;
-var scale = 100.0;
-var canvasWidth = 900;
-var canvasHeight = 600;
+var b2D = {
+    DEGTORAD : 0.0174532925199432957,
+    RADTODEG : 57.295779513082320876,
+    scale : 100.0,
+    canvasWidth : 900,
+    canvasHeight : 600    
+}
+
 
 // Define box2D shorthands
 var b2Vec2 = Box2D.Common.Math.b2Vec2
@@ -46,6 +37,11 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
         that.getVehicle = function(){
             return world.getVehicle();
         }
+
+        that.update = function(){
+            world.update();
+        }
+
         return that;
     }
     Simulator = sim;

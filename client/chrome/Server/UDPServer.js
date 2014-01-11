@@ -31,7 +31,6 @@
 
     that.poll = function () {
       if (socketId) {
-
         chrome.socket.recvFrom(socketId, 2048576, function (result) {
           if (result.resultCode >= 0) {
             var bytes = that.arrayBufferToView(result.data);

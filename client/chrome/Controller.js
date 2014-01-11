@@ -34,6 +34,7 @@
             var secondsPassed = Math.round((curTime - startTime) / 1000);
             
             //Get current server commands
+            var serverBuffer;
             var serverBuffer = server.getBufferBytes();
 
             /*var commandsServer = {};
@@ -46,12 +47,15 @@
                 serverBuffer.steering = (serverBuffer[1]);
                 serverBuffer.throttle = (serverBuffer[2]);
                 vehicle.read(serverBuffer);
+                vehicle.update();
             }else{
-                serverBuffer = curAutomation.update();
-                vehicle.read(serverBuffer);
+                //serverBuffer = curAutomation.update();
+                //vehicle.read(serverBuffer);
             }
 
-            vehicle.update();
+            
+            window.simulator.update();
+            //vehicle.update();
         }
 
         function animloop(){

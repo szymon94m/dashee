@@ -88,6 +88,8 @@
             }
         }
 
+        var speedInfo = document.getElementById('wheel-speed');
+
         that.updateDrive = function() {
             //find desired speed
             /*var desiredSpeed = 0;
@@ -107,12 +109,14 @@
 
             //apply necessary force
             var force = 0;
+            if(Math.abs(currentSpeed) < 0.15) currentSpeed = 0;
             if ( desiredSpeed > currentSpeed )
                 force = that.m_maxDriveForce;
             else if ( desiredSpeed < currentSpeed )
                 force = -that.m_maxDriveForce;
             else
                 return;
+            speedInfo.innerHTML = 'Current Speed: '+Math.round(currentSpeed);
             that.m_body.ApplyForce(b2Math.MulFV(force , currentForwardNormal), that.m_body.GetWorldCenter() );
         }
 
