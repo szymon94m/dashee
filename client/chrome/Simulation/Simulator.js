@@ -7,8 +7,10 @@ var b2D = {
     DEGTORAD : 0.0174532925199432957,
     RADTODEG : 57.295779513082320876,
     scale : 100.0,
+    canvasContext: null,
     canvasWidth : 900,
-    canvasHeight : 600    
+    canvasHeight : 600,
+
 }
 
 
@@ -32,6 +34,15 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
 (function(){
     var sim = function(world){
         var that = {};
+        // Set the canvas to the current page size.
+        var worldCanvas = document.getElementById("world1")
+        b2D.canvasContext = worldCanvas.getContext("2d");
+        b2D.canvasHeight = window.innerHeight;
+        b2D.canvasWidth = window.innerWidth;
+        console.log(b2D);
+        worldCanvas.width = b2D.canvasWidth;
+        worldCanvas.height = b2D.canvasHeight;
+
         var world = World1();
         // Return current world vehicle in this case a car.
         that.getVehicle = function(){

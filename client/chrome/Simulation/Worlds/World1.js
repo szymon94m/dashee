@@ -43,8 +43,7 @@
 
         //setup debug draw
         var debugDraw = new b2DebugDraw();
-        var context = document.getElementById("world1").getContext("2d");
-        debugDraw.SetSprite(context);
+        debugDraw.SetSprite(b2D.canvasContext);
         debugDraw.SetDrawScale(b2D.scale);
         debugDraw.SetFillAlpha(0.5);
         debugDraw.SetLineThickness(1.0);
@@ -82,22 +81,22 @@
             }, p1, p2);
             //if(closestItem !== false)
                 //carProximity.innerHTML = "Radar: " + (closestItem-0.16).toFixed(2) + " meters away from an object";
-            /*context.beginPath();
-            context.moveTo(p1.x*scale, p1.y*scale);
-            context.lineTo(p2.x*scale, p2.y*scale);
-            context.stroke();*/
+            /*b2D.canvasContext.beginPath();
+            b2D.canvasContext.moveTo(p1.x*scale, p1.y*scale);
+            b2D.canvasContext.lineTo(p2.x*scale, p2.y*scale);
+            b2D.canvasContext.stroke();*/
 
-            context.save();
+            b2D.canvasContext.save();
             
             // Calculate image position
             // it moves along from the middle of the car 0.2 meters at an angle perpendicular to the cars angle
             var offsetAngle = ( 128) * b2D.DEGTORAD;
             var carImgPos =  new b2Vec2(carX + 0.44*Math.sin(-angle - offsetAngle ), carY + 0.44*Math.cos(-angle -offsetAngle)); 
 
-            context.translate((carImgPos.x)*b2D.scale, carImgPos.y*b2D.scale);
-            context.rotate(angle);
-            //context.drawImage(carImg, 0, 0);
-            context.restore();
+            b2D.canvasContext.translate((carImgPos.x)*b2D.scale, carImgPos.y*b2D.scale);
+            b2D.canvasContext.rotate(angle);
+            //b2D.canvasContext.drawImage(carImg, 0, 0);
+            b2D.canvasContext.restore();
             world.ClearForces();
         }
         that.update =  update;
