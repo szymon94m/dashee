@@ -10,7 +10,6 @@ var b2D = {
     canvasContext: null,
     canvasWidth : 900,
     canvasHeight : 600,
-
 }
 
 
@@ -36,14 +35,23 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
         var that = {};
         // Set the canvas to the current page size.
         var worldCanvas = document.getElementById("world1")
-        b2D.canvasContext = worldCanvas.getContext("2d");
-        b2D.canvasHeight = window.innerHeight;
-        b2D.canvasWidth = window.innerWidth;
-        console.log(b2D);
-        worldCanvas.width = b2D.canvasWidth;
-        worldCanvas.height = b2D.canvasHeight;
+        
+        
+        // Set the canvas size to the current window size
+        function updateCanvasSize(){
+            b2D.canvasContext = worldCanvas.getContext("2d");
+            b2D.canvasHeight = window.innerHeight;
+            b2D.canvasWidth = window.innerWidth;   
+            worldCanvas.width = b2D.canvasWidth;
+            worldCanvas.height = b2D.canvasHeight;
+        }
 
+        // Onload run this to get initial values.
+        updateCanvasSize();
+
+        // This is our current simulated environment definition.
         var world = World1();
+        
         // Return current world vehicle in this case a car.
         that.getVehicle = function(){
             return world.getVehicle();

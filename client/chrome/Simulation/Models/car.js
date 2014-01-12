@@ -98,7 +98,7 @@
 
             //control steering
             var turnSpeedPerSec = 160 * b2D.DEGTORAD;//from lock to lock in 0.5 sec
-            var turnPerTimeStep = turnSpeedPerSec / 60.0;
+            var turnPerTimeStep = turnSpeedPerSec / 40.0;
 
             var angleNow = flJoint.GetJointAngle();
             var angleToTurn = desiredAngle - angleNow;

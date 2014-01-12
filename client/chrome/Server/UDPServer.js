@@ -11,6 +11,7 @@
     var samples=0;
     var prevTime = new Date().getTime();
     var curTime = new Date().getTime();
+    
     // This server exists to update these commands and expose it to
     // the outside world.
     var bufferBytes;
@@ -25,32 +26,20 @@
           that.handleError("Error on joinGroup(): ", result);
         } else {
           that.poll();
+
         }
       });
     });
 
     that.poll = function () {
       if (socketId) {
-        chrome.socket.recvFrom(socketId, 2048576, function (result) {
+        chrome.socket.recvFrom(socketId, 10, function (result) {
           if (result.resultCode >= 0) {
-            var bytes = that.arrayBufferToView(result.data);
-            bufferBytes = bytes;
-            curTime = new Date().getTime();
-            
-            //Register a new packet
-            if(curTime - prevTime < 1000){
-              tempPacketCount++;
-            }else{
-              curPacketCount = tempPacketCount;
-              samples++;
-              tempPacketCount = 0;
-              prevTime = curTime;
-            }
-            
-            chrome.socket.sendTo(socketId, that.stringToArrayBuffer('k'), result.address, result.port, function(){});
-            
+            startedPolling = true;
+            bufferBytes = that.arrayBufferToView(result.data);
             that.poll();
           } else {
+            console.log(result.resultCode);
             that.handleError("", result.resultCode);
             that.disconnect();
           }
