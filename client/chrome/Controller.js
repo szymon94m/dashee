@@ -14,7 +14,7 @@
         var server = UDPServer();
         console.log(" --- Starting Simulator");
         window.simulator = Simulator();
-        var vehicle = Vehicle();
+        var vehicle = VehicleCar();
         var curAutomation = automationForward();        
         console.log(" --- Start Main Animation Loop");
 
@@ -44,8 +44,6 @@
 
             //1
             if (serverBuffer){
-                serverBuffer.steering = (serverBuffer[1]);
-                serverBuffer.throttle = (serverBuffer[2]);
                 vehicle.read(serverBuffer);
                 vehicle.update();
             }else{

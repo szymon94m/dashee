@@ -83,11 +83,11 @@
         var frJoint = world.CreateJoint( jointDef );
         that.m_tires.push(tireFRgt);
 
-        that.setSteer = function(in_val){
+        that.setYaw = function(in_val){
             desiredAngle = steerMapping(in_val);
         }
 
-        that.setPower = function(in_val){
+        that.setThrottle = function(in_val){
             for (var i = 0; i < that.m_tires.length; i++)
                 that.m_tires[i].setPower(in_val);
         }
