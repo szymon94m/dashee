@@ -1,6 +1,6 @@
 (function(){
     // Parent class for automation.
-    var auto = function(opts){
+    var automation = function(opts){
  
         var that = {};
         opts = opts || {};
@@ -9,12 +9,11 @@
         // Given the current the state of afairs
         // return dashee commands.
         that.update = function(){
-            
         }
 
         return that;
     };
       
-    automation = auto;
+    Automation = automation;
 
 })();

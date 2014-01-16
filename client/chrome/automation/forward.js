@@ -1,8 +1,8 @@
 (function(){
     // Automatically move the car forward
-    var auto = function(opts){
+    var forward = function(opts){
  
-        var that = automation();
+        var that = Automation();
         opts = opts || {};
 
         // Given the current the state of afairs
@@ -17,6 +17,6 @@
         return that;
     };
       
-    automationForward = auto;
+    AutomationForward = forward;
 
 })();

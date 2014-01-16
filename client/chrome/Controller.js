@@ -2,7 +2,7 @@
     // Maintains state of world, updating objects step by step
     // according to user input and world factor such as friction and
     // collisions.
-    var mainControl = function(opts, c){
+    var controller = function(opts, c){
  
         var that = {};
         opts = opts || {};
@@ -15,7 +15,7 @@
         console.log(" --- Starting Simulator");
         window.simulator = Simulator();
         var vehicle = VehicleCar();
-        var curAutomation = automationForward();        
+        var automation = AutomationForward();        
         console.log(" --- Start Main Animation Loop");
 
         // Update feedback on server commands and packet rate.
@@ -47,7 +47,7 @@
                 vehicle.read(serverBuffer);
                 vehicle.update();
             }else{
-                //serverBuffer = curAutomation.update();
+                //serverBuffer = automation.update();
                 //vehicle.read(serverBuffer);
             }
 
@@ -66,6 +66,6 @@
         return that;
       };
       
-      Controller = mainControl;
+      Controller = controller;
 
 })();

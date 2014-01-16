@@ -31,7 +31,7 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
 
 
 (function(){
-    var sim = function(world){
+    var simulator = function(world){
         var that = {};
         // Set the canvas to the current page size.
         var worldCanvas = document.getElementById("world1")
@@ -63,5 +63,5 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
 
         return that;
     }
-    Simulator = sim;
+    Simulator = simulator;
 })();
