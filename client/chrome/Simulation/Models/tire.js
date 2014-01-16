@@ -4,7 +4,7 @@
     // Requires box 2D.
     var tireDef = function(world){
         var that = {};
-        that.m_body;
+        that.body;
 
         // Forward and backward force is applied the maxDriveForce rate
         // until the speed is reached
@@ -23,7 +23,7 @@
         bodyDef.angle = 0;
         
         // Add to simulation.
-        that.m_body = world.CreateBody(bodyDef);
+        that.body = world.CreateBody(bodyDef);
 
         var fixDef = new b2FixtureDef;
         fixDef.density = 1.0; // Weight relative to size
@@ -35,32 +35,32 @@
         // So the figures below need to be doubled and it's in meters.
         // 0.0625 is 12.5 cm in width about as small as Box2D supports.
         fixDef.shape.SetAsBox(0.0625, 0.15);
-        that.m_body.CreateFixture(fixDef);
+        that.body.CreateFixture(fixDef);
 
         // Velocity to the side.
         function getLateralVelocity() {
-            //console.log(that.m_body.GetWorldVector());
-            var currentRightNormal = that.m_body.GetWorldVector( new b2Vec2(1,0) );
-            //console.log(that.m_body.GetLinearVelocity());
+            //console.log(that.body.GetWorldVector());
+            var currentRightNormal = that.body.GetWorldVector( new b2Vec2(1,0) );
+            //console.log(that.body.GetLinearVelocity());
             return b2Math.MulFV(
-            b2Math.Dot( currentRightNormal, that.m_body.GetLinearVelocity() ),
+            b2Math.Dot( currentRightNormal, that.body.GetLinearVelocity() ),
             currentRightNormal);
         }
 
         // Velocity to the 'front.'
         function getForwardVelocity() {
-            //console.log(that.m_body.GetWorldVector());
-            var currentRightNormal = that.m_body.GetWorldVector( new b2Vec2(0,1) );
-            //console.log(that.m_body.GetLinearVelocity());
+            //console.log(that.body.GetWorldVector());
+            var currentRightNormal = that.body.GetWorldVector( new b2Vec2(0,1) );
+            //console.log(that.body.GetLinearVelocity());
             return b2Math.MulFV(
-            b2Math.Dot( currentRightNormal, that.m_body.GetLinearVelocity() ),
+            b2Math.Dot( currentRightNormal, that.body.GetLinearVelocity() ),
             currentRightNormal);
         }
 
 
         that.updateFriction = function() {
             // Kill lateral velocity, optionally allow some to get skid effect.
-            var negativeLateralImpulse = b2Math.MulFV(that.m_body.GetMass(), getLateralVelocity().GetNegative());
+            var negativeLateralImpulse = b2Math.MulFV(that.body.GetMass(), getLateralVelocity().GetNegative());
             // The impluses are less in our model than they are on 
             var maxLateralImpulse = 0.025;
             if ( negativeLateralImpulse.Length() > maxLateralImpulse ){
@@ -69,15 +69,15 @@
                 negativeLateralImpulse = b2Math.MulFV(maxLateralImpulse / negativeLateralImpulse.Length(), negativeLateralImpulse);
             }
             var currentTraction = 1;
-            that.m_body.ApplyImpulse( b2Math.MulFV(currentTraction, negativeLateralImpulse), that.m_body.GetWorldCenter() );
+            that.body.ApplyImpulse( b2Math.MulFV(currentTraction, negativeLateralImpulse), that.body.GetWorldCenter() );
             
             // Kill angular velocity
-            that.m_body.ApplyAngularImpulse( 0.1 * that.m_body.GetInertia() * -that.m_body.GetAngularVelocity() );
+            that.body.ApplyAngularImpulse( 0.1 * that.body.GetInertia() * -that.body.GetAngularVelocity() );
 
             var currentForwardNormal = getForwardVelocity();
             var currentForwardSpeed = currentForwardNormal.Normalize();
             var dragForceMagnitude = -0.1 * currentForwardSpeed;
-            that.m_body.ApplyForce( b2Math.MulFV(dragForceMagnitude , currentForwardNormal), that.m_body.GetWorldCenter() );
+            that.body.ApplyForce( b2Math.MulFV(dragForceMagnitude , currentForwardNormal), that.body.GetWorldCenter() );
         }
 
         that.setPower = function(in_power_val){
@@ -104,7 +104,7 @@
             }*/
 
             //find current speed in forward direction
-            var currentForwardNormal = that.m_body.GetWorldVector(new b2Vec2(0,1) );
+            var currentForwardNormal = that.body.GetWorldVector(new b2Vec2(0,1) );
             var currentSpeed = b2Math.Dot( getForwardVelocity(), currentForwardNormal );
 
             //apply necessary force
@@ -117,7 +117,7 @@
             else
                 return;
             speedInfo.innerHTML = 'Current Speed: '+Math.round(currentSpeed);
-            that.m_body.ApplyForce(b2Math.MulFV(force , currentForwardNormal), that.m_body.GetWorldCenter() );
+            that.body.ApplyForce(b2Math.MulFV(force , currentForwardNormal), that.body.GetWorldCenter() );
         }
 
         // Function not use except for stand alone tyre testing.
@@ -132,7 +132,7 @@
             }else{
                 return;
             }
-            that.m_body.ApplyTorque( desiredTorque );
+            that.body.ApplyTorque( desiredTorque );
         }
 
         that.update = function(){
