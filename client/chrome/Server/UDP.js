@@ -1,6 +1,6 @@
 (function(){
   // UDP server to listen for dashee formatted commands.
-  var udpServer = function(opts, c){
+  var udp = function(opts, c){
     var that = {};
     var socketId;
     var rotator;
@@ -92,7 +92,7 @@
     return that;
   }
 
-  UDPServer = udpServer;
+  ServerUDP = udp;
 
 })();
 

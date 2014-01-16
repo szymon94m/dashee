@@ -11,7 +11,7 @@
         var ctx=c.getContext("2d");*/
 
         console.log(" --- Create UDP Server");
-        var server = UDPServer();
+        var server = ServerUDP();
         console.log(" --- Starting Simulator");
         window.simulator = Simulator();
         var vehicle = VehicleCar();
