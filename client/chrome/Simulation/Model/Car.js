@@ -80,7 +80,7 @@
             jointDef.upperAngle = 0;
 
             //back left tire
-            var tireLeft = tire(world);
+            var tireLeft = ModelTire(world);
             //tire.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
             jointDef.bodyB = tireLeft.body;
             jointDef.localAnchorA.Set( -0.2, 0 );
@@ -89,7 +89,7 @@
             that.tires.push(tireLeft);
 
             //back right tire
-            var tireRgt = tire(world);
+            var tireRgt = ModelTire(world);
             //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
             jointDef.bodyB = tireRgt.body;
             jointDef.localAnchorA.Set( 0.2, 0 );
@@ -98,7 +98,7 @@
             that.tires.push(tireRgt);
 
             //front left tire
-            var tireFLeft = tire(world);
+            var tireFLeft = ModelTire(world);
             //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
             jointDef.bodyB = tireFLeft.body;
             jointDef.localAnchorA.Set( -0.2, 0.6 );
@@ -107,7 +107,7 @@
             that.tires.push(tireFLeft);
 
             //front right tire
-            var tireFRgt = tire(world);
+            var tireFRgt = ModelTire(world);
             //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
             jointDef.bodyB = tireFRgt.body;
             jointDef.localAnchorA.Set( 0.2, 0.6 );

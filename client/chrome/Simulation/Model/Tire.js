@@ -2,7 +2,7 @@
 (function(){
     // Box 2D tire class takes the Box 2D World as a parameter.
     // Requires box 2D.
-    var tireDef = function(world){
+    var tire = function(world){
         var that = {};
         that.body;
 
@@ -142,5 +142,5 @@
         }
         return that;
     }
-    tire = tireDef;
+    ModelTire = tire;
 })();
