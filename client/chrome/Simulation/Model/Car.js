@@ -1,5 +1,6 @@
 // Box 2D car definition
 // Build a car with our tires.
+// Based on turorial at http://www.iforce2d.net/b2dtut/top-down-car
 (function(){
     var car = function(world){
         
