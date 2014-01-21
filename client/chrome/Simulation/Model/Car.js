@@ -21,14 +21,14 @@
         var steerMapping = rangeMapping(0,255,-LOCK_ANGLE,LOCK_ANGLE);
         
         // Max speed values
-        var maxForwardSpeed = 250;
-        var maxBackwardSpeed = -40;
+        var maxForwardSpeed = 7;
+        var maxBackwardSpeed = -3;
 
         // Different forces on our tyres
-        var backTireMaxDriveForce = 300;
-        var frontTireMaxDriveForce = 500;
-        var backTireMaxLateralImpulse = 8.5;
-        var frontTireMaxLateralImpulse = 7.5;
+        var backTireMaxDriveForce = 0.3;
+        var frontTireMaxDriveForce = 0.5;
+        var backTireMaxLateralImpulse = 0.01;
+        var frontTireMaxLateralImpulse = 0.025;
 
         // Handlers to the Joint
         var frontLeftJoint;
@@ -82,7 +82,7 @@
 
             //back left tire
             var tireLeft = ModelTire(world);
-            //tire.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
+            tireLeft.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
             jointDef.bodyB = tireLeft.body;
             jointDef.localAnchorA.Set( -0.2, 0 );
             jointDef.localAnchorB.Set( 0, 0 );
@@ -91,7 +91,7 @@
 
             //back right tire
             var tireRgt = ModelTire(world);
-            //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
+            tireRgt.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
             jointDef.bodyB = tireRgt.body;
             jointDef.localAnchorA.Set( 0.2, 0 );
             jointDef.localAnchorB.Set( 0, 0 );
@@ -100,7 +100,7 @@
 
             //front left tire
             var tireFLeft = ModelTire(world);
-            //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+            tireFLeft.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
             jointDef.bodyB = tireFLeft.body;
             jointDef.localAnchorA.Set( -0.2, 0.6 );
             jointDef.localAnchorB.Set( 0, 0 );
@@ -109,7 +109,7 @@
 
             //front right tire
             var tireFRgt = ModelTire(world);
-            //tire->setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
+            tireFRgt.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, frontTireMaxDriveForce, frontTireMaxLateralImpulse);
             jointDef.bodyB = tireFRgt.body;
             jointDef.localAnchorA.Set( 0.2, 0.6 );
             jointDef.localAnchorB.Set( 0, 0 );

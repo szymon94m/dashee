@@ -20,8 +20,7 @@
 
         // Initialise Our Tire.
         (function init(){
-            powerMappingReverse = rangeMapping(0, 128, maxBackwardSpeed, 0);
-            powerMappingForward = rangeMapping(128, 255, 0, maxForwardSpeed);
+            updateMappings();
             initBody();
         })();
 
@@ -51,6 +50,11 @@
             that.body.CreateFixture(fixDef);
         }
 
+        // Mapping between box2d speed and dashee command values.
+        function updateMappings(){
+            powerMappingReverse = rangeMapping(0, 128, maxBackwardSpeed, 0);
+            powerMappingForward = rangeMapping(128, 255, 0, maxForwardSpeed);
+        }
 
         // Velocity to the side.
         function getLateralVelocity() {
@@ -126,6 +130,14 @@
         that.update = function(){
             updateFriction();
             updateDrive();
+        }
+
+        that.setCharacteristics = function(in_maxForwardSpeed, in_maxBackwardSpeed, in_tireMaxDriveForce, in_tireMaxLateralImpulse){
+            maxForwardSpeed = in_maxForwardSpeed;
+            maxBackwardSpeed = in_maxBackwardSpeed;
+            maxDriveForce = in_tireMaxDriveForce;
+            maxLateralImpulse = in_tireMaxLateralImpulse;
+            updateMappings()
         }
 
         return that;
