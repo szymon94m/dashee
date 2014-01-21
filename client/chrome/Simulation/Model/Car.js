@@ -66,11 +66,7 @@
             that.body.CreateFixture(fixDef);
         }
 
-        // initilise our Joints.
-        //
-        // TODO: setCharacteristics using:
-        //     tire.setCharacteristics(maxForwardSpeed, maxBackwardSpeed, backTireMaxDriveForce, backTireMaxLateralImpulse);
-        // 
+        // Initilise our Joints.
         function initTires(){
             //prepare common joint parameters
             var jointDef = new b2RevoluteJointDef;
