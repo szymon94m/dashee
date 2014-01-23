@@ -1,4 +1,4 @@
-package org.dashee.remote.Exceptions;
+package org.dashee.remote.exception;
 
 /**
  * Exception class indicating Invalid Values

@@ -18,23 +18,25 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.dashee.remote.Exceptions.InvalidValue;
+import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.fragments.*;
 import org.dashee.remote.models.*;
 import org.dashee.remote.threads.*;
 
 /**
  * The main activity that the program will run.
- * This will set our fragments, handle our preferences
- * changing, start the threads which communicate to our servers
- * set and listen to the Observers so actions can be taken when things are changed
+ * This will set our fragments, handle our preferences changing, start the 
+ * threads which communicate to our servers set and listen  to the Observers 
+ * so actions can be taken when things are changed
  *
  * @author David Buttar
  * @author Shahmir Javaid
  */
 public class MainActivity 
     extends FragmentActivity 
-    implements SeekBar.OnSeekBarChangeListener, Observer, OnSharedPreferenceChangeListener
+    implements SeekBar.OnSeekBarChangeListener, 
+               Observer, 
+               OnSharedPreferenceChangeListener
 {
 
     /**
@@ -43,7 +45,6 @@ public class MainActivity
      * there previous state.
      */
     private FragmentHud fragmentHud;
-    private FragmentLog fragmentLog;
     
     /**
      * This is our threadSendControllerPositions, which allows us to communicate
@@ -101,7 +102,8 @@ public class MainActivity
             return;
         }*/
         
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        this.sharedPreferences 
+            = PreferenceManager.getDefaultSharedPreferences(this);
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         // This will initialise our PhonePosition Observer,
@@ -110,17 +112,18 @@ public class MainActivity
         this.modelPosition.addObserver(this);
         
         //Create our ServerState model
-        this.modelServerState = new ModelServerState(this.sharedPreferences.getString("pref_server_ip", "192.168.1.115"));
+        this.modelServerState = new ModelServerState(
+                this.sharedPreferences
+                    .getString("pref_server_ip", "192.168.1.115")
+            );
         this.modelServerState.addObserver(this);
         
         // Create our vehicle model
         this.modelVehicle = new ModelVehicleCar();
-
         
     	// Create our fragment views
         this.fragmentHud = new FragmentHudCar();
         this.fragmentHud.setVehicle(this.modelVehicle);
-        this.fragmentLog = new FragmentLog();
     	
         //Set the initial view to our HUD
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -129,11 +132,15 @@ public class MainActivity
         
         
         // Initialise our thread
-        this.threadPassPositionControls = new ThreadPassPositionControls(this.modelServerState, this.modelVehicle);
+        this.threadPassPositionControls = new ThreadPassPositionControls(
+                this.modelServerState, 
+                this.modelVehicle
+            );
         this.threadPassPositionControls.start();
 
         // Initialise our thread
-        this.threadCheckServerStatus = new ThreadCheckServerStatus(this.modelServerState);
+        this.threadCheckServerStatus 
+            = new ThreadCheckServerStatus(this.modelServerState);
         this.threadCheckServerStatus.start();
 
         this.initAllSettings();
@@ -144,11 +151,11 @@ public class MainActivity
      * Iterate through the settings and apply the current values via the
      * onSharedPreferenceChanged handler.
      */
-    private void initAllSettings(){
+    private void initAllSettings()
+    {
         Map<String,?> values = this.sharedPreferences.getAll();
         for (Map.Entry<String, ?> entry : values.entrySet())
         {
-            Log.d("Dashee", "init setting " + entry.getKey());
             onSharedPreferenceChanged(this.sharedPreferences, entry.getKey());
         }
     }
@@ -166,31 +173,49 @@ public class MainActivity
             Log.d("Dashee", "Setting:: " + key);
 
             if(key.equals("pref_server_ip"))
-            {
-                Log.d("Dashee", "Setting new ip address: "+prefs.getString("pref_server_ip", "192.168.115"));
-                this.modelServerState.setIp(prefs.getString("pref_server_ip", "192.168.115"));
-            }
+                this.modelServerState.setIp(
+                        prefs.getString("pref_server_ip", "192.168.115")
+                    );
             else if(key.equals("pref_server_port"))
-                this.modelServerState.setControlsPort(Integer.parseInt(prefs.getString("pref_server_port", "2047")));
+                this.modelServerState.setControlsPort(
+                        Integer.parseInt(
+                            prefs.getString("pref_server_port", "2047")
+                        )
+                    );
             else if(key.contains("pref_phone_tilt"))
-                this.modelVehicle.setPowerToUsePitch(prefs.getBoolean(key, false));
+                this.modelVehicle
+                    .setPowerToUsePitch(prefs.getBoolean(key, false));
             else if(key.contains("pref_channel"))
             {
                 int channel =  Integer.parseInt(key.substring(13, 14));
 
                 if(key.contains("invert"))
-                    this.modelVehicle.setInvert(channel, prefs.getBoolean(key, false));
+                    this.modelVehicle
+                        .setInvert(channel, prefs.getBoolean(key, false));
                 else if(key.contains("max"))
-                    this.modelVehicle.setMax(channel, Integer.parseInt(prefs.getString(key, "100")));
+                    this.modelVehicle.setMax(
+                            channel, 
+                            Integer.parseInt(prefs.getString(key, "100"))
+                        );
                 else if(key.contains("min"))
-                    this.modelVehicle.setMin(channel, Float.parseFloat(prefs.getString(key, "0")));
+                    this.modelVehicle.setMin(
+                            channel, 
+                            Float.parseFloat(prefs.getString(key, "0"))
+                        );
                 else
-                    this.modelVehicle.setTrim(channel, Integer.parseInt(prefs.getString(key, "0")));
+                    this.modelVehicle.setTrim(
+                            channel, 
+                            Integer.parseInt(prefs.getString(key, "0"))
+                        );
             }
         }
         catch(InvalidValue e)
         {
-            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(
+                    getApplicationContext(), 
+                    e.getMessage(), 
+                    Toast.LENGTH_SHORT
+                );
             toast.show();
         }
     }
@@ -224,23 +249,13 @@ public class MainActivity
         {
             case R.id.action_dot_settings:
             {
-                Intent preferencesActivity = new Intent(getBaseContext(), org.dashee.remote.preferences.PreferencesActivity.class);
+                Intent preferencesActivity 
+                    = new Intent(
+                            getBaseContext(), 
+                            org.dashee.remote.preferences.PreferencesActivity.class
+                        );
                 startActivity(preferencesActivity);
                 return true;
-            }
-            case R.id.action_menu_hud:
-            {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_content, fragmentHud);
-                ft.commit();
-            	return true;
-            }
-            case R.id.action_menu_log:
-            {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_content, fragmentLog);
-                ft.commit();
-            	return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
@@ -297,12 +312,14 @@ public class MainActivity
                         runOnUiThread(new Runnable() {
                             public void run()
                             {
-                                fragmentHud.setHudIp(modelServerState.getIp().getHostAddress()); 
+                                fragmentHud.setHudIp(
+                                    modelServerState.getIp().getHostAddress()
+                                ); 
                             }
                         });
                         break;
-				default:
-					break;
+                            default:
+                            break;
                 }
             }
         }
@@ -323,8 +340,6 @@ public class MainActivity
         this.modelPosition.onResume();
         this.threadPassPositionControls.onResume();
         this.threadCheckServerStatus.onResume();
-
-        // Make sure car is stopped when coming back from settings.
         this.modelVehicle.onResume();
     }
     
@@ -362,7 +377,11 @@ public class MainActivity
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) 
+    public void onProgressChanged(
+            SeekBar seekBar, 
+            int progress, 
+            boolean fromUser
+        ) 
     {
     }
 }
