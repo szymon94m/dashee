@@ -18,3 +18,7 @@ playground/lib
 www/website/application/configs
 www/website/sass/css
 www/website/public/download
+
+client/android/bin
+client/android/gen
+client/android/local.properties
