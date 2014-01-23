@@ -1,11 +1,11 @@
-package com.confusedbrowser.androneee_remote.threads;
+package org.dashee.remote.threads;
 
 
 import android.util.Log;
 
 import java.net.*;
 
-import com.confusedbrowser.androneee_remote.models.*;
+import org.dashee.remote.models.*;
 
 /**
  * Thread to check alive status of servers.

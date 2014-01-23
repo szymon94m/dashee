@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote.threads;
+package org.dashee.remote.threads;
 
 import android.util.Log;
 
@@ -6,8 +6,8 @@ import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.confusedbrowser.androneee_remote.models.ModelServerState;
-import com.confusedbrowser.androneee_remote.models.ModelVehicle;
+import org.dashee.remote.models.ModelServerState;
+import org.dashee.remote.models.ModelVehicle;
 
 /**
  * Thread to communicate to the server.

@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote.preferences;
+package org.dashee.remote.preferences;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -9,8 +9,8 @@ import android.preference.PreferenceScreen;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 
-import com.confusedbrowser.androneee_remote.R;
-import com.confusedbrowser.androneee_remote.models.ModelServerState;
+import org.dashee.remote.R;
+import org.dashee.remote.models.ModelServerState;
 
 import java.util.List;
 import java.util.Map;

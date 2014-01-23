@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote;
+package org.dashee.remote;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.confusedbrowser.androneee_remote.Exceptions.InvalidValue;
-import com.confusedbrowser.androneee_remote.fragments.*;
-import com.confusedbrowser.androneee_remote.models.*;
-import com.confusedbrowser.androneee_remote.threads.*;
+import org.dashee.remote.Exceptions.InvalidValue;
+import org.dashee.remote.fragments.*;
+import org.dashee.remote.models.*;
+import org.dashee.remote.threads.*;
 
 /**
  * The main activity that the program will run.
@@ -224,7 +224,7 @@ public class MainActivity
         {
             case R.id.action_dot_settings:
             {
-                Intent preferencesActivity = new Intent(getBaseContext(), com.confusedbrowser.androneee_remote.preferences.PreferencesActivity.class);
+                Intent preferencesActivity = new Intent(getBaseContext(), org.dashee.remote.preferences.PreferencesActivity.class);
                 startActivity(preferencesActivity);
                 return true;
             }

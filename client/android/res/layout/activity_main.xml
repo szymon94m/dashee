@@ -14,14 +14,14 @@
      
      <fragment
         android:id="@+id/fragment_log"
-        android:name="com.confusedbrowser.androneee_remote.fragments.FragmentLog"
+        android:name="org.dashee.remote.fragments.FragmentLog"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
      	/>
      
     <fragment
          android:id="@+id/fragment_hud"
-         android:name="com.confusedbrowser.androneee_remote.fragments.FragmentHudCar"
+         android:name="org.dashee.remote.fragments.FragmentHudCar"
          android:layout_width="fill_parent"
          android:layout_height="fill_parent" 
          />

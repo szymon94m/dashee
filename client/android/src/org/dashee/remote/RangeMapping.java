@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote;
+package org.dashee.remote;
 
 /*
  * Allows to set up generic range mappings

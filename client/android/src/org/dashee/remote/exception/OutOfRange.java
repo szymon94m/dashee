@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote.exception;
+package org.dashee.remote.exception;
 
 /**
  * Exception class indicating Invalid Values

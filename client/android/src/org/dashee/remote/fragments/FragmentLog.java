@@ -1,6 +1,6 @@
-package com.confusedbrowser.androneee_remote.fragments;
+package org.dashee.remote.fragments;
 
-import com.confusedbrowser.androneee_remote.R;
+import org.dashee.remote.R;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

@@ -1,10 +1,10 @@
-package com.confusedbrowser.androneee_remote.preferences;
+package org.dashee.remote.preferences;
 
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.MenuItem;
-import com.confusedbrowser.androneee_remote.R;
+import org.dashee.remote.R;
  
 /**
  * This will handle our Preference object
@@ -12,7 +12,7 @@ import com.confusedbrowser.androneee_remote.R;
  * @author David Buttar
  * @author Shahmir Javaid
  */
-public class ChannelActivity 
+public class PreferencesActivity 
     extends PreferenceActivity 
 {
     @Override
@@ -22,11 +22,11 @@ public class ChannelActivity
         
         ActionBar ab = getActionBar();
         ab.setSubtitle(R.string.pref_subtitle);
-        ab.setHomeButtonEnabled(true);
+        //ab.setHomeButtonEnabled(true);
 
         getFragmentManager()
             .beginTransaction()
-            .replace(android.R.id.content, new ChannelFragment())
+            .replace(android.R.id.content, new MainFragment())
             .commit();
     }
 

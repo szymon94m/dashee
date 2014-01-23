@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote;
+package org.dashee.remote;
 
 import android.content.Context;
 import android.content.res.Resources;

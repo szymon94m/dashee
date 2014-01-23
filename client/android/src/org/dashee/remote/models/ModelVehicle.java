@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote.models;
+package org.dashee.remote.models;
 
 import java.util.ArrayList;
 import java.util.List;

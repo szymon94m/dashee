@@ -1,7 +1,10 @@
-package com.confusedbrowser.androneee_remote.models.vehicle;
+package org.dashee.remote.models.vehicle;
 
-import com.confusedbrowser.androneee_remote.exception.*;
+import org.dashee.remote.exception.*;
 
+/**
+ * This class holds all the values used for all vehicles.
+ */
 public abstract class Vehicle
 {
     /**

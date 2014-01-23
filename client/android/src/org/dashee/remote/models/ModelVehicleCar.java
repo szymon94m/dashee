@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote.models;
+package org.dashee.remote.models;
 
 import android.util.Log;
 
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.lang.Math;
 import java.util.List;
 
-import com.confusedbrowser.androneee_remote.Exceptions.InvalidValue;
-import com.confusedbrowser.androneee_remote.RangeMapping;
+import org.dashee.remote.Exceptions.InvalidValue;
+import org.dashee.remote.RangeMapping;
 
 /**
  * @author shahmirj is a cock
@@ -103,7 +103,7 @@ public class ModelVehicleCar implements ModelVehicle
     }
 
     /**
-     * @see com.confusedbrowser.androneee_remote.models.ModelVehicle:getCommand()
+     * @see org.dashee.remote.models.ModelVehicle:getCommand()
      *
      * @return ArrayList<byte> - A list of bytes which form the command to be sent to the server
      */

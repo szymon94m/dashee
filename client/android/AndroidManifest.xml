@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.confusedbrowser.androneee_remote"
+<manifest package="org.dashee.remote"
     android:versionCode="1"
     android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-sdk
@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         >
         <activity
-            android:name="com.confusedbrowser.androneee_remote.MainActivity"
+            android:name="org.dashee.remote.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"  >
@@ -25,14 +25,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.confusedbrowser.androneee_remote.preferences.PreferencesActivity"
+            android:name="org.dashee.remote.preferences.PreferencesActivity"
             android:label="@string/pref_title"
-            android:parentActivityName="com.confusedbrowser.androneee_remote.MainActivity">
+            android:parentActivityName="org.dashee.remote.MainActivity">
         </activity>
         <activity
-            android:name="com.confusedbrowser.androneee_remote.preferences.ChannelActivity"
+            android:name="org.dashee.remote.preferences.ChannelActivity"
             android:label="@string/pref_title"
-            android:parentActivityName="com.confusedbrowser.androneee_remote.preferences.PreferenceActivity">
+            android:parentActivityName="org.dashee.remote.preferences.PreferenceActivity">
         </activity>
     </application>
 </manifest>

@@ -1,8 +1,8 @@
-package com.confusedbrowser.androneee_remote.fragments;
+package org.dashee.remote.fragments;
 
 import android.support.v4.app.Fragment;
 
-import com.confusedbrowser.androneee_remote.models.*;
+import org.dashee.remote.models.*;
 
 /**
  * FragmentHud abstract class. Create the functions

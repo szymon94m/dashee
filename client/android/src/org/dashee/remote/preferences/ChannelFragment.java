@@ -1,9 +1,9 @@
-package com.confusedbrowser.androneee_remote.preferences;
+package org.dashee.remote.preferences;
 
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
-import com.confusedbrowser.androneee_remote.R;
+import org.dashee.remote.R;
  
 /**
  * This will handle our Preference object

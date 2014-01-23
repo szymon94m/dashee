@@ -1,4 +1,4 @@
-package com.confusedbrowser.androneee_remote.fragments;
+package org.dashee.remote.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -22,10 +22,10 @@ import android.graphics.Typeface;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import com.confusedbrowser.androneee_remote.DrawHud;
-import com.confusedbrowser.androneee_remote.R;
-import com.confusedbrowser.androneee_remote.RangeMapping;
-import com.confusedbrowser.androneee_remote.models.*;
+import org.dashee.remote.DrawHud;
+import org.dashee.remote.R;
+import org.dashee.remote.RangeMapping;
+import org.dashee.remote.models.*;
 import android.text.Html;
 
 import android.widget.TextView;
@@ -180,7 +180,7 @@ public class FragmentHudCar extends FragmentHud
             @Override
             public void onClick(View v) {
             	
-                Intent intent = new Intent(getActivity(), com.confusedbrowser.androneee_remote.preferences.PreferencesActivity.class);
+                Intent intent = new Intent(getActivity(), org.dashee.remote.preferences.PreferencesActivity.class);
                 startActivity(intent);
             }
         });
