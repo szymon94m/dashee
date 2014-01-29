@@ -22,3 +22,6 @@ www/website/public/download
 client/android/bin
 client/android/gen
 client/android/local.properties
+client/android/tests/bin
+client/android/tests/gen
+client/android/tests/local.properties

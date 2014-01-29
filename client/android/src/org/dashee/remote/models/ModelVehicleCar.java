@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.lang.Math;
 import java.util.List;
 
-import org.dashee.remote.Exceptions.InvalidValue;
+import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.RangeMapping;
 
 /**

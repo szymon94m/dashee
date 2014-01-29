@@ -1,0 +1,48 @@
+package org.dashee.remote.test.models.vehicle;
+
+import junit.framework.TestCase;
+import org.dashee.remote.models.Vehicle;
+import org.dashee.remote.models.vehicle.*;
+
+public class CarTest
+    extends TestCase
+{
+    /**
+     * The created instance of our vehicle.
+     */
+    private Vehicle vehicle;
+
+    /**
+     * New instance of our Car variable
+     */
+    public void setUp() throws Exception
+    {
+        super.setUp();
+        this.vehicle = new Car();
+    }
+
+    /**
+     * Test the set and get values of the pitch
+     */
+    public void testSetAndGetPitch()
+    {
+        assertEquals(this.vehicle.getPitch(), 128);
+
+        for (int x = 0; x < 255; ++x)
+        {
+            this.vehicle.setPitch(255);
+            assertEquals(this.vehicle.getPitch(), 255);
+        }
+
+
+
+    }
+
+    /**
+     * Clean up our class
+     */
+    public void tearDown() throws Exception
+    {
+        super.tearDown();
+    }
+}
