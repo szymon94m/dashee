@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import org.dashee.remote.models.Vehicle;
 import org.dashee.remote.models.vehicle.Car;
 import org.dashee.remote.exception.OutOfRange;
-import static java.lang.System.out;
 
 public class CarTest
     extends TestCase
@@ -81,18 +80,53 @@ public class CarTest
         for (int x = 0; x < 255; x++)
         {
             this.vehicle.setPitch(x);
-            
-            /*
+
             if (x < 128)
                 assertEquals(this.vehicle.getPitch(), 128);
             else if (x > 130)
                 assertEquals(this.vehicle.getPitch(), 130);
             else 
                 assertEquals(this.vehicle.getPitch(), x);
-                */
+        }
+    }
 
-            this.vehicle.setPitchMin(0);
-            this.vehicle.setPitchMax(255);
+    /**
+     * Test the value when the trim is set
+     */
+    public void testSetAndGetPitchWhenTrimmed()
+    {
+        this.vehicle.setPitchTrim(10);
+        this.vehicle.setPitch(10);
+        assertEquals(this.vehicle.getPitch(), 20);
+        
+        // Make sure any value greater than 255 after trim is calculated
+        // as the max value
+        this.vehicle.setPitch(250);
+        assertEquals(this.vehicle.getPitch(), 255);
+
+        // Test the negative value
+        this.vehicle.setPitchTrim(-10);
+        this.vehicle.setPitch(10);
+        assertEquals(this.vehicle.getPitch(), 0);
+
+        try
+        {
+            this.vehicle.setPitchTrim(-129);
+            fail("Setting values less than -128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Pitch trim");
+        }
+
+        try
+        {
+            this.vehicle.setPitchTrim(129);
+            fail("Setting values greater than 128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Pitch trim");
         }
     }
 
@@ -131,6 +165,78 @@ public class CarTest
             assertSame(e.getMessage(), "Invalid range of Roll");
         }
     }
+
+    /**
+     * Test the min and max values from pitch
+     */
+    public void testSetAndGetRollWithMinAndMax()
+    {
+        this.vehicle.setRollMin(128);
+        this.vehicle.setRollMax(130);
+
+        // Try setting the min to more than max
+        try 
+        {
+            this.vehicle.setRollMin(140);
+            fail("Roll min should not be more than max");
+        }
+        catch (OutOfRange e)
+        {
+            assertSame(e.getMessage(), "Min value must be less than max");
+        }
+
+        for (int x = 0; x < 255; x++)
+        {
+            this.vehicle.setRoll(x);
+
+            if (x < 128)
+                assertEquals(this.vehicle.getRoll(), 128);
+            else if (x > 130)
+                assertEquals(this.vehicle.getRoll(), 130);
+            else 
+                assertEquals(this.vehicle.getRoll(), x);
+        }
+    }
+
+    /**
+     * Test the value when the trim is set
+     */
+    public void testSetAndGetRollWhenTrimmed()
+    {
+        this.vehicle.setRollTrim(10);
+        this.vehicle.setRoll(10);
+        assertEquals(this.vehicle.getRoll(), 20);
+        
+        // Make sure any value greater than 255 after trim is calculated
+        // as the max value
+        this.vehicle.setRoll(250);
+        assertEquals(this.vehicle.getRoll(), 255);
+
+        // Test the negative value
+        this.vehicle.setRollTrim(-10);
+        this.vehicle.setRoll(10);
+        assertEquals(this.vehicle.getRoll(), 0);
+
+        try
+        {
+            this.vehicle.setRollTrim(-129);
+            fail("Setting values less than -128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Roll trim");
+        }
+
+        try
+        {
+            this.vehicle.setRollTrim(129);
+            fail("Setting values greater than 128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Roll trim");
+        }
+    }
     
     /**
      * Test the set and get of yaw
@@ -167,6 +273,78 @@ public class CarTest
             assertSame(e.getMessage(), "Invalid range of Yaw");
         }
     }
+
+    /**
+     * Test the min and max values from pitch
+     */
+    public void testSetAndGetYawWithMinAndMax()
+    {
+        this.vehicle.setYawMin(128);
+        this.vehicle.setYawMax(130);
+
+        // Try setting the min to more than max
+        try 
+        {
+            this.vehicle.setYawMin(140);
+            fail("Yaw min should not be more than max");
+        }
+        catch (OutOfRange e)
+        {
+            assertSame(e.getMessage(), "Min value must be less than max");
+        }
+
+        for (int x = 0; x < 255; x++)
+        {
+            this.vehicle.setYaw(x);
+
+            if (x < 128)
+                assertEquals(this.vehicle.getYaw(), 128);
+            else if (x > 130)
+                assertEquals(this.vehicle.getYaw(), 130);
+            else 
+                assertEquals(this.vehicle.getYaw(), x);
+        }
+    }
+
+    /**
+     * Test the value when the trim is set
+     */
+    public void testSetAndGetYawWhenTrimmed()
+    {
+        this.vehicle.setYawTrim(10);
+        this.vehicle.setYaw(10);
+        assertEquals(this.vehicle.getYaw(), 20);
+        
+        // Make sure any value greater than 255 after trim is calculated
+        // as the max value
+        this.vehicle.setYaw(250);
+        assertEquals(this.vehicle.getYaw(), 255);
+
+        // Test the negative value
+        this.vehicle.setYawTrim(-10);
+        this.vehicle.setYaw(10);
+        assertEquals(this.vehicle.getYaw(), 0);
+
+        try
+        {
+            this.vehicle.setYawTrim(-129);
+            fail("Setting values less than -128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Yaw trim");
+        }
+
+        try
+        {
+            this.vehicle.setYawTrim(129);
+            fail("Setting values greater than 128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Yaw trim");
+        }
+    }
     
     /**
      * Test the set and get of throttle
@@ -201,6 +379,78 @@ public class CarTest
         catch (OutOfRange e)
         {
             assertSame(e.getMessage(), "Invalid range of Throttle");
+        }
+    }
+
+    /**
+     * Test the min and max values from pitch
+     */
+    public void testSetAndGetThrottleWithMinAndMax()
+    {
+        this.vehicle.setThrottleMin(128);
+        this.vehicle.setThrottleMax(130);
+
+        // Try setting the min to more than max
+        try 
+        {
+            this.vehicle.setThrottleMin(140);
+            fail("Throttle min should not be more than max");
+        }
+        catch (OutOfRange e)
+        {
+            assertSame(e.getMessage(), "Min value must be less than max");
+        }
+
+        for (int x = 0; x < 255; x++)
+        {
+            this.vehicle.setThrottle(x);
+
+            if (x < 128)
+                assertEquals(this.vehicle.getThrottle(), 128);
+            else if (x > 130)
+                assertEquals(this.vehicle.getThrottle(), 130);
+            else 
+                assertEquals(this.vehicle.getThrottle(), x);
+        }
+    }
+
+    /**
+     * Test the value when the trim is set
+     */
+    public void testSetAndGetThrottleWhenTrimmed()
+    {
+        this.vehicle.setThrottleTrim(10);
+        this.vehicle.setThrottle(10);
+        assertEquals(this.vehicle.getThrottle(), 20);
+        
+        // Make sure any value greater than 255 after trim is calculated
+        // as the max value
+        this.vehicle.setThrottle(250);
+        assertEquals(this.vehicle.getThrottle(), 255);
+
+        // Test the negative value
+        this.vehicle.setThrottleTrim(-10);
+        this.vehicle.setThrottle(10);
+        assertEquals(this.vehicle.getThrottle(), 0);
+
+        try
+        {
+            this.vehicle.setThrottleTrim(-129);
+            fail("Setting values less than -128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Throttle trim");
+        }
+
+        try
+        {
+            this.vehicle.setThrottleTrim(129);
+            fail("Setting values greater than 128 is invalid");
+        }
+        catch (OutOfRange ex)
+        {
+            assertSame(ex.getMessage(), "Invalid range value for Throttle trim");
         }
     }
 
