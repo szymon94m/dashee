@@ -95,13 +95,17 @@
 
             // update object friction;
             model.update();
+
             // Step through the world
             curTime = new Date().getTime();
             world.Step((curTime - prevTime)/1000, 10, 10);
             prevTime = curTime;
 
             // Helpfull debug information
-            if (debugDraw) world.DrawDebugData();
+            if (debugDraw){ 
+                world.DrawDebugData();
+                model.debugDraw(b2D.canvasContext, b2D.scale);
+            }
 
             world.ClearForces();
         }

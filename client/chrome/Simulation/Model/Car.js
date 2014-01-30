@@ -133,6 +133,11 @@
             return sensor.read();
         }
 
+        // Do any debug drawing output
+        that.debugDraw = function(context, scale){
+            sensor.debugDraw(context, scale);
+        }
+
         // Update the physical state of the car
         that.update = function() {
 

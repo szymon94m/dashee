@@ -10,7 +10,9 @@
         var length = opts.length || 1.6;
         var world = opts.world || console.error('No World set biatches!');
 
-        var proximity = 0; 
+        var proximity = 0;
+        var p1 = 0;
+        var p2 = 0; 
 
         // Perform the Actual raycast
         function raycast(p1, p2){
@@ -27,8 +29,8 @@
         that.update = function(){
             var sinAngle = Math.sin(angle);
             var cosAngle = Math.cos(angle);
-            var p1 = new b2Vec2(x, y);
-            var p2 = new b2Vec2(x + length*sinAngle, y + length*cosAngle); 
+            p1 = new b2Vec2(x, y);
+            p2 = new b2Vec2(x + length*sinAngle, y + length*cosAngle); 
             raycast(p1, p2);
         }
 
@@ -50,6 +52,13 @@
         that.setLength = function(in_length){
             if (in_length < 0) console.error('Length must be greater than 0');
             length = in_length;
+        }
+
+        that.debugDraw = function(context, scale){
+            context.beginPath();
+            context.moveTo(p1.x*scale, p1.y*scale);
+            context.lineTo(p2.x*scale, p2.y*scale);
+            context.stroke();
         }
     
         return that;
