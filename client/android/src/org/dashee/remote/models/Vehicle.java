@@ -1,8 +1,12 @@
 package org.dashee.remote.models;
+
 import org.dashee.remote.exception.OutOfRange;
 
 /**
- * This class holds all the values used for all vehicles.
+ * This class holds all the values used for all vehicles. A nice way to 
+ * encapsulate the properties of pitch, roll, yaw and throttle. With an
+ * added functionality to provide Trim, Min, Max and Invert behavior to
+ * all of the flight controls.
  */
 public abstract class Vehicle
 {
@@ -37,6 +41,14 @@ public abstract class Vehicle
     private int rollMax = 255;
     private int yawMax = 255;
     private int throttleMax = 255;
+
+    /**
+     * Flag to determine the inversion of the flight controls.
+     */
+    private boolean pitchInverted = false;
+    private boolean rollInverted = false;
+    private boolean yawInverted = false;
+    private boolean throttleInverted = false;
  
     /**
      * Set the value of pitch.
@@ -64,10 +76,14 @@ public abstract class Vehicle
 
         // Return the min/max values if the actual value is out of range
         if (trimmed < this.pitchMin)
-           return this.pitchMin;
+           trimmed = this.pitchMin;
         else if (trimmed > this.pitchMax)
-            return this.pitchMax;
+            trimmed = this.pitchMax;
 
+        // Reverse the value when in invert
+        if (pitchInverted)
+            return 255 - trimmed;
+        
         return trimmed;
     }
 
@@ -84,6 +100,26 @@ public abstract class Vehicle
             throw new OutOfRange("Invalid range value for Pitch trim");
 
         this.pitchTrim = trim;
+    }
+
+    /**
+     * Set the invert flag for pitch.
+     *
+     * @param inverted The value to set
+     */
+    public void setPitchInverted(boolean inverted)
+    {
+        this.pitchInverted = inverted;
+    }
+
+    /**
+     * Get the pitch invert value.
+     *
+     * @return the value of the inverted flag 
+     */
+    public boolean getPitchInverted()
+    {
+        return this.pitchInverted;
     }
 
     /**
@@ -142,10 +178,14 @@ public abstract class Vehicle
 
         // Return the min/max values if the actual value is out of range
         if (trimmed < this.rollMin)
-           return this.rollMin;
+           trimmed = this.rollMin;
         else if (trimmed > this.rollMax)
-            return this.rollMax;
+            trimmed = this.rollMax;
 
+        // Reverse the value when in invert
+        if (rollInverted)
+            return 255 - trimmed;
+        
         return trimmed;
     }
 
@@ -162,6 +202,26 @@ public abstract class Vehicle
             throw new OutOfRange("Invalid range value for Roll trim");
 
         this.rollTrim = trim;
+    }
+
+    /**
+     * Set the invert flag for roll.
+     *
+     * @param inverted The value to set
+     */
+    public void setRollInverted(boolean inverted)
+    {
+        this.rollInverted = inverted;
+    }
+
+    /**
+     * Get the roll invert value.
+     *
+     * @return the value of the inverted flag 
+     */
+    public boolean getRollInverted()
+    {
+        return this.rollInverted;
     }
 
     /**
@@ -220,10 +280,14 @@ public abstract class Vehicle
 
         // Return the min/max values if the actual value is out of range
         if (trimmed < this.yawMin)
-           return this.yawMin;
+            trimmed = this.yawMin;
         else if (trimmed > this.yawMax)
-            return this.yawMax;
-
+            trimmed = this.yawMax;
+        
+        // Reverse the value when in invert
+        if (yawInverted)
+            return 255 - trimmed;
+        
         return trimmed;
     }
 
@@ -240,6 +304,26 @@ public abstract class Vehicle
             throw new OutOfRange("Invalid range value for Yaw trim");
 
         this.yawTrim = trim;
+    }
+    
+    /**
+     * Set the invert flag for yaw.
+     *
+     * @param inverted The value to set
+     */
+    public void setYawInverted(boolean inverted)
+    {
+        this.yawInverted = inverted;
+    }
+
+    /**
+     * Get the yaw invert value.
+     *
+     * @return the value of the inverted flag 
+     */
+    public boolean getYawInverted()
+    {
+        return this.yawInverted;
     }
 
     /**
@@ -298,10 +382,14 @@ public abstract class Vehicle
 
         // Return the min/max values if the actual value is out of range
         if (trimmed < this.throttleMin)
-           return this.throttleMin;
+            trimmed = this.throttleMin;
         else if (trimmed > this.throttleMax)
-            return this.throttleMax;
+            trimmed = this.throttleMax;
 
+        // Reverse the value when in invert
+        if (throttleInverted)
+            return 255 - trimmed;
+        
         return trimmed;
     }
 
@@ -318,6 +406,26 @@ public abstract class Vehicle
             throw new OutOfRange("Invalid range value for Throttle trim");
 
         this.throttleTrim = trim;
+    }
+    
+    /**
+     * Set the invert flag for throttle.
+     *
+     * @param inverted The value to set
+     */
+    public void setThrottleInverted(boolean inverted)
+    {
+        this.throttleInverted = inverted;
+    }
+
+    /**
+     * Get the throttle invert value.
+     *
+     * @return the value of the inverted flag 
+     */
+    public boolean getThrottleInverted()
+    {
+        return this.throttleInverted;
     }
 
     /**

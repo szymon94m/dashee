@@ -131,6 +131,22 @@ public class CarTest
     }
 
     /**
+     * Test the pitch values when the world is inverted
+     */ 
+    public void testSetAndGetPitchWhenInverted()
+    {
+        assertFalse(this.vehicle.getPitchInverted());
+        this.vehicle.setPitchInverted(true);
+        assertTrue(this.vehicle.getPitchInverted());
+
+        for (int x = 0; x < 255; ++x)
+        {
+            this.vehicle.setPitch(x);
+            assertEquals(this.vehicle.getPitch(), 255-x);
+        }
+    }
+
+    /**
      * Test the set and get of roll
      */
     public void testSetAndGetRoll()
@@ -235,6 +251,22 @@ public class CarTest
         catch (OutOfRange ex)
         {
             assertSame(ex.getMessage(), "Invalid range value for Roll trim");
+        }
+    }
+
+    /**
+     * Test the pitch values when the world is inverted
+     */ 
+    public void testSetAndGetRollWhenInverted()
+    {
+        assertFalse(this.vehicle.getRollInverted());
+        this.vehicle.setRollInverted(true);
+        assertTrue(this.vehicle.getRollInverted());
+
+        for (int x = 0; x < 255; ++x)
+        {
+            this.vehicle.setRoll(x);
+            assertEquals(this.vehicle.getRoll(), 255-x);
         }
     }
     
@@ -345,6 +377,22 @@ public class CarTest
             assertSame(ex.getMessage(), "Invalid range value for Yaw trim");
         }
     }
+
+    /**
+     * Test the pitch values when the world is inverted
+     */ 
+    public void testSetAndGetYawWhenInverted()
+    {
+        assertFalse(this.vehicle.getYawInverted());
+        this.vehicle.setYawInverted(true);
+        assertTrue(this.vehicle.getYawInverted());
+
+        for (int x = 0; x < 255; ++x)
+        {
+            this.vehicle.setYaw(x);
+            assertEquals(this.vehicle.getYaw(), 255-x);
+        }
+    }
     
     /**
      * Test the set and get of throttle
@@ -451,6 +499,22 @@ public class CarTest
         catch (OutOfRange ex)
         {
             assertSame(ex.getMessage(), "Invalid range value for Throttle trim");
+        }
+    }
+
+    /**
+     * Test the pitch values when the world is inverted
+     */ 
+    public void testSetAndGetThrottleWhenInverted()
+    {
+        assertFalse(this.vehicle.getThrottleInverted());
+        this.vehicle.setThrottleInverted(true);
+        assertTrue(this.vehicle.getThrottleInverted());
+
+        for (int x = 0; x < 255; ++x)
+        {
+            this.vehicle.setThrottle(x);
+            assertEquals(this.vehicle.getThrottle(), 255-x);
         }
     }
 
