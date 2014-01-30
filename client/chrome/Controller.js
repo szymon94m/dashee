@@ -13,9 +13,9 @@
         console.log(" --- Create UDP Server");
         var server = ServerUDP();
         console.log(" --- Starting Simulator");
-        window.simulator = Simulator();
-        var vehicle = VehicleCar();
-        var automation = AutomationForward();        
+        var simulator = Simulator();
+        var vehicle = VehicleCar({simulator:simulator});
+        var automation = AutomationForward();
         console.log(" --- Start Main Animation Loop");
 
         // Update feedback on server commands and packet rate.
@@ -51,8 +51,9 @@
                 //vehicle.read(serverBuffer);
             }
 
-            
-            window.simulator.update();
+            //sensor.update();
+
+            simulator.update();
             //vehicle.update();
         }
 

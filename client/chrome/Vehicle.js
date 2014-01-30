@@ -7,7 +7,7 @@
         var throttle;
         var yaw;
 
-        var simVehicle = simulator.getVehicle();
+        var sim = opts.simulator || false;
         
         // Reads commands in dashee byte format.
         that.read = function(){
@@ -31,7 +31,9 @@
         }
 
         that.getSimVehicle = function(){
-            return simVehicle;
+            if (sim == false)
+                console.error("No simVehicle set");
+            return sim.getVehicle();
         }
 
         //given commands update your position

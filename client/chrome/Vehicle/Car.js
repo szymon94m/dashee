@@ -1,11 +1,12 @@
 // 
 (function(){
-    var car = function(opts, c){
+    var car = function(opts){
  
-        var that = Vehicle();
         opts = opts || {};
+        var that = Vehicle(opts);
 
         var simCar = that.getSimVehicle();
+        console.log(simCar);
         
         that.read = function(commands){
             that.setThrottle(commands[2]);

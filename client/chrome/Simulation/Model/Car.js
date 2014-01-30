@@ -24,10 +24,13 @@
         var maxForwardSpeed = 7;
         var maxBackwardSpeed = -3;
 
+        // the sensor to determine the proxmity
+        var sensor = ModelSensorProximity({world:world});
+
         // Different forces on our tyres
         var backTireMaxDriveForce = 0.3;
         var frontTireMaxDriveForce = 0.5;
-        var backTireMaxLateralImpulse = 0.01;
+        var backTireMaxLateralImpulse = 0.3;
         var frontTireMaxLateralImpulse = 0.025;
 
         // Handlers to the Joint
@@ -124,8 +127,15 @@
                 that.tires[i].setPower(in_val);
         }
 
+        // Get the sensor proximity value
+        that.getSensorProximity = function()
+        {
+            return sensor.read();
+        }
+
         // Update the physical state of the car
         that.update = function() {
+
             for (var i = 0; i < that.tires.length; i++)
                 that.tires[i].update();
 
@@ -139,6 +149,8 @@
             // causing a turned wheel effect.
             frontLeftJoint.SetLimits(newAngle, newAngle);
             frontRightJoint.SetLimits(newAngle, newAngle);
+
+            sensor.moveTo(that.body.GetPosition().x, that.body.GetPosition().y, that.body.GetAngle());
         }
 
         return that;

@@ -95,7 +95,6 @@
 
             // update object friction;
             model.update();
-
             // Step through the world
             curTime = new Date().getTime();
             world.Step((curTime - prevTime)/1000, 10, 10);
