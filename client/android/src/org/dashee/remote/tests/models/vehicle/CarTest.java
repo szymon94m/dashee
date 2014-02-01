@@ -1,7 +1,6 @@
 package org.dashee.remote.test.models.vehicle;
 
 import junit.framework.TestCase;
-import org.dashee.remote.models.Vehicle;
 import org.dashee.remote.models.vehicle.Car;
 import org.dashee.remote.exception.OutOfRange;
 

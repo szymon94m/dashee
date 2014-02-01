@@ -14,14 +14,15 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.fragments.*;
 import org.dashee.remote.models.*;
-import org.dashee.remote.threads.*;
+
+import org.dashee.remote.models.Vehicle;
+import org.dashee.remote.models.vehicle.Car;
 
 /**
  * The main activity that the program will run.
@@ -47,19 +48,10 @@ public class MainActivity
     private FragmentHud fragmentHud;
     
     /**
-     * This is our threadSendControllerPositions, which allows us to communicate
-     * with our server on the RC robot, this thread handles the
-     * network communication
+     * A list of running threads. Easy to contain them in a list as we
+     * start them and leave them running.
      */
-    public ThreadPassPositionControls threadPassPositionControls;
-    
-    /**
-     * This will poll our server to check weather it is still
-     * alive or not. If not then an observer will be notified
-     * It is this observer that will handle other threads, which require
-     * this server
-     */
-    public ThreadCheckServerStatus threadCheckServerStatus;
+    private java.util.List<Thread> threads;
     
     /**
      * Handle to our Phone schematics. This will return
@@ -77,6 +69,11 @@ public class MainActivity
      * Current vehicle to control
      */
     public ModelVehicle modelVehicle;
+
+    /**
+     * Current vehicle to control
+     */
+    private Vehicle vehicle;
     
     /**
      * SharedPrefrences object for registering
@@ -91,21 +88,26 @@ public class MainActivity
         // Keep our screen constantly on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         
-        
         // Set the XML view for this activity
         setContentView(R.layout.activity_main);
-        
-        // However, if we're being restored from a previous state,
-        // then we don't need to do anything and should return or else
-        // we could end up with overlapping fragments.
-        /*if (savedInstanceState != null) {
-            return;
-        }*/
         
         this.sharedPreferences 
             = PreferenceManager.getDefaultSharedPreferences(this);
         this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
+        this.initModels();
+        this.initFragments();
+        this.initSettings();
+        this.initThreads();
+    }
+
+    /**
+     * Initialize our models. 
+     *
+     * Set the vehicle, position and the state models. 
+     */
+    private void initModels()
+    {
         // This will initialise our PhonePosition Observer,
         // So our this.update function can handle updates 
         this.modelPosition = new ModelPhonePosition(getBaseContext());
@@ -113,14 +115,23 @@ public class MainActivity
         
         //Create our ServerState model
         this.modelServerState = new ModelServerState(
-                this.sharedPreferences
-                    .getString("pref_server_ip", "192.168.1.115")
+                this.sharedPreferences.getString(
+                    "pref_server_ip", 
+                    "192.168.1.115"
+                )
             );
         this.modelServerState.addObserver(this);
         
         // Create our vehicle model
         this.modelVehicle = new ModelVehicleCar();
-        
+        this.vehicle = new Car();
+    }
+
+    /**
+     * Initialize our fragments
+     */
+    private void initFragments()
+    {
     	// Create our fragment views
         this.fragmentHud = new FragmentHudCar();
         this.fragmentHud.setVehicle(this.modelVehicle);
@@ -129,32 +140,38 @@ public class MainActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_content, this.fragmentHud);
         ft.commit();
-        
-        
+    }
+
+    /**
+     * Initialize our threads. 
+     *
+     * Add them to our thread list which is used to hold
+     * all threads so operations such as onPause and onResume can be performed
+     * on all threads.
+     */
+    private void initThreads()
+    {
+        threads = new java.util.ArrayList<Thread>();
+
         // Initialise our thread
-        this.threadPassPositionControls = new ThreadPassPositionControls(
+        threads.add(
+            new org.dashee.remote.threads.SendCommands(
                 this.modelServerState, 
-                this.modelVehicle
-            );
-        this.threadPassPositionControls.start();
-
-        // Initialise our thread
-        this.threadCheckServerStatus 
-            = new ThreadCheckServerStatus(this.modelServerState);
-        this.threadCheckServerStatus.start();
-
-        this.initAllSettings();
-
+                this.vehicle
+            )
+        );
+        
+        for (Thread t : threads) { t.start(); }
     }
 
     /*
      * Iterate through the settings and apply the current values via the
      * onSharedPreferenceChanged handler.
      */
-    private void initAllSettings()
+    private void initSettings()
     {
-        Map<String,?> values = this.sharedPreferences.getAll();
-        for (Map.Entry<String, ?> entry : values.entrySet())
+        java.util.Map<String,?> values = this.sharedPreferences.getAll();
+        for (java.util.Map.Entry<String, ?> entry : values.entrySet())
         {
             onSharedPreferenceChanged(this.sharedPreferences, entry.getKey());
         }
@@ -235,7 +252,7 @@ public class MainActivity
     }
     
     /**
-     * Handle our menu button clicks. Given the menue item, 
+     * Handle our menu button clicks. Given the menu item, 
      * either start an activity or change the fragment view
      *
      * @param item - The handler to the item selected
@@ -252,7 +269,8 @@ public class MainActivity
                 Intent preferencesActivity 
                     = new Intent(
                             getBaseContext(), 
-                            org.dashee.remote.preferences.PreferencesActivity.class
+                            org.dashee.remote.preferences.PreferencesActivity
+                                .class
                         );
                 startActivity(preferencesActivity);
                 return true;
@@ -338,9 +356,8 @@ public class MainActivity
     {
         super.onResume();
         this.modelPosition.onResume();
-        this.threadPassPositionControls.onResume();
-        this.threadCheckServerStatus.onResume();
         this.modelVehicle.onResume();
+        //for (Thread t : this.threads) { t.onResume(); }
     }
     
     /**
@@ -352,8 +369,7 @@ public class MainActivity
     {
         super.onPause();
         this.modelPosition.onPause();
-        this.threadPassPositionControls.onPause();
-        this.threadCheckServerStatus.onPause();
+        //for (Thread t : this.threads) { t.onPause(); }
     }
 
     /**
