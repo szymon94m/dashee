@@ -2,8 +2,6 @@ package org.dashee.remote.fragments;
 
 import android.support.v4.app.Fragment;
 
-import org.dashee.remote.models.*;
-
 /**
  * FragmentHud abstract class. Create the functions
  * that mainActivity can refer to without using this class
@@ -11,7 +9,8 @@ import org.dashee.remote.models.*;
  * @author David Buttar
  * @author Shahmir Javaid
  */
-public abstract class FragmentHud extends Fragment
+public abstract class Hud 
+    extends Fragment
 {
     /**
      * Instance which holds our vehicle.
@@ -22,7 +21,7 @@ public abstract class FragmentHud extends Fragment
      *
      * @param vehicle The vehicle value to initiate
      */
-    public FragmentHud()
+    public Hud()
     {
     }
 

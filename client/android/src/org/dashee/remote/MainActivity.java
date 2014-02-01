@@ -17,7 +17,6 @@ import android.widget.Toast;
 import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.exception.OutOfRange;
 
-import org.dashee.remote.fragments.*;
 import org.dashee.remote.models.*;
 
 import org.dashee.remote.models.Config;
@@ -43,7 +42,7 @@ public class MainActivity
      * So they don't have to be initialised every time, and hold
      * there previous state.
      */
-    private FragmentHud hud;
+    private org.dashee.remote.fragments.Hud hud;
     
     /**
      * A list of running threads. Easy to contain them in a list as we
@@ -126,7 +125,7 @@ public class MainActivity
     private void initFragments()
     {
     	// Create our fragment views
-        this.hud = new FragmentHudCar();
+        this.hud = new org.dashee.remote.fragments.hud.Car();
         this.hud.setVehicle(this.vehicle);
     	
         //Set the initial view to our HUD

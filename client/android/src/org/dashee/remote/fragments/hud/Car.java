@@ -1,4 +1,4 @@
-package org.dashee.remote.fragments;
+package org.dashee.remote.fragments.hud;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -40,8 +40,8 @@ import android.widget.TextView;
  * @author David Buttar
  * @author Shahmir Javaid
  */
-public class FragmentHudCar 
-    extends FragmentHud
+public class Car 
+    extends org.dashee.remote.fragments.Hud
     implements Observer
 {
     /**
@@ -71,12 +71,24 @@ public class FragmentHudCar
     private TextView textViewHudIpValue;
     private TextView textViewHudConnectionValue;
     private TextView textViewHudBpsValue;
+
+    /**
+     * Throttle TextView handlers.
+     */
     private TextView textViewHudThrottleValue;
     private TextView textViewHudThrottleMinValue;
     private TextView textViewHudThrottleMaxValue;
+
+    /**
+     * Roll TextView handlers.
+     */
     private TextView textViewHudRollValue;
     private TextView textViewHudRollMinValue;
     private TextView textViewHudRollMaxValue;
+
+    /**
+     * Drive and Reverse TextView Handlers
+     */
     private TextView textViewDrive;
     private TextView textViewReverse;
 
@@ -100,7 +112,7 @@ public class FragmentHudCar
      * Constructor. Required by Fragment type Objects,
      * and they have to be public
      */
-    public FragmentHudCar()
+    public Car()
     {
         this.visualPowerMapping = new RangeMapping(0.0f,255.0f,-50.0f,50.0f);
     }
