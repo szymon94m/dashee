@@ -2,7 +2,7 @@ package org.dashee.remote.threads;
 
 import java.net.*;
 
-import org.dashee.remote.models.ModelServerState;
+import org.dashee.remote.models.Config;
 import org.dashee.remote.models.Vehicle;
 
 /**
@@ -16,8 +16,10 @@ import org.dashee.remote.models.Vehicle;
  */
 public class SendCommands extends Thread 
 {
-    
-    static final int TICK_PER_BYTE = 1000;
+    /**
+     * Send commands every nth millisecond
+     */
+    static final int TICK_PER_BYTE = 100;
 
     /**
      * DataGram object to send commands over UDP
@@ -31,9 +33,10 @@ public class SendCommands extends Thread
     private long currentTime = 0;
     
     /**
-     * Handle to our ModelServerState, to get port and other values.
+     * The config which holds configuration of our application. We use the 
+     * IP address and the port Number
      */
-    private ModelServerState modelServerState;
+    private Config config;
     
     /**
      * Current vehicle in use.
@@ -41,22 +44,19 @@ public class SendCommands extends Thread
     private Vehicle vehicle;
 
     /**
-     * Initiate our thread. Set the variables from the params, and 
-     * set our ipAdress object. Also create a new instance of socket
+     * Initiate our thread. Set the variables from the parameters, and set our 
+     * IP Address object. Also create a new instance of socket
      *
-     * @param modelServerState - Set our pointer to the modelServerState
-     * @param modelVehicle - Set our variable reference to the modelVehicle
+     * @param config Set our pointer to the config var
+     * @param vehicle  Set our variable reference to the vehicle var
      */
-    public SendCommands(
-            ModelServerState modelServerState, 
-            Vehicle vehicle
-        )
+    public SendCommands(Config config, Vehicle vehicle)
     {
         super();
         try
         {
             this.vehicle = vehicle;
-            this.modelServerState = modelServerState;
+            this.config = config;
             this.sockHandler = new DatagramSocket();
         }
         catch(Exception e)
@@ -69,13 +69,7 @@ public class SendCommands extends Thread
 
     /**
      * Set the position. If a position presented is different than
-     * the previous position, notify our server over UDP. If we stop sending 
-     * signals to our servers the server will revert to fallback mode, to 
-     * prevent this we periodically send the same signal back to the server to 
-     * tell it we are still alive.
-     *
-     * Also if the Thread is paused, our lockPause object will wait. We know the 
-     * thread is paused if the @pause variable is true
+     * the previous position, notify our server over UDP. 
      */
     public void run()
     {   
@@ -101,6 +95,8 @@ public class SendCommands extends Thread
             }
             catch (InterruptedException e) 
             {
+                android.util.Log.e("dashee", "sendCommand threw an exception");
+                android.util.Log.e("dashee", "sendCommand " + e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -136,8 +132,8 @@ public class SendCommands extends Thread
             DatagramPacket packet = new DatagramPacket(
                 command,
                 command.length,
-                this.modelServerState.getIp(),
-                this.modelServerState.getControlPort()
+                this.config.getIp(),
+                this.config.getPort()
             );
 
             this.sockHandler.send(packet);

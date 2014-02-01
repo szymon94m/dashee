@@ -18,9 +18,12 @@ import java.util.Observable;
 import java.util.Observer;
 
 import org.dashee.remote.exception.InvalidValue;
+import org.dashee.remote.exception.OutOfRange;
+
 import org.dashee.remote.fragments.*;
 import org.dashee.remote.models.*;
 
+import org.dashee.remote.models.Config;
 import org.dashee.remote.models.Vehicle;
 import org.dashee.remote.models.vehicle.Car;
 
@@ -63,7 +66,7 @@ public class MainActivity
      * Hold the state of our Server. This will notify our
      * Observer, any time server values are changed
      */
-    public ModelServerState modelServerState;
+    public Config config;
 
     /**
      * Current vehicle to control
@@ -114,13 +117,12 @@ public class MainActivity
         this.modelPosition.addObserver(this);
         
         //Create our ServerState model
-        this.modelServerState = new ModelServerState(
+        this.config = new Config(
                 this.sharedPreferences.getString(
                     "pref_server_ip", 
                     "192.168.1.115"
                 )
             );
-        this.modelServerState.addObserver(this);
         
         // Create our vehicle model
         this.modelVehicle = new ModelVehicleCar();
@@ -156,7 +158,7 @@ public class MainActivity
         // Initialise our thread
         threads.add(
             new org.dashee.remote.threads.SendCommands(
-                this.modelServerState, 
+                this.config, 
                 this.vehicle
             )
         );
@@ -187,14 +189,14 @@ public class MainActivity
     {
         try
         {
-            Log.d("Dashee", "Setting:: " + key);
+            Log.d("dashee", "Setting:: " + key);
 
             if(key.equals("pref_server_ip"))
-                this.modelServerState.setIp(
+                this.config.setIp(
                         prefs.getString("pref_server_ip", "192.168.115")
                     );
             else if(key.equals("pref_server_port"))
-                this.modelServerState.setControlsPort(
+                this.config.setPort(
                         Integer.parseInt(
                             prefs.getString("pref_server_port", "2047")
                         )
@@ -298,47 +300,6 @@ public class MainActivity
                 this.modelVehicle.setFromPhonePosition(position);
                 fragmentHud.setPosition((ModelVehicleCar) this.modelVehicle);
                 //fragmentHud.setHudConnection(position.getRoll()+"");
-            }
-            else if (o instanceof ModelServerState)
-            {
-                switch ((ModelServerState.Notifier)arg)
-                {
-                    case STATUS_CONTROLS:
-                    case STATUS_TELEMETRY:
-                    case STATUS_FPV:
-                        if (this.modelServerState.isAlive())
-                        {
-                            runOnUiThread(new Runnable() {
-                                public void run()
-                                {
-                                    fragmentHud.setHudConnection("Connected"); 
-                                }
-                            });
-                        }
-                        else
-                        {
-                            runOnUiThread(new Runnable() {
-                                public void run()
-                                {
-                                    fragmentHud.setHudConnection("Failed"); 
-                                }
-                            });
-                        }
-                        break;
-                    
-                    case IP:
-                        runOnUiThread(new Runnable() {
-                            public void run()
-                            {
-                                fragmentHud.setHudIp(
-                                    modelServerState.getIp().getHostAddress()
-                                ); 
-                            }
-                        });
-                        break;
-                            default:
-                            break;
-                }
             }
         }
         catch (Exception e)
