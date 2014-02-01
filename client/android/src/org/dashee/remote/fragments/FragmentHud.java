@@ -13,6 +13,15 @@ import org.dashee.remote.models.*;
  */
 public abstract class FragmentHud extends Fragment
 {
+    /**
+     * Instance which holds our vehicle.
+     */
+    protected org.dashee.remote.models.Vehicle vehicle;
+
+    /**
+     *
+     * @param vehicle The vehicle value to initiate
+     */
     public FragmentHud()
     {
     }
@@ -55,16 +64,12 @@ public abstract class FragmentHud extends Fragment
     public abstract void setHudConnection(String connection);
 
     /**
-     * Set the Position of the hud
-     *
-     * @param modelVehicle - The vehicle object
-     */
-    public abstract void setPosition(ModelVehicle modelVehicle);
-
-    /**
      * Assign a reference of vehicle model to the hud
      *
-     * @param modelVehicle - The vehicle object
+     * @param vehicle The vehicle object
      */
-    public abstract void setVehicle(ModelVehicle modelVehicle);
+    public void setVehicle(org.dashee.remote.models.Vehicle vehicle)
+    {
+        this.vehicle = vehicle;
+    }
 }

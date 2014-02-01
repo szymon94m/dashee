@@ -45,31 +45,25 @@ public class FragmentHudCar
     implements Observer
 {
     /**
-     * This is the variable where our HUD is drawn
-     * We use DrawHud
-     */
-    LinearLayout layout_hud;
-    
-    /**
      * Draw our Hud object.
      */
-    DrawHud draw_hud;
+    private DrawHud hud;
 
     /**
      * The view of the fragment. Useful to retrieve the layout values within 
      * other methods
      */
-    View view;
+    private View view;
     
     /**
      * Assign area for current steer value
      */
-    float steer;
+    private float steer;
 
     /**
      * Dont update steer UI if it's same as last time.
      */
-    int prevSteer = -1;
+    private int prevSteer = -1;
             
     /**
      * Handlers to our text view.
@@ -77,19 +71,14 @@ public class FragmentHudCar
     private TextView textViewHudIpValue;
     private TextView textViewHudConnectionValue;
     private TextView textViewHudBpsValue;
-    private TextView textViewHudPitchValue;
+    private TextView textViewHudThrottleValue;
+    private TextView textViewHudThrottleMinValue;
+    private TextView textViewHudThrottleMaxValue;
     private TextView textViewHudRollValue;
     private TextView textViewHudRollMinValue;
     private TextView textViewHudRollMaxValue;
-    private TextView textViewHudPowerMinValue;
-    private TextView textViewHudPowerMaxValue;
     private TextView textViewDrive;
     private TextView textViewReverse;
-
-    /**
-     * The vehicle value.
-     */
-    private ModelVehicleCar car; //Pitch Value
 
     /**
      * To set weather or not we are in reverse
@@ -99,13 +88,13 @@ public class FragmentHudCar
     /**
      * Power mapping values
      */
-    RangeMapping visualPowerMapping;
+    private RangeMapping visualPowerMapping;
     
     /**
      * Handle to our Phone schematics. This will return
      * our phones roll, pitch state, by notifying the observer
      */
-    public ModelPhonePosition modelPosition;
+    private ModelPhonePosition modelPosition;
 
     /**
      * Constructor. Required by Fragment type Objects,
@@ -128,56 +117,109 @@ public class FragmentHudCar
         ) 
     {
         view = inflater.inflate(R.layout.fragment_hud, container, false);
-
         assert view != null;
-        layout_hud = (LinearLayout)view.findViewById(R.id.hud_canvas);
-        draw_hud = new DrawHud (this.getActivity(), view);
-        layout_hud.addView(draw_hud);
+
+        this.initHud();
+        this.initModels();
+        this.initThrottleListener();
+        this.initDriveTypeListener();
+        this.initOptionsButtonListener();
+        this.initTextViews();
         
+        this.setHudConnection("unknown");
+        //this.setHudBps(0);
+    //    this.setThrottle(128);
+     //   this.setRoll(0.0f);
+        
+        // Get the sharedPreferences so the values can be set
+        SharedPreferences sharedPreferences 
+            = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        this.setHudIp(
+                sharedPreferences.getString("pref_server_ip", "192.168.1.115")
+            );
+        
+        return view;
+    }
+
+    /**
+     * Initialize our HUD which is used to draw the graphics on our linear 
+     * layout.
+     */
+    private void initHud()
+    {
+        LinearLayout layout = (LinearLayout)view.findViewById(R.id.hud_canvas);
+        hud = new DrawHud (this.getActivity(), view);
+        layout.addView(hud);
+    }
+
+    /**
+     * Create new instances of all models used inside the Fragment.
+     */
+    private void initModels()
+    {
         // This will initialise our PhonePosition Observer,
         // So our this.update function can handle updates 
         this.modelPosition = new ModelPhonePosition(this.getActivity());
         this.modelPosition.addObserver(this);
-        
-        // Use the height and width of the image and the position of the stick to
-        // map to car power value
+    }
+
+    /**
+     * When a user slides on the screen he and she increase or decrease the 
+     * throttle value of the vehicle. This function initializes the event 
+     * handler
+     */
+    private void initThrottleListener()
+    {
+        // Use the height and width of the image and the position of the stick 
+        // to map to car power value
         final ImageView iv = (ImageView)view.findViewById(R.id.power_stick);
 
         iv.setOnTouchListener(new OnTouchListener(){
             @Override
             public boolean onTouch(View v, MotionEvent event) 
             {
-                if(Reverse)
+                float mapVal = 128.0f;
+    
+                // Only if the user is still touching the screen
+                // will the mapValue change
+                if (event.getAction() != MotionEvent.ACTION_UP) 
                 {
-                    float mapVal = RangeMapping.mapValue(
-                        event.getY(), 
-                        120, 
-                        iv.getHeight()-72, 
-                        0, 
-                        128
-                    );
-                    setVehiclePower((int) mapVal);
+                    if(Reverse)
+                    {
+                        mapVal = RangeMapping.mapValue(
+                            event.getY(), 
+                            120, 
+                            iv.getHeight()-72, 
+                            0, 
+                            128
+                        );
+                    }
+                    else
+                    {
+                        mapVal = RangeMapping.mapValue(
+                            event.getY(), 
+                            120, 
+                            iv.getHeight()-72, 
+                            255, 
+                            128
+                        );
+                    }
                 }
-                else
-                {
-                    float mapVal = RangeMapping.mapValue(
-                        event.getY(), 
-                        120, 
-                        iv.getHeight()-72, 
-                        255, 
-                        128
-                    );
-                    setVehiclePower((int) mapVal);
-                }
+                    
+                setThrottle((int)mapVal);
 
-                if (event.getAction() == MotionEvent.ACTION_UP) 
-                {
-                    setVehiclePower(128);
-                }
                 return true;
             }
         });
+    }
 
+    /**
+     * Every time the Power HUD value is clicked the car can go from drive to 
+     * reverse. This handler deals with creating tones and highlighting the 
+     * current state
+     */
+    public void initDriveTypeListener()
+    {
         LinearLayout powerToggle = (LinearLayout) view.findViewById(
                 R.id.power_direction_toggle
             );
@@ -202,13 +244,18 @@ public class FragmentHudCar
                 }
             }
         });
+    }
 
+    /**
+     * Start the preferences activity every time the dashee Icon is clicked.
+     */
+    private void initOptionsButtonListener()
+    {
         Button optsButton = (Button)view.findViewById(R.id.dot_settings);
         optsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) 
             {
-            	
                 Intent intent = new Intent(
                     getActivity(), 
                     org.dashee.remote.preferences.PreferencesActivity.class
@@ -216,36 +263,60 @@ public class FragmentHudCar
                 startActivity(intent);
             }
         });
+    }
 
+    /**
+     * Set the Aliasing and fonts on all listeners.
+     *
+     * Useful to do this using code as it provides more granularity on the 
+     * things which can be changed
+     */
+    private void initTextViews()
+    {
+        // The original
         Typeface visitorFont = Typeface.createFromAsset(
                 getActivity().getAssets(),
                 "fonts/visitor1.ttf"
             );
+        // The modified version
         Typeface visitor2Font = Typeface.createFromAsset(
                 getActivity().getAssets(),
                 "fonts/visitor2.ttf"
             );
+        // Other font used in text used to highlight small numeric text
         Typeface novamonoFont = Typeface.createFromAsset(
                 getActivity().getAssets(),
                 "fonts/novamono2.ttf"
             );
 
-        // Set all of our textViews        
+        // Generic values
         textViewHudIpValue 
             = (TextView)view.findViewById(R.id.hud_text_ip_value);
         textViewHudIpValue.getPaint().setAntiAlias(false);
+        textViewHudIpValue.setTypeface(visitorFont);
 
         textViewHudConnectionValue 
             = (TextView)view.findViewById(R.id.hud_text_connection_value);
         textViewHudConnectionValue.getPaint().setAntiAlias(false);
+        textViewHudConnectionValue.setTypeface(visitorFont);
 
         textViewHudBpsValue 
             = (TextView)view.findViewById(R.id.hud_text_bps_value);
 
-        textViewHudPitchValue 
-            = (TextView)view.findViewById(R.id.hud_text_pitch_value);
-        textViewHudPitchValue.setTypeface(visitor2Font);
+        // Throttle
+        textViewHudThrottleValue 
+            = (TextView)view.findViewById(R.id.hud_text_throttle_value);
+        textViewHudThrottleValue.setTypeface(visitor2Font);
 
+        textViewHudThrottleMaxValue 
+            = (TextView)view.findViewById(R.id.hud_text_throttle_max_value);
+        textViewHudThrottleMaxValue.setTypeface(novamonoFont);
+
+        textViewHudThrottleMinValue 
+            = (TextView)view.findViewById(R.id.hud_text_throttle_min_value);
+        textViewHudThrottleMinValue.setTypeface(novamonoFont);
+
+        // Roll
         textViewHudRollValue 
             = (TextView)view.findViewById(R.id.hud_text_roll_value);
         textViewHudRollValue.setTypeface(visitor2Font);
@@ -256,71 +327,18 @@ public class FragmentHudCar
 
         textViewHudRollMaxValue 
             = (TextView)view.findViewById(R.id.hud_text_roll_max_value);
+        textViewHudRollMaxValue.setTypeface(novamonoFont);
 
-        textViewHudPowerMaxValue 
-            = (TextView)view.findViewById(R.id.hud_text_pitch_max_value);
-        textViewHudPowerMinValue 
-            = (TextView)view.findViewById(R.id.hud_text_pitch_min_value);
-
+        // Drive/Reverse
         textViewDrive 
             = (TextView)view.findViewById(R.id.hud_text_drive_label);
         textViewDrive.getPaint().setAntiAlias(false);
+        textViewDrive.setTypeface(visitorFont);
 
         textViewReverse 
             = (TextView)view.findViewById(R.id.hud_text_reverse_label);
         textViewReverse.getPaint().setAntiAlias(false);
-
-        this.setElementsFont(R.id.hud_text_roll_max_value, novamonoFont);
-        this.setElementsFont(R.id.hud_text_ip_value, visitorFont);
-        this.setElementsFont(R.id.hud_text_connection_value, visitorFont);
-        this.setElementsFont(R.id.hud_text_drive_label, visitorFont);
-        this.setElementsFont(R.id.hud_text_reverse_label, visitorFont);
-        this.setElementsFont(R.id.hud_text_pitch_min_value, novamonoFont);
-        this.setElementsFont(R.id.hud_text_pitch_max_value, novamonoFont);
-        this.setElementsFont(R.id.hud_text_tilt_label, visitorFont);
-        
-        this.setHudConnection("unknown");
-        //this.setHudBps(0);
-        this.setHudPitch(128.0f);
-        this.setHudRoll(0.0f);
-        
-        // Get the sharedPreferences so the values can be set
-        SharedPreferences sharedPreferences 
-            = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        this.setHudIp(
-                sharedPreferences.getString("pref_server_ip", "192.168.1.115")
-            );
-        
-        return view;
-    }
-
-    /**
-     * Sets the ids listed to the font listed
-     */
-    private void setElementsFont(int elementID, Typeface font)
-    {
-        TextView textElement = (TextView)view.findViewById(elementID);
-        textElement.setTypeface(font);
-    }
-
-    /**
-     * Set the ModelVehicle
-     *
-     * @param modelVehicle - The vehicle object
-     */
-    public void setVehicle(ModelVehicle modelVehicle)
-    {
-    	this.car = (ModelVehicleCar) modelVehicle;
-    }
-
-    /**
-     * Set the vehicle power
-     *
-     * @param power - The value to set it to
-     */
-    private void setVehiclePower(int power)
-    {
-    	this.car.setFromSlider(power);
+        textViewReverse.setTypeface(visitorFont);
     }
     
     /**
@@ -341,38 +359,6 @@ public class FragmentHudCar
     public void setHudConnection(String ip)
     {
         textViewHudConnectionValue.setText(ip);
-    }
-    
-    /**
-     * Set our textbox BytesPerSecond value
-     *
-     * @param bps - the bps value
-     */
-    public void setHudBps(int bps)
-    {
-        if (bps < 0)
-            textViewHudBpsValue.setText("Negative?");
-
-        textViewHudBpsValue.setText(Integer.toString(bps));
-    }
-    
-    /**
-     * Set our textbox Pitch value
-     *
-     * @param pitch - the pitch value
-     */
-    public void setHudPitch(float pitch)
-    {
-        //Display invalid values when things are out of range
-        if (pitch < 0.0f || pitch > 100.0f)
-            textViewHudPitchValue.setText(
-                    Html.fromHtml("<font color='#D93600'>---</font>")
-                );
-
-        int pitchValue = Math.round(visualPowerMapping.remapValue(pitch));
-
-
-        textViewHudPitchValue.setText(""+pitchValue);
     }
 
     /**
@@ -397,17 +383,33 @@ public class FragmentHudCar
             textViewHudRollMinValue.setText(steerMin+"");
             textViewHudRollMaxValue.setText(steerMax+"");
 
-            textViewHudPowerMinValue.setText(powerMin+"");
-            textViewHudPowerMaxValue.setText(powerMax+"");
+            textViewHudThrottleMinValue.setText(powerMin+"");
+            textViewHudThrottleMaxValue.setText(powerMax+"");
         }
     }
     
     /**
-     * Set our textbox Roll value
+     * Set our textbox BytesPerSecond value
      *
-     * @param roll - the pitch value
+     * @param bps - the bps value
      */
-    public void setHudRoll(float roll)
+    public void setHudBps(int bps)
+    {
+        if (bps < 0)
+            textViewHudBpsValue.setText("Negative?");
+
+        textViewHudBpsValue.setText(Integer.toString(bps));
+    }
+    
+    /**
+     * Set the roll value of our view. This will change the value's of the text
+     * box and also update the rotation of the steering value
+     *
+     * TODO Refactor this, as this does not work
+     *
+     * @param roll the pitch value
+     */
+    public void setRoll(float roll)
     {
         //Display invalid values when things are out of range
         if (roll < 0.0f || roll > 100.0f)
@@ -433,39 +435,36 @@ public class FragmentHudCar
         }
 
         prevSteer = rollValue;
+    	hud.setTilt(roll);
     }
     
     /**
-     * Rotate our HUD. Given a value, rotate our hud accordingly
+     * Set our Throttle value. Update the button values and also update the 
+     * throttle applied in the hud view
      *
-     * @param roll - The rotation value.
-     */
-    public void rotateHud(float roll)
-    {
-        //layout_hud.setRotation(-1.0f*(roll - 50.0f));
-    	draw_hud.setTilt(roll);
-    }
-    
-    /**
-     * Change our Hud, according to the vehicle.
-     * The vehicle must be a ModelVehicleCar, other
-     * wise an exception will be thrown.
+     * TODO Fix the Hud drawing the correct bar on the left
      *
-     * @param vehicle - The vehicle
+     * @param throttle The value of throttle applied
      */
-    public void setPosition(ModelVehicle vehicle)
+    public void setThrottle(int throttle)
     {
-        if (vehicle instanceof ModelVehicleCar)
+        this.vehicle.setThrottle(throttle);
+
+        //Display invalid values when things are out of range
+        if (throttle < 0.0 || throttle > 255)
+            textViewHudThrottleValue.setText(
+                    Html.fromHtml("<font color='#D93600'>---</font>")
+                );
+        else
         {
-            ModelVehicleCar car = (ModelVehicleCar)vehicle;
-            this.steer = car.getSteer();
-            this.setHudRoll(this.steer);
-            this.setHudPitch(car.getPower());
-            this.rotateHud(this.steer);
-            this.setMaxMinValues(car);
-            float powerVal 
-                = (this.Reverse) ? 128-car.getPower() : car.getPower()-128 ;
-            draw_hud.setPowerPerc((powerVal)/128);
+            textViewHudThrottleValue.setText(
+                    Math.round(
+                        visualPowerMapping.remapValue(throttle)
+                    ) + ""
+                );
+            
+            // TODO change the name of this thing
+            hud.setPowerPerc(throttle/128);
         }
     }
 
@@ -481,17 +480,22 @@ public class FragmentHudCar
     {
         if (o instanceof ModelPhonePosition)
         {
-            android.util.Log.d("dashee", "asdf");
-            this.setHudIp(modelPosition.getRoll()+"");
+            this.setRoll(modelPosition.getRoll());
         }
     }
 
+    /**
+     * Pause our values
+     */
     public void onPause()
     {
         this.modelPosition.onPause();
         super.onPause();
     }   
 
+    /**
+     * Resume our values
+     */
     public void onResume()
     {
         this.modelPosition.onResume();

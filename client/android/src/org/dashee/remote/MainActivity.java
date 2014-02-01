@@ -14,9 +14,6 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.exception.OutOfRange;
 
@@ -39,16 +36,14 @@ import org.dashee.remote.models.vehicle.Car;
 public class MainActivity 
     extends FragmentActivity 
     implements SeekBar.OnSeekBarChangeListener, 
-               Observer, 
                OnSharedPreferenceChangeListener
 {
-
     /**
      * Create instances of our fragments in memory.
      * So they don't have to be initialised every time, and hold
      * there previous state.
      */
-    private FragmentHud fragmentHud;
+    private FragmentHud hud;
     
     /**
      * A list of running threads. Easy to contain them in a list as we
@@ -65,11 +60,6 @@ public class MainActivity
     /**
      * Current vehicle to control
      */
-    public ModelVehicle modelVehicle;
-
-    /**
-     * Current vehicle to control
-     */
     private Vehicle vehicle;
     
     /**
@@ -77,6 +67,11 @@ public class MainActivity
      */
     private SharedPreferences sharedPreferences;
 
+    /**
+     * The on create method to get the activity started.
+     *
+     * @param savedInstanceState The bundle from the main
+     */ 
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -116,7 +111,6 @@ public class MainActivity
                 );
             
             // Create our vehicle model
-            this.modelVehicle = new ModelVehicleCar();
             this.vehicle = new Car();
         }
         catch (java.net.UnknownHostException e)
@@ -132,12 +126,12 @@ public class MainActivity
     private void initFragments()
     {
     	// Create our fragment views
-        this.fragmentHud = new FragmentHudCar();
-        this.fragmentHud.setVehicle(this.modelVehicle);
+        this.hud = new FragmentHudCar();
+        this.hud.setVehicle(this.vehicle);
     	
         //Set the initial view to our HUD
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_content, this.fragmentHud);
+        ft.replace(R.id.fragment_content, this.hud);
         ft.commit();
     }
 
@@ -188,42 +182,16 @@ public class MainActivity
         {
             Log.d("dashee", "Setting:: " + key);
 
-            if(key.equals("pref_server_ip"))
+            if (key.equals("pref_server_ip"))
                 this.config.setIp(
                         prefs.getString("pref_server_ip", "192.168.115")
                     );
-            else if(key.equals("pref_server_port"))
+            else if (key.equals("pref_server_port"))
                 this.config.setPort(
                         Integer.parseInt(
                             prefs.getString("pref_server_port", "2047")
                         )
                     );
-            else if(key.contains("pref_phone_tilt"))
-                this.modelVehicle
-                    .setPowerToUsePitch(prefs.getBoolean(key, false));
-            else if(key.contains("pref_channel"))
-            {
-                int channel =  Integer.parseInt(key.substring(13, 14));
-
-                if(key.contains("invert"))
-                    this.modelVehicle
-                        .setInvert(channel, prefs.getBoolean(key, false));
-                else if(key.contains("max"))
-                    this.modelVehicle.setMax(
-                            channel, 
-                            Integer.parseInt(prefs.getString(key, "100"))
-                        );
-                else if(key.contains("min"))
-                    this.modelVehicle.setMin(
-                            channel, 
-                            Float.parseFloat(prefs.getString(key, "0"))
-                        );
-                else
-                    this.modelVehicle.setTrim(
-                            channel, 
-                            Integer.parseInt(prefs.getString(key, "0"))
-                        );
-            }
         }
         catch(InvalidValue e)
         {
@@ -284,46 +252,17 @@ public class MainActivity
     }
 
     /**
-     *  Update our view and model. Given the phone's roll
-     *  we update our server/model using our thread and we also
-     *  update the HUD rotational value
-     *  
-     *  @param o - The observer handler
-     *  @param arg - The arguments to the Observer
-     */
-    public void update(Observable o, Object arg)
-    {
-        try
-        {
-            if (o instanceof ModelPhonePosition)
-            {
-                ModelPhonePosition position = (ModelPhonePosition)o;
-                this.modelVehicle.setFromPhonePosition(position);
-                fragmentHud.setPosition((ModelVehicleCar) this.modelVehicle);
-                //fragmentHud.setHudConnection(position.getRoll()+"");
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * App is Resumed from a pause state.
-     * Resume the thread, and start the PhoneRoll monitoring
      */
     @Override
     protected void onResume() 
     {
         super.onResume();
-        this.modelVehicle.onResume();
         //for (Thread t : this.threads) { t.onResume(); }
     }
     
     /**
      * App is paused, handle pause systems.
-     * Pause the thread, and stop the PhoneRoll monitoring
      */
     @Override
     protected void onPause() 
