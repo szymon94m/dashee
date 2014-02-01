@@ -1,7 +1,7 @@
-package org.dashee.remote.test.models;
+package org.dashee.remote.test.model;
 
 import junit.framework.TestCase;
-import org.dashee.remote.models.Config;
+import org.dashee.remote.model.Config;
 import org.dashee.remote.exception.OutOfRange;
 
 public class ConfigTest

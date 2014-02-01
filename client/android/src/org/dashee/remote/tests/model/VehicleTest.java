@@ -1,7 +1,7 @@
-package org.dashee.remote.test.models;
+package org.dashee.remote.test.model;
 
 import junit.framework.TestCase;
-import org.dashee.remote.models.Vehicle;
+import org.dashee.remote.model.Vehicle;
 import org.dashee.remote.exception.OutOfRange;
 
 abstract public class VehicleTest

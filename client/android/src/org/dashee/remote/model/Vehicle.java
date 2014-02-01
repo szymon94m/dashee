@@ -1,4 +1,4 @@
-package org.dashee.remote.models;
+package org.dashee.remote.model;
 
 import org.dashee.remote.exception.OutOfRange;
 

@@ -1,4 +1,4 @@
-package org.dashee.remote.preferences;
+package org.dashee.remote.preference;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
@@ -10,7 +10,7 @@ import android.preference.PreferenceFragment;
 import android.util.Log;
 
 import org.dashee.remote.R;
-import org.dashee.remote.models.ModelServerState;
+import org.dashee.remote.model.Config;
 
 import java.util.List;
 import java.util.Map;

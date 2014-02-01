@@ -15,9 +15,8 @@ import android.test.ActivityInstrumentationTestCase2;
 public class MainActivityTest 
     extends ActivityInstrumentationTestCase2<MainActivity> {
 
-    public MainActivityTest() {
+    public MainActivityTest() 
+    {
         super("org.dashee.remote", MainActivity.class);
-
-
     }
 }

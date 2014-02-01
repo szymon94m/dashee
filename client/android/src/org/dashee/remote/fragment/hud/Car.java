@@ -1,4 +1,4 @@
-package org.dashee.remote.fragments.hud;
+package org.dashee.remote.fragment.hud;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -22,16 +22,17 @@ import android.graphics.Typeface;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import org.dashee.remote.DrawHud;
-import org.dashee.remote.R;
-import org.dashee.remote.RangeMapping;
-import org.dashee.remote.models.*;
 import android.text.Html;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import android.widget.TextView;
+
+import org.dashee.remote.DrawHud;
+import org.dashee.remote.R;
+import org.dashee.remote.RangeMapping;
+import org.dashee.remote.model.*;
 
 /**
  * This is our HUD Fragment. which controls, sending and receiving controls
@@ -41,7 +42,7 @@ import android.widget.TextView;
  * @author Shahmir Javaid
  */
 public class Car 
-    extends org.dashee.remote.fragments.Hud
+    extends org.dashee.remote.fragment.Hud
     implements Observer
 {
     /**
@@ -270,7 +271,7 @@ public class Car
             {
                 Intent intent = new Intent(
                     getActivity(), 
-                    org.dashee.remote.preferences.PreferencesActivity.class
+                    org.dashee.remote.preference.PreferencesActivity.class
                 );
                 startActivity(intent);
             }

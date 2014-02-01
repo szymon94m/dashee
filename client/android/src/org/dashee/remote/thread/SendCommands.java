@@ -1,9 +1,9 @@
-package org.dashee.remote.threads;
+package org.dashee.remote.thread;
 
 import java.net.*;
 
-import org.dashee.remote.models.Config;
-import org.dashee.remote.models.Vehicle;
+import org.dashee.remote.model.Config;
+import org.dashee.remote.model.Vehicle;
 
 /**
  * Thread to communicate to the server.

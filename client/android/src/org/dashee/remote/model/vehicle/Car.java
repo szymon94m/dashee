@@ -1,6 +1,6 @@
-package org.dashee.remote.models.vehicle;
+package org.dashee.remote.model.vehicle;
 
-import org.dashee.remote.models.Vehicle;
+import org.dashee.remote.model.Vehicle;
 
 public class Car extends Vehicle
 {

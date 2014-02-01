@@ -1,4 +1,4 @@
-package org.dashee.remote.models;
+package org.dashee.remote.model;
 
 import android.content.Context;
 import android.hardware.SensorEvent;

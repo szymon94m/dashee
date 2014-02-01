@@ -17,11 +17,9 @@ import android.widget.Toast;
 import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.exception.OutOfRange;
 
-import org.dashee.remote.models.*;
-
-import org.dashee.remote.models.Config;
-import org.dashee.remote.models.Vehicle;
-import org.dashee.remote.models.vehicle.Car;
+import org.dashee.remote.model.Config;
+import org.dashee.remote.model.Vehicle;
+import org.dashee.remote.model.vehicle.Car;
 
 /**
  * The main activity that the program will run.
@@ -42,7 +40,7 @@ public class MainActivity
      * So they don't have to be initialised every time, and hold
      * there previous state.
      */
-    private org.dashee.remote.fragments.Hud hud;
+    private org.dashee.remote.fragment.Hud hud;
     
     /**
      * A list of running threads. Easy to contain them in a list as we
@@ -125,7 +123,7 @@ public class MainActivity
     private void initFragments()
     {
     	// Create our fragment views
-        this.hud = new org.dashee.remote.fragments.hud.Car();
+        this.hud = new org.dashee.remote.fragment.hud.Car();
         this.hud.setVehicle(this.vehicle);
     	
         //Set the initial view to our HUD
@@ -147,7 +145,7 @@ public class MainActivity
 
         // Initialise our thread
         threads.add(
-            new org.dashee.remote.threads.SendCommands(
+            new org.dashee.remote.thread.SendCommands(
                 this.config, 
                 this.vehicle
             )
@@ -239,7 +237,7 @@ public class MainActivity
                 Intent preferencesActivity 
                     = new Intent(
                             getBaseContext(), 
-                            org.dashee.remote.preferences.PreferencesActivity
+                            org.dashee.remote.preference.PreferencesActivity
                                 .class
                         );
                 startActivity(preferencesActivity);

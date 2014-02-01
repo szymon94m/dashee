@@ -4,7 +4,7 @@
     android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="19" />
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -25,14 +25,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.dashee.remote.preferences.PreferencesActivity"
+            android:name="org.dashee.remote.preference.PreferencesActivity"
             android:label="@string/pref_title"
             android:parentActivityName="org.dashee.remote.MainActivity">
         </activity>
         <activity
-            android:name="org.dashee.remote.preferences.ChannelActivity"
+            android:name="org.dashee.remote.preference.ChannelActivity"
             android:label="@string/pref_title"
-            android:parentActivityName="org.dashee.remote.preferences.PreferenceActivity">
+            android:parentActivityName="org.dashee.remote.preference.PreferenceActivity">
         </activity>
     </application>
 </manifest>

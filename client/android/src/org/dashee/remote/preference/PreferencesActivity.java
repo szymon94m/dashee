@@ -1,4 +1,4 @@
-package org.dashee.remote.preferences;
+package org.dashee.remote.preference;
 
 import android.app.ActionBar;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package org.dashee.remote.fragments;
+package org.dashee.remote.fragment;
 
 import android.support.v4.app.Fragment;
 
@@ -15,7 +15,7 @@ public abstract class Hud
     /**
      * Instance which holds our vehicle.
      */
-    protected org.dashee.remote.models.Vehicle vehicle;
+    protected org.dashee.remote.model.Vehicle vehicle;
 
     /**
      *
@@ -67,7 +67,7 @@ public abstract class Hud
      *
      * @param vehicle The vehicle object
      */
-    public void setVehicle(org.dashee.remote.models.Vehicle vehicle)
+    public void setVehicle(org.dashee.remote.model.Vehicle vehicle)
     {
         this.vehicle = vehicle;
     }

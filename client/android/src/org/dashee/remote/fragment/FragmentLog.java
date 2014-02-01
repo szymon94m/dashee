@@ -1,4 +1,4 @@
-package org.dashee.remote.fragments;
+package org.dashee.remote.fragment;
 
 import org.dashee.remote.R;
 import android.os.Bundle;
@@ -18,8 +18,12 @@ public class FragmentLog extends Fragment
     /**
      * return our view, required by the parent
      */
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) 
+    public View onCreateView(
+            LayoutInflater inflater, 
+            ViewGroup container, 
+            Bundle savedInstanceState
+        ) 
     {
-            return inflater.inflate(R.layout.fragment_log, container, false);
+        return inflater.inflate(R.layout.fragment_log, container, false);
     }
 }
