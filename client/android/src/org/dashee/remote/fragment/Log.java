@@ -13,7 +13,7 @@ import android.support.v4.app.Fragment;
  * @author David Buttar
  * @author Shahmir Javaid
  */
-public class FragmentLog extends Fragment 
+public class Log extends Fragment 
 {
     /**
      * return our view, required by the parent

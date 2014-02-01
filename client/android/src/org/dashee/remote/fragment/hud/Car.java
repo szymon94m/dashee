@@ -373,33 +373,6 @@ public class Car
     {
         textViewHudConnectionValue.setText(ip);
     }
-
-    /**
-     * Set our textbox Pitch value
-     *
-     * @param car - the car model
-     */
-    public void setMaxMinValues(ModelVehicleCar car)
-    {
-        if(car.getSettingChange())
-        {
-            Log.d("Dashee", "Updating minor settings");
-            String steerMin 
-                = String.format("%03d", Math.round(car.getSteerMin()));
-            String steerMax 
-                = String.format("%03d", Math.round(car.getSteerMax()));
-            String powerMin 
-                = String.format("%03d", Math.round(car.getPowerMin()));
-            String powerMax 
-                = String.format("%03d", Math.round(car.getPowerMax()));
-
-            textViewHudRollMinValue.setText(steerMin+"");
-            textViewHudRollMaxValue.setText(steerMax+"");
-
-            textViewHudThrottleMinValue.setText(powerMin+"");
-            textViewHudThrottleMaxValue.setText(powerMax+"");
-        }
-    }
     
     /**
      * Set our textbox BytesPerSecond value

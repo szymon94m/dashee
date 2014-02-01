@@ -14,7 +14,7 @@
      
      <fragment
         android:id="@+id/fragment_log"
-        android:name="org.dashee.remote.fragment.FragmentLog"
+        android:name="org.dashee.remote.fragment.Log"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
      	/>
