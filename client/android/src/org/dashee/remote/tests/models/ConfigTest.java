@@ -74,7 +74,11 @@ public class ConfigTest
         }
         catch (java.net.UnknownHostException e)
         {
-            assertEquals(e.getMessage(), "Unable to resolve host \"1111.1.1.1.1\": No address associated with hostname");
+            assertEquals(
+                    e.getMessage(), 
+                    "Unable to resolve host \"1111.1.1.1.1\": No address " +
+                    "associated with hostname"
+                );
             assertEquals(this.config.getIp().getHostAddress(), "192.168.1.10");
         }
     }

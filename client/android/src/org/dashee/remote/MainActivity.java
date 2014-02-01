@@ -57,12 +57,6 @@ public class MainActivity
     private java.util.List<Thread> threads;
     
     /**
-     * Handle to our Phone schematics. This will return
-     * our phones roll, pitch state, by notifying the observer
-     */
-    public ModelPhonePosition modelPosition;
-    
-    /**
      * Hold the state of our Server. This will notify our
      * Observer, any time server values are changed
      */
@@ -109,24 +103,27 @@ public class MainActivity
      *
      * Set the vehicle, position and the state models. 
      */
-    private void initModels()
+    private void initModels() 
     {
-        // This will initialise our PhonePosition Observer,
-        // So our this.update function can handle updates 
-        this.modelPosition = new ModelPhonePosition(getBaseContext());
-        this.modelPosition.addObserver(this);
-        
-        //Create our ServerState model
-        this.config = new Config(
-                this.sharedPreferences.getString(
-                    "pref_server_ip", 
-                    "192.168.1.115"
-                )
-            );
-        
-        // Create our vehicle model
-        this.modelVehicle = new ModelVehicleCar();
-        this.vehicle = new Car();
+        try
+        {
+            //Create our ServerState model
+            this.config = new Config(
+                    this.sharedPreferences.getString(
+                        "pref_server_ip", 
+                        "192.168.1.115"
+                    )
+                );
+            
+            // Create our vehicle model
+            this.modelVehicle = new ModelVehicleCar();
+            this.vehicle = new Car();
+        }
+        catch (java.net.UnknownHostException e)
+        {
+            android.util.Log.e("dashee", "Failed to set IP Address");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -237,6 +234,10 @@ public class MainActivity
                 );
             toast.show();
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -316,7 +317,6 @@ public class MainActivity
     protected void onResume() 
     {
         super.onResume();
-        this.modelPosition.onResume();
         this.modelVehicle.onResume();
         //for (Thread t : this.threads) { t.onResume(); }
     }
@@ -329,7 +329,6 @@ public class MainActivity
     protected void onPause() 
     {
         super.onPause();
-        this.modelPosition.onPause();
         //for (Thread t : this.threads) { t.onPause(); }
     }
 

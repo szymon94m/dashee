@@ -66,5 +66,5 @@ public abstract class FragmentHud extends Fragment
      *
      * @param modelVehicle - The vehicle object
      */
-	public abstract void setVehicle(ModelVehicle modelVehicle);
+    public abstract void setVehicle(ModelVehicle modelVehicle);
 }
