@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import org.dashee.remote.exception.OutOfRange;
+
 /**
  * This is currently mapping out the HUD display as of Shahmir's hud.fw.png, it
  * should draw a central steer arc which will move when the car is steering. 
@@ -18,7 +20,8 @@ import android.widget.RelativeLayout;
  * @author David Buttar
  * @author Shahmir Javaid
  */
-public class DrawHud extends View
+public class DrawHud 
+    extends View
 {
     Context context;
 
@@ -26,11 +29,11 @@ public class DrawHud extends View
      * Various paths to be defined onSizeChanged
      */
     Path steerPath = new Path();
-    Path[] powerPaths = new Path[12];
+    Path[] throttlePaths = new Path[12];
     Path[] batteryPaths = new Path[12];
-    Path[] powerPathsInner = new Path[12];
+    Path[] throttlePathsInner = new Path[12];
     Path[] batteryPathsInner = new Path[12];
-    Path powerOuterArc = new Path();
+    Path throttleOuterArc = new Path();
     Path batteryOuterArc = new Path();
     
     /**
@@ -61,7 +64,7 @@ public class DrawHud extends View
      * Values to be updated to reflect app state
      */
     float tilt = 50.0f;
-    float powerPerc = 0.0f;
+    float throttle = 0.0f;
     
     /**
      * Style elements go here
@@ -101,11 +104,13 @@ public class DrawHud extends View
      * 
      * @param mContext - The context required by super
      */
-    public DrawHud(Context mContext, View inView)
+    public DrawHud(Context context, View view)
     {
-        super(mContext);
-        context = mContext;
-        this.view = inView;
+        super(context);
+
+        this.context = context;
+        this.view = view;
+
         steerLine = new Paint();
         steerLine.setAntiAlias(true);
         steerLine.setColor(lineColor);
@@ -221,13 +226,13 @@ public class DrawHud extends View
     	// Start Building Our HUD paths.
     	this.buildSteerPath();
     	this.addGaugePath(
-                this.powerPaths, 
+                this.throttlePaths, 
                 true, 
                 this.innerGaugeRadius, 
                 this.outerGaugeRadius
             );
     	this.addGaugePath(
-                this.powerPathsInner, 
+                this.throttlePathsInner, 
                 true, 
                 this.innerGaugeRadius2, 
                 this.outerGaugeRadius
@@ -244,15 +249,15 @@ public class DrawHud extends View
                 this.innerGaugeRadius2, 
                 this.outerGaugeRadius
             );
-    	this.addArc(this.powerOuterArc, true);
+    	this.addArc(this.throttleOuterArc, true);
     	this.addArc(this.batteryOuterArc, false);
 
         // Position some xml elements
         LinearLayout ipInfo = (LinearLayout)view.findViewById(R.id.ip_info);
         RelativeLayout.LayoutParams params 
             = (RelativeLayout.LayoutParams)ipInfo.getLayoutParams();
-        float textWidth = convertDpToPixel(73.0f, context);
-        float textHeight = convertDpToPixel(11.0f, context);
+        float textWidth = convertDpToPixel(73.0f, this.context);
+        float textHeight = convertDpToPixel(11.0f, this.context);
 
         params.setMargins(
                 Math.round(this.getMiddleInnerRightPos() - textWidth), 
@@ -267,10 +272,9 @@ public class DrawHud extends View
      * This method converts dp unit to equivalent pixels, depending on device 
      * density.
      *
-     * @param dp - A value in dp (density independent pixels) unit. Which we 
+     * @param dp A value in dp (density independent pixels) unit. Which we 
      *  need to convert into pixels
-     * @param context - Context to get resources and device specific display 
-     *  metrics
+     * @param context the context required to get the resource
      *
      * @return A float value to represent px equivalent to dp depending on 
      *  device density
@@ -371,9 +375,7 @@ public class DrawHud extends View
         innerOval.set(p1x, p1y, p2x, p2y);
         outerOval.set(outerP1x, outerP1y, outerP2x, outerP2y);
     	
-        int count  = 0;
-        
-    	while(count <=11)
+    	for (int count = 0; count < 12; count++)
         {
             float[] innerArcParams = this.getArcParams(
                     curY, 
@@ -407,7 +409,6 @@ public class DrawHud extends View
             paths[count].lineTo(innerArcParams[2], (float) (curY));
 
             curY = curY-rectHeight-gap;
-            count++;
         }
     }
     
@@ -584,29 +585,32 @@ public class DrawHud extends View
         canvas.restore();
         
         // Draw Power arcs
-        int count  = 0;
-        int cutOff = Math.round(this.powerPerc*12);
-    	while(count <=11)
+        int cutOff = Math.round(this.throttle * 12);
+            
+    	for (int count = 0; count < 12; count++)
         {
-            if(this.powerPaths[count] != null && count<cutOff)
+            if(this.throttlePaths[count] != null && count < cutOff)
             {
-                canvas.drawPath(this.powerPaths[count], activePowerBar);
+                canvas.drawPath(this.throttlePaths[count], activePowerBar);
                 canvas.drawPath(
-                        this.powerPathsInner[count], 
+                        this.throttlePathsInner[count], 
                         activeBarPowerInset
                     );
             }
             else
             {
-                canvas.drawPath(this.powerPaths[count], inactivePowerBar);
-                canvas.drawPath(this.powerPathsInner[count], inactiveBarInset);
+                canvas.drawPath(this.throttlePaths[count], inactivePowerBar);
+                canvas.drawPath(
+                        this.throttlePathsInner[count], 
+                        inactiveBarInset
+                    );
             }
+
             canvas.drawPath(this.batteryPaths[count], activeBatteryBar);
             canvas.drawPath(this.batteryPathsInner[count], activeBatteryInset);
-            count++;
     	}
     	
-    	canvas.drawPath(this.powerOuterArc, powerArc);
+    	canvas.drawPath(this.throttleOuterArc, powerArc);
     	canvas.drawPath(this.batteryOuterArc, batteryArc);
     	
         invalidate();
@@ -615,20 +619,26 @@ public class DrawHud extends View
     /**
      * Set the values of tilt in degrees
      *
-     * @param degrees - The value in degrees
+     * @param radians The value in degrees
      */
-    public void setTilt(float degrees)
+    public void setTilt(float radians)
     {
-    	this.tilt = degrees;
+        this.tilt = radians;
+   // 	this.tilt = (float)Math.toDegrees(radians);
     }
 
     /**
      * Set the value of power in percentage
      *
-     * @param powerPerc - The value in percentage
+     * @param percentage The value in percentage
      */
-    public void setPowerPerc(float powerPerc)
+    public void setThrottle(float percentage)
     {
-    	this.powerPerc = powerPerc;
+        if (percentage < 0.0 || percentage > 1.0)
+            throw new OutOfRange(
+                    "Percentage value for throttle must be within 0.0-1.0"
+                );
+
+    	this.throttle = percentage;
     }
 }

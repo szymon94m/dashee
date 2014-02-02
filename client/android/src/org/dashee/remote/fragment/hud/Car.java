@@ -29,6 +29,7 @@ import java.util.Observer;
 
 import android.widget.TextView;
 
+import org.dashee.remote.exception.OutOfRange;
 import org.dashee.remote.DrawHud;
 import org.dashee.remote.R;
 import org.dashee.remote.RangeMapping;
@@ -424,34 +425,50 @@ public class Car
         prevSteer = rollValue;
     	hud.setTilt(roll);
     }
-    
+
     /**
      * Set our Throttle value. Update the button values and also update the 
      * throttle applied in the hud view
-     *
-     * TODO Fix the Hud drawing the correct bar on the left
      *
      * @param throttle The value of throttle applied
      */
     public void setThrottle(int throttle)
     {
-        this.vehicle.setThrottle(throttle);
+        try
+        {
+            // Set the throttle value
+            this.vehicle.setThrottle(throttle);
+    
+            // Set the text value from the actual throttle after considering for
+            // trim, min and max.
+            textViewHudThrottleValue.setText(
+                    Math.round(visualPowerMapping.remapValue(
+                            this.vehicle.getThrottle()
+                        )) + ""
+                );
+            
+            // If we are in reverse we go from 0-128 other wise we go from 
+            // 128-255. The throttle percentage sent to hud is from 0.0 to 1.0.
+            //
+            // Therefore when we are in reverse we need to calculate the 
+            // percentage from the range 0-128 other wise we calculate from 
+            // 128-255
+            float percentage = 0.0f;
+            if (Reverse) 
+                percentage = (this.vehicle.getThrottle() / -128.0f) + 1.0f;
+            else
+                percentage = (this.vehicle.getThrottle() -128) / 128.0f;
+            
+            // Change our hud bar value
+            hud.setThrottle(percentage);
+        }
 
-        //Display invalid values when things are out of range
-        if (throttle < 0.0 || throttle > 255)
+        // If throttle fails, set this to the error string
+        catch (OutOfRange e)
+        {
             textViewHudThrottleValue.setText(
                     Html.fromHtml("<font color='#D93600'>---</font>")
                 );
-        else
-        {
-            textViewHudThrottleValue.setText(
-                    Math.round(
-                        visualPowerMapping.remapValue(throttle)
-                    ) + ""
-                );
-            
-            // TODO change the name of this thing
-            hud.setPowerPerc(throttle/128);
         }
     }
 
