@@ -5,7 +5,9 @@ package org.dashee.remote.exception;
  *
  * @author Shahmir Javaid
  */
-public class InvalidValue extends RuntimeException
+@SuppressWarnings("serial")
+public class InvalidValue 
+    extends RuntimeException
 {
     /**
      * Call extended version

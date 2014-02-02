@@ -1,10 +1,11 @@
 package org.dashee.remote.exception;
 
 /**
- * Exception class indicating Invalid Values
+ * Exception class indicating values are out of the given range
  *
  * @author Shahmir Javaid
  */
+@SuppressWarnings("serial")
 public class OutOfRange extends RuntimeException
 {
     /**

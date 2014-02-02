@@ -17,6 +17,6 @@ public class MainActivityTest
 
     public MainActivityTest() 
     {
-        super("org.dashee.remote", MainActivity.class);
+        super(MainActivity.class);
     }
 }

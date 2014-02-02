@@ -37,7 +37,7 @@ public class ConfigTest
         try
         {
             this.config.setPort(1499);
-            this.fail("Port less than 1500 is invalid");
+            TestCase.fail("Port less than 1500 is invalid");
         }
         catch (OutOfRange e)
         {
@@ -48,7 +48,7 @@ public class ConfigTest
         try
         {
             this.config.setPort(3001);
-            this.fail("Port more than 3001 is invalid");
+            TestCase.fail("Port more than 3001 is invalid");
         }
         catch (OutOfRange e)
         {
@@ -70,7 +70,7 @@ public class ConfigTest
         try
         {
             this.config.setIp("1111.1.1.1.1");
-            this.fail("Invalid IP");
+            TestCase.fail("Invalid IP");
         }
         catch (java.net.UnknownHostException e)
         {
