@@ -634,7 +634,7 @@ public class DrawHud
      */
     public void setThrottle(float percentage)
     {
-        if (percentage < 0.0 || percentage > 1.0)
+        if (percentage < 0.0f || percentage > 1.0f)
             throw new OutOfRange(
                     "Percentage value for throttle must be within 0.0-1.0"
                 );

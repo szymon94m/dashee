@@ -99,11 +99,6 @@ public class Car
      * To set weather or not we are in reverse
      */
     private boolean Reverse = false;
-
-    /**
-     * Power mapping values
-     */
-    private RangeMapping visualPowerMapping;
     
     /**
      * Handle to our Phone schematics. This will return
@@ -117,7 +112,6 @@ public class Car
      */
     public Car()
     {
-        this.visualPowerMapping = new RangeMapping(0.0f,255.0f,-50.0f,50.0f);
     }
     
     /**
@@ -142,15 +136,12 @@ public class Car
         this.initTextViews();
         
         this.setHudConnection("unknown");
-        //this.setHudBps(0);
-    //    this.setThrottle(128);
-     //   this.setRoll(0.0f);
         
         // Get the sharedPreferences so the values can be set
         SharedPreferences sharedPreferences 
             = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         this.setHudIp(
-                sharedPreferences.getString("pref_server_ip", "192.168.1.115")
+                sharedPreferences.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
             );
         
         return view;
@@ -355,7 +346,7 @@ public class Car
         textViewReverse.getPaint().setAntiAlias(false);
         textViewReverse.setTypeface(visitorFont);
     }
-    
+
     /**
      * Set our textbox ip value
      *
@@ -363,19 +354,25 @@ public class Car
      */
     public void setHudIp(String ip)
     {
+        if (textViewHudIpValue == null)
+           return;
+
         textViewHudIpValue.setText(ip);
     }
-    
+
     /**
      * Set our textbox connection value
      *
-     * @param ip - the ip address
+     * @param value the value to update
      */
-    public void setHudConnection(String ip)
+    public void setHudConnection(String value)
     {
-        textViewHudConnectionValue.setText(ip);
+        if (textViewHudConnectionValue == null)
+            return;
+
+        textViewHudConnectionValue.setText(value);
     }
-    
+
     /**
      * Set our textbox BytesPerSecond value
      *
@@ -383,33 +380,43 @@ public class Car
      */
     public void setHudBps(int bps)
     {
+        if (textViewHudBpsValue == null)
+            return;
+
         if (bps < 0)
             textViewHudBpsValue.setText("Negative?");
-
-        textViewHudBpsValue.setText(Integer.toString(bps));
+        else
+            textViewHudBpsValue.setText(Integer.toString(bps));
     }
     
     /**
      * Set the roll value of our view. This will change the value's of the text
      * box and also update the rotation of the steering value
      *
-     * TODO Refactor this, as this does not work
-     *
      * @param roll the pitch value
      */
     public void setRoll(float roll)
     {
-        //Display invalid values when things are out of range
-        if (roll < 0.0f || roll > 100.0f)
-            textViewHudRollValue.setText(
-                    Html.fromHtml("<font color='#D93600'>---</font>")
+        try
+        {
+            // This is important, as the sensor calls this before the OS can 
+            // call setVehicle method
+            if (this.vehicle == null)
+                return;
+
+            // Set the vehicle value
+            this.vehicle.setRoll(
+                    Math.round(
+                        RangeMapping.mapValue(roll, -0.5f, 0.5f, 255.0f, 0.0f)
+                    )
                 );
 
-        int rollValue = Math.round(roll);
+            // Vibrate and print the text in a color, when min or max is hit
+            if (
+                    this.vehicle.getRoll() == this.vehicle.getRollMax() ||
+                    this.vehicle.getRoll() == this.vehicle.getRollMin()
+                )
 
-        if (rollValue != prevSteer)
-        {
-            if (rollValue == 0 || rollValue == 100)
             {
                 // Get instance of Vibrator from current Context
                 Vibrator v = (Vibrator) getActivity().getSystemService(
@@ -419,11 +426,26 @@ public class Car
                 v.vibrate(30);
             }
 
-            textViewHudRollValue.setText(rollValue-50+"");
-        }
+            // Convert the roll value from the vehicle, so min, max is 
+            // compensated
+            float mapped = RangeMapping.mapValue(
+                    this.vehicle.getRoll(), 
+                    0, 
+                    255, 
+                    0.0f, 
+                    100.0f
+                );
 
-        prevSteer = rollValue;
-    	hud.setTilt(roll);
+
+            textViewHudRollValue.setText(Math.round(mapped)-50+"");
+            hud.setTilt(mapped);
+        }
+        catch (OutOfRange e)    
+        {
+            textViewHudRollValue.setText(
+                        Html.fromHtml("<font color='#D93600'>---</font>")
+                    );
+        }
     }
 
     /**
@@ -438,14 +460,28 @@ public class Car
         {
             // Set the throttle value
             this.vehicle.setThrottle(throttle);
+
+            float mapped 
+                = RangeMapping.mapValue(
+                        this.vehicle.getThrottle(), 
+                        0.0f, 
+                        255.0f, 
+                        -50.0f, 
+                        50.0f
+                    );
     
             // Set the text value from the actual throttle after considering for
             // trim, min and max.
-            textViewHudThrottleValue.setText(
-                    Math.round(visualPowerMapping.remapValue(
-                            this.vehicle.getThrottle()
-                        )) + ""
-                );
+            if (mapped == 50.0)
+                textViewHudThrottleValue.setText(
+                        Html.fromHtml(
+                            "<font color='#D93600'>" + 
+                            Math.round(mapped) + 
+                            "</font>"
+                        )
+                    );
+            else
+                textViewHudThrottleValue.setText(Math.round(mapped) + "");
             
             // If we are in reverse we go from 0-128 other wise we go from 
             // 128-255. The throttle percentage sent to hud is from 0.0 to 1.0.

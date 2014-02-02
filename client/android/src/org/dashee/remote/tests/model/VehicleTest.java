@@ -62,7 +62,9 @@ abstract public class VehicleTest
     public void testSetAndGetPitchWithMinAndMax()
     {
         this.vehicle.setPitchMin(128);
+        assertEquals(this.vehicle.getPitchMin(), 128);
         this.vehicle.setPitchMax(130);
+        assertEquals(this.vehicle.getPitchMax(), 130);
 
         // Try setting the min to more than max
         try 
@@ -186,7 +188,9 @@ abstract public class VehicleTest
     public void testSetAndGetRollWithMinAndMax()
     {
         this.vehicle.setRollMin(128);
+        assertEquals(this.vehicle.getRollMin(), 128);
         this.vehicle.setRollMax(130);
+        assertEquals(this.vehicle.getRollMax(), 130);
 
         // Try setting the min to more than max
         try 
@@ -310,7 +314,9 @@ abstract public class VehicleTest
     public void testSetAndGetYawWithMinAndMax()
     {
         this.vehicle.setYawMin(128);
+        assertEquals(this.vehicle.getYawMin(), 128);
         this.vehicle.setYawMax(130);
+        assertEquals(this.vehicle.getYawMax(), 130);
 
         // Try setting the min to more than max
         try 
@@ -434,7 +440,9 @@ abstract public class VehicleTest
     public void testSetAndGetThrottleWithMinAndMax()
     {
         this.vehicle.setThrottleMin(128);
+        assertEquals(this.vehicle.getThrottleMin(), 128);
         this.vehicle.setThrottleMax(130);
+        assertEquals(this.vehicle.getThrottleMax(), 130);
 
         // Try setting the min to more than max
         try 

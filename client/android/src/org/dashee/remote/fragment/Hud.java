@@ -16,7 +16,7 @@ public abstract class Hud
      * Instance which holds our vehicle.
      */
     protected org.dashee.remote.model.Vehicle vehicle;
-
+    
     /**
      *
      * @param vehicle The vehicle value to initiate
@@ -40,7 +40,7 @@ public abstract class Hud
     {
         super.onResume();
     }
-    
+
     /**
      * Set the IP of HUD
      *

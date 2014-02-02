@@ -138,6 +138,16 @@ public abstract class Vehicle
     }
 
     /**
+     * Get the pitch min value
+     *
+     * @return the value of min pitch
+     */
+    public int getPitchMin()
+    {
+        return this.pitchMin;
+    }
+
+    /**
      * Set the max value of pitch.
      *
      * @param max The value to set it to
@@ -150,6 +160,16 @@ public abstract class Vehicle
             throw new OutOfRange("Max value must be less than min");
 
         this.pitchMax = max;
+    }
+
+    /**
+     * Get the pitch max value
+     *
+     * @return the value of max pitch
+     */
+    public int getPitchMax()
+    {
+        return this.pitchMax;
     }
 
     /**
@@ -240,6 +260,16 @@ public abstract class Vehicle
     }
 
     /**
+     * Get the roll min value
+     *
+     * @return the value of min roll
+     */
+    public int getRollMin()
+    {
+        return this.rollMin;
+    }
+
+    /**
      * Set the max value of roll.
      *
      * @param max The value to set it to
@@ -252,6 +282,16 @@ public abstract class Vehicle
             throw new OutOfRange("Max value must be less than min");
 
         this.rollMax = max;
+    }
+
+    /**
+     * Get the roll max value
+     *
+     * @return the value of max roll
+     */
+    public int getRollMax()
+    {
+        return this.rollMax;
     }
  
     /**
@@ -342,6 +382,16 @@ public abstract class Vehicle
     }
 
     /**
+     * Get the yaw min value
+     *
+     * @return the value of min yaw
+     */
+    public int getYawMin()
+    {
+        return this.yawMin;
+    }
+
+    /**
      * Set the max value of yaw.
      *
      * @param max The value to set it to
@@ -354,6 +404,16 @@ public abstract class Vehicle
             throw new OutOfRange("Max value must be less than min");
 
         this.yawMax = max;
+    }
+
+    /**
+     * Get the yaw max value
+     *
+     * @return the value of max yaw
+     */
+    public int getYawMax()
+    {
+        return this.yawMax;
     }
  
     /**
@@ -444,6 +504,16 @@ public abstract class Vehicle
     }
 
     /**
+     * Get the throttle min value
+     *
+     * @return the value of min throttle
+     */
+    public int getThrottleMin()
+    {
+        return this.throttleMin;
+    }
+
+    /**
      * Set the max value of throttle.
      *
      * @param max The value to set it to
@@ -456,5 +526,15 @@ public abstract class Vehicle
             throw new OutOfRange("Max value must be less than min");
 
         this.throttleMax = max;
+    }
+
+    /**
+     * Get the throttle max value
+     *
+     * @return the value of max throttle
+     */
+    public int getThrottleMax()
+    {
+        return this.throttleMax;
     }
 }

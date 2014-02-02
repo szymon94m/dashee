@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.Toast;
+import java.util.Map;
+import java.net.UnknownHostException;
 
 import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.exception.OutOfRange;
@@ -79,10 +81,6 @@ public class MainActivity
         
         // Set the XML view for this activity
         setContentView(R.layout.activity_main);
-        
-        this.sharedPreferences 
-            = PreferenceManager.getDefaultSharedPreferences(this);
-        this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
         this.initModels();
         this.initFragments();
@@ -100,12 +98,7 @@ public class MainActivity
         try
         {
             //Create our ServerState model
-            this.config = new Config(
-                    this.sharedPreferences.getString(
-                        "pref_server_ip", 
-                        "192.168.1.115"
-                    )
-                );
+            this.config = new Config("127.0.0.1");
             
             // Create our vehicle model
             this.vehicle = new Car();
@@ -154,24 +147,29 @@ public class MainActivity
         for (Thread t : threads) { t.start(); }
     }
 
-    /*
-     * Iterate through the settings and apply the current values via the
-     * onSharedPreferenceChanged handler.
+    /**
+     * Iterate through the settings and apply to our configuration.
      */
     private void initSettings()
     {
-        java.util.Map<String,?> values = this.sharedPreferences.getAll();
-        for (java.util.Map.Entry<String, ?> entry : values.entrySet())
+        this.sharedPreferences 
+            = PreferenceManager.getDefaultSharedPreferences(this);
+        this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+
+        for (
+            Map.Entry<String, ?> entry : 
+            this.sharedPreferences.getAll().entrySet()
+        )
         {
             onSharedPreferenceChanged(this.sharedPreferences, entry.getKey());
         }
     }
-    
+
     /**
      * Create a listener to activate when SharedPreferences are changed.
      *
-     * @param prefs - The SharedPreferences
-     * @param key - The key value changed
+     * @param prefs The SharedPreferences
+     * @param key The key value changed
      */
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) 
     {
@@ -179,29 +177,44 @@ public class MainActivity
         {
             Log.d("dashee", "Setting:: " + key);
 
-            if (key.equals("pref_server_ip"))
+            if(key.equals("pref_server_ip"))
                 this.config.setIp(
-                        prefs.getString("pref_server_ip", "192.168.115")
-                    );
+                    prefs.getString("pref_server_ip", "192.168.115")
+                 );
             else if (key.equals("pref_server_port"))
                 this.config.setPort(
-                        Integer.parseInt(
-                            prefs.getString("pref_server_port", "2047")
-                        )
-                    );
+                    Integer.parseInt(
+                        prefs.getString("pref_server_port", "2047")
+                    )
+                );
+
+            // Change the value of ip and port, as One
+            if (
+                    this.hud != null && ( 
+                    key.equals("pref_server_ip") || 
+                    key.equals("pref_server_port") )
+                )
+                this.hud.setHudIp(
+                    prefs.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
+                );
+        }
+        catch (UnknownHostException e)
+        {
+            Toast toast = Toast.makeText(
+                getApplicationContext(), 
+                e.getMessage(), 
+                Toast.LENGTH_SHORT
+            );
+            toast.show();
         }
         catch(InvalidValue e)
         {
             Toast toast = Toast.makeText(
-                    getApplicationContext(), 
-                    e.getMessage(), 
-                    Toast.LENGTH_SHORT
-                );
+                getApplicationContext(), 
+                e.getMessage(), 
+                Toast.LENGTH_SHORT
+            );
             toast.show();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
         }
     }
 
