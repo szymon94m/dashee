@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.hardware.Sensor;
+
 import java.util.Observable;
 
 /**
@@ -14,12 +15,18 @@ import java.util.Observable;
  * @author David Buttar
  * @author Shahmir Javaid
  */
-public class ModelPhonePosition extends Observable implements SensorEventListener 
+public class PhoneSensors
+    extends Observable 
+    implements SensorEventListener 
 {
     /**
      * required Sensors.
      */
     private SensorManager sensorManager;
+
+    /**
+     * The sensor type ROTATION_VECTOR
+     */ 
     private Sensor rotationSensor;
 
     /**
@@ -37,18 +44,20 @@ public class ModelPhonePosition extends Observable implements SensorEventListene
     /**
      * Initialise our variables
      *
-     * @param cont - The context in which to set the sensor in
+     * @param The context in which to set the sensor in
      */
-    public ModelPhonePosition(Context cont)
+    public PhoneSensors(Context cont)
     {
-        this.sensorManager = (SensorManager)cont.getSystemService(Context.SENSOR_SERVICE);
-        this.rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+        this.sensorManager 
+            = (SensorManager)cont.getSystemService(Context.SENSOR_SERVICE);
+        this.rotationSensor 
+            = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
     }
     
     /**
      * Return current Pitch value
      * 
-     * @return float - The pitch value in radians
+     * @return The pitch value in radians
      */
     public float getPitch()
     {
@@ -58,7 +67,7 @@ public class ModelPhonePosition extends Observable implements SensorEventListene
     /**
      * Return current Roll value
      * 
-     * @return float - The roll value in radians
+     * @return The roll value in radians
      */
     public float getRoll()
     {
@@ -68,7 +77,7 @@ public class ModelPhonePosition extends Observable implements SensorEventListene
     /**
      * Return current Yaw value
      * 
-     * @return float - The yaw value in Radians
+     * @return The yaw value in Radians
      */
     public float getYaw()
     {
@@ -78,8 +87,8 @@ public class ModelPhonePosition extends Observable implements SensorEventListene
     /**
      * When the accuracy is changed, Perform some actions
      *
-     * @param sensor - The sensor in question
-     * @param accuracy - The accuracy value
+     * @param sensor The sensor in question
+     * @param accuracy The accuracy value
      */
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) 
@@ -94,7 +103,8 @@ public class ModelPhonePosition extends Observable implements SensorEventListene
         sensorManager.registerListener(
             this,
             rotationSensor,
-            SensorManager.SENSOR_DELAY_FASTEST //Important, use the highest value possible
+            //Important, use the highest value possible
+            SensorManager.SENSOR_DELAY_FASTEST 
         );
     }
     
@@ -112,13 +122,20 @@ public class ModelPhonePosition extends Observable implements SensorEventListene
      * This function will notifyObservers of the change of value
      * This object can then access the get function to determine new values
      *
-     * @param event - The sensor event
+     * @param event The sensor values when changed
      */
     @Override
     public void onSensorChanged(SensorEvent event) 
     {
-        SensorManager.getRotationMatrixFromVector (this.rotationMatrix, event.values);
-        SensorManager.getOrientation(this.rotationMatrix, this.orientation);
+        SensorManager.getRotationMatrixFromVector(
+                this.rotationMatrix, 
+                event.values
+            );
+        SensorManager.getOrientation(
+                this.rotationMatrix, 
+                this.orientation
+            );
+
         setChanged();
         notifyObservers();
     }

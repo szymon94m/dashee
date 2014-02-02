@@ -32,7 +32,8 @@ import android.widget.TextView;
 import org.dashee.remote.DrawHud;
 import org.dashee.remote.R;
 import org.dashee.remote.RangeMapping;
-import org.dashee.remote.model.*;
+import org.dashee.remote.model.PhoneSensors;
+import org.dashee.remote.fragment.Hud;
 
 /**
  * This is our HUD Fragment. which controls, sending and receiving controls
@@ -42,7 +43,7 @@ import org.dashee.remote.model.*;
  * @author Shahmir Javaid
  */
 public class Car 
-    extends org.dashee.remote.fragment.Hud
+    extends Hud
     implements Observer
 {
     /**
@@ -107,7 +108,7 @@ public class Car
      * Handle to our Phone schematics. This will return
      * our phones roll, pitch state, by notifying the observer
      */
-    private ModelPhonePosition modelPosition;
+    private PhoneSensors phoneSensors;
 
     /**
      * Constructor. Required by Fragment type Objects,
@@ -172,8 +173,8 @@ public class Car
     {
         // This will initialise our PhonePosition Observer,
         // So our this.update function can handle updates 
-        this.modelPosition = new ModelPhonePosition(this.getActivity());
-        this.modelPosition.addObserver(this);
+        this.phoneSensors = new PhoneSensors(this.getActivity());
+        this.phoneSensors.addObserver(this);
     }
 
     /**
@@ -464,9 +465,9 @@ public class Car
      */
     public void update(Observable o, Object arg)
     {
-        if (o instanceof ModelPhonePosition)
+        if (o instanceof PhoneSensors)
         {
-            this.setRoll(modelPosition.getRoll());
+            this.setRoll(phoneSensors.getRoll());
         }
     }
 
@@ -475,7 +476,7 @@ public class Car
      */
     public void onPause()
     {
-        this.modelPosition.onPause();
+        this.phoneSensors.onPause();
         super.onPause();
     }   
 
@@ -484,7 +485,7 @@ public class Car
      */
     public void onResume()
     {
-        this.modelPosition.onResume();
+        this.phoneSensors.onResume();
         super.onResume();
     }
 }
