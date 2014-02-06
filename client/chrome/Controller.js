@@ -15,7 +15,9 @@
         console.log(" --- Starting Simulator");
         var simulator = Simulator();
         var vehicle = VehicleCar({simulator:simulator});
-        var automation = AutomationForward();
+
+        var automation = AutomationForward({proximitySensor:simulator.getSensorProximity(), vehicle:vehicle});
+        
         console.log(" --- Start Main Animation Loop");
 
         // Update feedback on server commands and packet rate.
@@ -41,17 +43,13 @@
             commandsServer.steering = (serverBuffer[1]);
             commandsServer.throttle = (serverBuffer[2]);*/
 
-
             //1
             if (serverBuffer){
                 vehicle.read(serverBuffer);
                 vehicle.update();
             }else{
-                //serverBuffer = automation.update();
-                //vehicle.read(serverBuffer);
+                automation.update();
             }
-
-            //sensor.update();
 
             simulator.update();
             //vehicle.update();

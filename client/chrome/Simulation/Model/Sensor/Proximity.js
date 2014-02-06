@@ -22,7 +22,6 @@
                 return 1;
             }, p1, p2);
             proximity = closestItem;
-            console.log(proximity);
         }
 
         //given commands update your position

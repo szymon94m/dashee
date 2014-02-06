@@ -5,6 +5,11 @@
         opts = opts || {};
 
         //given commands update your position
+        that.read = function(){
+            console.error('Please implement');
+        }
+
+        //given commands update your position
         that.update = function(){
             console.error('Please implement');
         }

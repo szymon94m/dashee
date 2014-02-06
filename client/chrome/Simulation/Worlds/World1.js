@@ -11,7 +11,9 @@
 
         // Our world handler
         var world = new b2World(GRAVITY,  true);
-        var model;
+        var simVehicle;
+        var sensor;
+
 
         // Switch Box2D debug view on and off.
         var debugDraw = true;
@@ -25,7 +27,8 @@
         (function init(){
             initWalls();
             initDebug();
-            model = ModelCar(world);
+            simVehicle = ModelCar(world);
+            sensor = ModelSensorProximity({world:world});
         })();
 
         // Create our world and add walls
@@ -77,7 +80,7 @@
 
         // Return the current vehicle
         that.getVehicle = function(){
-            return model;
+            return simVehicle;
         }
 
         // Enable debug draw
@@ -90,11 +93,12 @@
             debugDraw = false;
         }
 
-        // Update our models.
+        // Update our world.
         that.update = function() {
 
             // update object friction;
-            model.update();
+            simVehicle.update();
+            sensor.moveTo(simVehicle.getX(), simVehicle.getY(), simVehicle.getAngle());
 
             // Step through the world
             curTime = new Date().getTime();
@@ -104,17 +108,22 @@
             // Helpfull debug information
             if (debugDraw){ 
                 world.DrawDebugData();
-                model.debugDraw(b2D.canvasContext, b2D.scale);
+                sensor.debugDraw(b2D.canvasContext, b2D.scale);
             }
 
             world.ClearForces();
         }
 
-        // Place a proximity sensor on our model.
+        that.getSensorProximity = function()
+        {
+            return sensor;
+        }
+
+        // Place a proximity sensor on our simVehicle.
         function proximitySensor(){
-            var carX = model.body.GetPosition().x;
-            var carY = model.body.GetPosition().y; 
-            var angle = model.body.GetAngle() * -1;
+            var carX = simVehicle.body.GetPosition().x;
+            var carY = simVehicle.body.GetPosition().y; 
+            var angle = simVehicle.body.GetAngle() * -1;
             var sinAngle = Math.sin(angle);
             var cosAngle = Math.cos(angle);
             var p1 = new b2Vec2(carX + PROXIMITY_START*sinAngle, carY + PROXIMITY_START*cosAngle);

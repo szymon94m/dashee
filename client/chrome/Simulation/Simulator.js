@@ -53,8 +53,14 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
         var world = World1();
         
         // Return current world vehicle in this case a car.
-        that.getVehicle = function(){
+        that.getVehicle = function()
+        {
             return world.getVehicle();
+        }
+
+        that.getSensorProximity = function()
+        {
+            return world.getSensorProximity();
         }
 
         that.update = function(){
