@@ -12,8 +12,8 @@ import org.dashee.remote.R;
  * @author David Buttar
  * @author Shahmir Javaid
  */
-public class PreferencesActivity 
-    extends PreferenceActivity 
+public class RollActivity 
+    extends PreferenceActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -21,14 +21,14 @@ public class PreferencesActivity
         super.onCreate(savedInstanceState);
         
         ActionBar ab = getActionBar();
-        ab.setSubtitle(R.string.pref_subtitle);
+        ab.setSubtitle(R.string.pref_roll_subtitle);
         ab.setHomeButtonEnabled(true);
 
         getFragmentManager()
             .beginTransaction()
             .replace(
                     android.R.id.content, 
-                    new org.dashee.remote.preference.fragment.Main()
+                    new org.dashee.remote.preference.fragment.Roll()
                 )
             .commit();
     }

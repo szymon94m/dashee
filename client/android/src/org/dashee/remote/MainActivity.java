@@ -228,7 +228,7 @@ public class MainActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
     
@@ -245,6 +245,7 @@ public class MainActivity
     	// Handle item selection
         switch (item.getItemId())
         {
+            /*
             case R.id.action_dot_settings:
             {
                 Intent preferencesActivity 
@@ -256,6 +257,7 @@ public class MainActivity
                 startActivity(preferencesActivity);
                 return true;
             }
+            */
             default:
                 return super.onOptionsItemSelected(item);
         }        

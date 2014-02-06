@@ -57,7 +57,7 @@ public class Car
      * other methods
      */
     private View view;
-    
+
     /**
      * Assign area for current steer value
      */
@@ -67,10 +67,10 @@ public class Car
      * Dont update steer UI if it's same as last time.
      */
     private int prevSteer = -1;
-            
+
     /**
      * Handlers to our text view.
-     */    
+     */
     private TextView textViewHudIpValue;
     private TextView textViewHudConnectionValue;
     private TextView textViewHudBpsValue;
@@ -98,8 +98,8 @@ public class Car
     /**
      * To set weather or not we are in reverse
      */
-    private boolean Reverse = false;
-    
+    private boolean reverse = false;
+
     /**
      * Handle to our Phone schematics. This will return
      * our phones roll, pitch state, by notifying the observer
@@ -113,7 +113,7 @@ public class Car
     public Car()
     {
     }
-    
+
     /**
      * Set our HUD. Initiate the servers IP address so our thread can talk to 
      * it, start our thread and return the view which is required by this 
@@ -134,16 +134,16 @@ public class Car
         this.initDriveTypeListener();
         this.initOptionsButtonListener();
         this.initTextViews();
-        
+
         this.setHudConnection("unknown");
-        
+
         // Get the sharedPreferences so the values can be set
         SharedPreferences sharedPreferences 
             = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         this.setHudIp(
                 sharedPreferences.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
             );
-        
+
         return view;
     }
 
@@ -185,12 +185,12 @@ public class Car
             public boolean onTouch(View v, MotionEvent event) 
             {
                 float mapVal = 128.0f;
-    
+
                 // Only if the user is still touching the screen
                 // will the mapValue change
                 if (event.getAction() != MotionEvent.ACTION_UP) 
                 {
-                    if(Reverse)
+                    if(reverse)
                     {
                         mapVal = RangeMapping.mapValue(
                             event.getY(), 
@@ -211,7 +211,7 @@ public class Car
                         );
                     }
                 }
-                    
+
                 setThrottle((int)mapVal);
 
                 return true;
@@ -233,10 +233,10 @@ public class Car
             @Override
             public void onClick(View v) 
             {
-                Reverse = !Reverse;
+                reverse = !reverse;
                 final ToneGenerator tg 
                     = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                if(Reverse)
+                if(reverse)
                 {
                     tg.startTone(ToneGenerator.TONE_PROP_ACK);
                     textViewDrive.setTextColor(Color.parseColor("#444444"));
@@ -388,7 +388,7 @@ public class Car
         else
             textViewHudBpsValue.setText(Integer.toString(bps));
     }
-    
+
     /**
      * Set the roll value of our view. This will change the value's of the text
      * box and also update the rotation of the steering value
@@ -430,9 +430,9 @@ public class Car
             // compensated
             float mapped = RangeMapping.mapValue(
                     this.vehicle.getRoll(), 
-                    0, 
-                    255, 
-                    0.0f, 
+                    0,
+                    255,
+                    0.0f,
                     100.0f
                 );
 
@@ -469,7 +469,7 @@ public class Car
                         -50.0f, 
                         50.0f
                     );
-    
+
             // Set the text value from the actual throttle after considering for
             // trim, min and max.
             if (mapped == 50.0)
@@ -482,7 +482,7 @@ public class Car
                     );
             else
                 textViewHudThrottleValue.setText(Math.round(mapped) + "");
-            
+
             // If we are in reverse we go from 0-128 other wise we go from 
             // 128-255. The throttle percentage sent to hud is from 0.0 to 1.0.
             //
@@ -490,11 +490,11 @@ public class Car
             // percentage from the range 0-128 other wise we calculate from 
             // 128-255
             float percentage = 0.0f;
-            if (Reverse) 
+            if (reverse) 
                 percentage = (this.vehicle.getThrottle() / -128.0f) + 1.0f;
             else
                 percentage = (this.vehicle.getThrottle() -128) / 128.0f;
-            
+
             // Change our hud bar value
             hud.setThrottle(percentage);
         }
@@ -531,7 +531,7 @@ public class Car
     {
         this.phoneSensors.onPause();
         super.onPause();
-    }   
+    }
 
     /**
      * Resume our values

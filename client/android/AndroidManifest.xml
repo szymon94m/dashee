@@ -27,12 +27,22 @@
         <activity
             android:name="org.dashee.remote.preference.PreferencesActivity"
             android:label="@string/pref_title"
+            android:screenOrientation="landscape"
             android:parentActivityName="org.dashee.remote.MainActivity">
         </activity>
         <activity
-            android:name="org.dashee.remote.preference.ChannelActivity"
-            android:label="@string/pref_title"
+            android:name="org.dashee.remote.preference.RollActivity"
+            android:label="@string/pref_roll_title"
             android:parentActivityName="org.dashee.remote.preference.PreferenceActivity">
+            <intent-filter>  
+                <action android:name="dashee.action.ROLL"/>  
+                <category android:name="android.intent.category.DEFAULT" />  
+            </intent-filter>  
+            <!--
+            <intent 
+                android:targetPackage="org.dashee.remote.preference"
+                android:targetClass="org.dashee.remote.prefence.RollActivity"
+                />-->
         </activity>
     </application>
 </manifest>
