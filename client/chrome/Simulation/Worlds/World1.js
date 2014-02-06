@@ -119,26 +119,6 @@
             return sensor;
         }
 
-        // Place a proximity sensor on our simVehicle.
-        function proximitySensor(){
-            var carX = simVehicle.body.GetPosition().x;
-            var carY = simVehicle.body.GetPosition().y; 
-            var angle = simVehicle.body.GetAngle() * -1;
-            var sinAngle = Math.sin(angle);
-            var cosAngle = Math.cos(angle);
-            var p1 = new b2Vec2(carX + PROXIMITY_START*sinAngle, carY + PROXIMITY_START*cosAngle);
-            var p2 = new b2Vec2(carX + PROXIMITY_LENGTH*sinAngle, carY + PROXIMITY_LENGTH*cosAngle); 
-            
-            var closestItem = 0;
-            world.RayCast(function(fixture, point, normal, fraction){
-                if(!closestItem || fraction < closestItem) closestItem = fraction;
-                return 1;
-            }, p1, p2);
-
-            // TODO: get the closestItem to be from 0-100, maybe depends on the thing
-            return closestItem - TIRE_LENGTH;
-        }
-
         return that;
     }
     World1 = world1;

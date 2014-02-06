@@ -13,10 +13,7 @@
 
             if(!vehicle)
                 console.error('Automation needs a vehicle');
-
             //console.log("forward proximitySensor" + proximitySensor.read());
-
-
 
             if (proximitySensor.read() == 0)
             {

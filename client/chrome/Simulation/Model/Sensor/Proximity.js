@@ -7,7 +7,9 @@
         var x = opts.x || 0;
         var y = opts.y || 0;
         var angle = opts.angle || 0;
+        var frontOffset = opts.frontOffset || 0.6;
         var length = opts.length || 1.6;
+        length = length + frontOffset;
         var world = opts.world || console.error('No World set biatches!');
 
         var proximity = 0;
@@ -28,7 +30,7 @@
         that.update = function(){
             var sinAngle = Math.sin(angle);
             var cosAngle = Math.cos(angle);
-            p1 = new b2Vec2(x, y);
+            p1 = new b2Vec2(x + frontOffset*sinAngle, y +frontOffset*cosAngle);
             p2 = new b2Vec2(x + length*sinAngle, y + length*cosAngle); 
             raycast(p1, p2);
         }
