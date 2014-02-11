@@ -12,12 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
      
-     <fragment
+    <fragment
         android:id="@+id/fragment_log"
         android:name="org.dashee.remote.fragment.Log"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" 
-     	/>
+        />
      
     <fragment
          android:id="@+id/fragment_hud"
@@ -25,5 +25,11 @@
          android:layout_width="fill_parent"
          android:layout_height="fill_parent" 
          />
-
+     
+    <FrameLayout
+         android:id="@+id/preference_roll"
+         android:name="org.dashee.remote.preference.fragment.Roll"
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent" 
+         />
 </LinearLayout>

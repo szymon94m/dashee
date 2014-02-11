@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.MenuItem;
 import org.dashee.remote.R;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
  
 /**
  * This will handle our Preference object
@@ -13,24 +16,24 @@ import org.dashee.remote.R;
  * @author Shahmir Javaid
  */
 public class RollActivity 
-    extends PreferenceActivity
+    extends FragmentActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
         
+        // Set the XML view for this activity
+        setContentView(R.layout.activity_preference);
+        
         ActionBar ab = getActionBar();
         ab.setSubtitle(R.string.pref_roll_subtitle);
         ab.setHomeButtonEnabled(true);
-
-        getFragmentManager()
-            .beginTransaction()
-            .replace(
-                    android.R.id.content, 
-                    new org.dashee.remote.preference.fragment.Roll()
-                )
-            .commit();
+    	
+        //Set the initial view to our HUD
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.preference_roll, new org.dashee.remote.preference.fragment.Roll());
+        ft.commit();
     }
 
     /**

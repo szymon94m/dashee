@@ -38,11 +38,6 @@
                 <action android:name="dashee.action.ROLL"/>  
                 <category android:name="android.intent.category.DEFAULT" />  
             </intent-filter>  
-            <!--
-            <intent 
-                android:targetPackage="org.dashee.remote.preference"
-                android:targetClass="org.dashee.remote.prefence.RollActivity"
-                />-->
         </activity>
     </application>
 </manifest>

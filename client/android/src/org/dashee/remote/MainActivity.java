@@ -13,8 +13,8 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.Toast;
-import java.util.Map;
 import java.net.UnknownHostException;
+import java.util.Map;
 
 import org.dashee.remote.exception.InvalidValue;
 import org.dashee.remote.exception.OutOfRange;
