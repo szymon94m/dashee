@@ -4,8 +4,8 @@
  
         var that = {};
         opts = opts || {};
-        var throttle;
-        var yaw;
+        var throttle = 128;
+        var yaw = 128;
 
         var sim = opts.simulator || false;
         
