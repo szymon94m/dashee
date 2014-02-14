@@ -35,17 +35,23 @@
         var frontLeftJoint;
         var frontRightJoint;
 
+        var run = false;
+
         // Initialise Our Car.
         (function init(){
             initBody();
             initTires();
+            setTimeout(function(){
+                that.body.SetType(b2Body.b2_dynamicBody);
+                run = true;
+            },100);
         })();
 
         // Create car body.
         function initBody(){
             var bodyDef = new b2BodyDef;
-            bodyDef.type = b2Body.b2_dynamicBody;
-            bodyDef.position.Set(2, 2);
+            //bodyDef.type = b2Body.b2_dynamicBody;
+            bodyDef.position.Set(4, 4);
             bodyDef.angle = 0;
             that.body = world.CreateBody(bodyDef);
             
@@ -146,7 +152,7 @@
 
         // Update the physical state of the car
         that.update = function() {
-
+            if(!run) return;
             for (var i = 0; i < that.tires.length; i++)
                 that.tires[i].update();
 
