@@ -21,14 +21,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#FFFFFF"
-                android:text="Trim +/-"
+                android:text="@string/roll_trim"
                 android:textSize="18sp"
                 />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#666666"
-                android:text="Choose between -100 to 100. Default value is 0"
+                android:text="@string/roll_trim_summary"
                 android:textSize="14sp"
                 />
         </LinearLayout>
@@ -76,7 +76,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#FFFFFF"
-                android:text="Minimum"
+                android:text="@string/roll_min"
                 android:textSize="18sp"
                 android:gravity="right"
                 />
@@ -84,7 +84,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#666666"
-                android:text="Value must be less than max."
+                android:text="@string/roll_min_summary"
                 android:textSize="10sp"
                 android:gravity="right"
                 />
@@ -96,7 +96,7 @@
             android:layout_weight=".20"
             android:gravity="center"
             android:textSize="23sp"
-            android:text="0-100"
+            android:text="@string/roll_minmax"
             />
         <LinearLayout
             android:layout_width="0dip"
@@ -109,7 +109,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#FFFFFF"
-                android:text="Maximum"
+                android:text="@string/roll_max"
                 android:textSize="18sp"
                 android:gravity="left"
                 />
@@ -117,7 +117,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#666666"
-                android:text="Value must be greater than min."
+                android:text="@string/roll_max_summary"
                 android:textSize="10sp"
                 android:gravity="left"
                 />
@@ -156,14 +156,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#FFFFFF"
-                android:text="Invert"
+                android:text="@string/roll_invert"
                 android:textSize="18sp"
                 />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#666666"
-                android:text="Enable to send inverted values to the server."
+                android:text="@string/roll_invert_summary"
                 android:textSize="14sp"
                 />
         </LinearLayout>
@@ -173,8 +173,6 @@
             android:layout_weight=".30"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:switchTextOff="Normal"
-            android:switchTextOn="Inverted"
             android:gravity="center"
             />
     </LinearLayout>

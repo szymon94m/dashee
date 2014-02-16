@@ -3,7 +3,9 @@ package org.dashee.remote.preference.fragment;
 import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,8 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.dashee.remote.R;
 import org.dashee.remote.preference.fragment.dialog.MinMax;
@@ -25,6 +27,7 @@ import org.dashee.remote.preference.fragment.dialog.MinMax;
  */
 public class Roll
 	extends Fragment
+        implements OnClickListener
 {
     /**
      * The view of the fragment. Useful to retrieve the layout values within 
@@ -41,6 +44,11 @@ public class Roll
      * The current value of max.
      */
     private int max;
+    
+    /**
+     * Preference editor.
+     */
+    private Editor editor;
     
     /**
      * Do Nothing but define.
@@ -66,56 +74,111 @@ public class Roll
             = inflater.inflate(R.layout.preference_roll, container, false);
         assert this.view != null;
 
-        this.updateMinMaxTextView();
-        initMinMaxListener();
-        initInvertListener();
+        this.initPreferences();
+        this.initClickListeners();
 
         return this.view;
     }
-
+    
     /**
-     * Listener for Min and Max. Initialize all events with the click listener
+     * Get the preference editor from the SharedPreference
      */
-    private void initMinMaxListener()
+    private void initPreferences()
     {
-        LinearLayout layout 
-            = (LinearLayout) this.view.findViewById(R.id.minmax);
-        layout.setOnClickListener(
-            new View.OnClickListener() 
-            {
-                @Override
-                public void onClick(View v) 
-                {
-                    MinMax minmax = new MinMax();
-                    minmax.setMin(Roll.this.min);
-                    minmax.setMax(Roll.this.max);
-                    minmax.show(getActivity().getFragmentManager(), "minmax");
-                }
-            }
-        );
+        SharedPreferences sp = PreferenceManager
+            .getDefaultSharedPreferences(this.getActivity());
+        editor = sp.edit();
+
+        this.setMin(sp.getInt("roll_min", 0));
+        this.setMax(sp.getInt("roll_max", 100));
+        this.updateMinMaxTextView();
     }
 
     /**
-     * Listener for the Invert switch. Every time we click the invert layout
-     * make sure that our invert switch is toggled
+     * Set all of our click listeners
      */
-    private void initInvertListener()
+    private void initClickListeners()
     {
-        LinearLayout layout 
+        LinearLayout layout_invert
             = (LinearLayout) this.view.findViewById(R.id.invert);
-        final Switch sw
-            = (Switch) this.view.findViewById(R.id.invert_switch);
+        layout_invert.setOnClickListener(this);
+        
+        LinearLayout layout_minmax
+            = (LinearLayout) this.view.findViewById(R.id.minmax);
+        layout_minmax.setOnClickListener(this);
+    }
 
-        layout.setOnClickListener(
-            new View.OnClickListener() 
-            {
-                @Override
-                public void onClick(View v) 
-                {
-                    sw.performClick();
-                }
-            }
+    /**
+     * Our click handlers
+     *
+     * @param v The view clicked
+     */ 
+    @Override
+    public void onClick(View v)
+    {
+        switch (v.getId())
+        {
+            case R.id.invert:
+                onClickInvert();
+                break;
+            case R.id.minmax:
+                onClickMinMax();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Handle the clicking of the invert value.
+     */
+    public void onClickInvert()
+    {
+        Switch sw
+            = (Switch) this.view.findViewById(R.id.invert_switch);
+        sw.performClick();
+    }
+
+    /**
+     * Handle clicking of the Min and Max value.
+     */ 
+    public void onClickMinMax()
+    {
+        MinMax minmax = new MinMax("minmax");
+        minmax.setMin(Roll.this.min);
+        minmax.setMax(Roll.this.max);
+        minmax.show(getActivity().getFragmentManager(), "minmax");
+    }
+
+    /**
+     * Handler for Positive click for MinMax dialog
+     *
+     * @param MinMax dialog
+     */
+    public void onMinMaxPositiveClick(MinMax dialog)
+    {
+        Toast toast = Toast.makeText(
+                this.getActivity(),
+                "Min and Max updated!", 
+                Toast.LENGTH_SHORT
         );
+
+        this.setMin(dialog.getMin());
+        this.setMax(dialog.getMax());
+        this.updateMinMaxTextView();
+        this.editor.putInt("roll_min", dialog.getMin());
+        this.editor.putInt("roll_max", dialog.getMax());
+        this.editor.commit();
+        toast.show();
+    }
+
+    /**
+     * Handler for Positive click for MinMax dialog
+     *
+     * @param MinMax dialog
+     */
+    public void onMinMaxNegativeClick(MinMax dialog)
+    {
     }
 
     /**

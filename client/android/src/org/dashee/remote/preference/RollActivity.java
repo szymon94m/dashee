@@ -32,11 +32,6 @@ public class RollActivity
      */ 
     private Roll roll;
 
-    /**
-     * Preference editor.
-     */
-    private Editor editor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -44,7 +39,6 @@ public class RollActivity
         
     	initActivity();
         initFragment();
-        initPreferenceEditor();
     }
 
     /**
@@ -76,19 +70,6 @@ public class RollActivity
     }
 
     /**
-     * Get the preference editor from the SharedPreference
-     */
-    public void initPreferenceEditor()
-    {
-        SharedPreferences sp = PreferenceManager
-            .getDefaultSharedPreferences(this);
-        editor = sp.edit();
-
-        roll.setMin(sp.getInt("roll_min", 0));
-        roll.setMax(sp.getInt("roll_max", 100));
-    }
-
-    /**
      * Handler of the Action bar selected Option
      *
      * @param item - The item clicked
@@ -108,33 +89,26 @@ public class RollActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+    
     /**
-     * The listener, for the successful dialog
-     */
+     * Override the Positive click
+     *
+     * @param dialog The dialog fragment in question
+     */ 
     @Override
     public void onMinMaxPositiveClick(MinMax dialog)
     {
-        Toast toast = Toast.makeText(
-                this,
-                "Min and Max updated!", 
-                Toast.LENGTH_SHORT
-        );
-
-        roll.setMin(dialog.getMin());
-        roll.setMax(dialog.getMax());
-        roll.updateMinMaxTextView();
-        editor.putInt("roll_min", dialog.getMin());
-        editor.putInt("roll_max", dialog.getMax());
-        editor.commit();
-        toast.show();
+        roll.onMinMaxPositiveClick(dialog);
     }
-    
+
     /**
-     * The listener, for the cancel dialog button.
-     */
+     * Override the Negative click
+     *
+     * @param dialog The dialog fragment in question
+     */ 
     @Override
     public void onMinMaxNegativeClick(MinMax dialog)
     {
+        roll.onMinMaxNegativeClick(dialog);
     }
 }

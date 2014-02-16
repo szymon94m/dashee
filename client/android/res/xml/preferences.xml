@@ -25,8 +25,9 @@
     <PreferenceCategory android:title="@string/pref_channel_title" >
         <Preference
             android:key="pref_roll"
-            android:summary="@string/pref_roll_subtitle"
-            android:title="@string/pref_roll_title" >
+            android:title="@string/roll_title" 
+            android:summary="@string/roll_title_summary"
+            >
             <intent android:action="dashee.action.ROLL"/>
         </Preference>
         <PreferenceScreen

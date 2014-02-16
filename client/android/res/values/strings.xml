@@ -20,15 +20,6 @@
     <string name="pref_pitch_title">Pitch</string>
     <string name="pref_pitch_summary">Change the finer details on pitch axis.</string>
 
-    <string name="pref_roll_title">Roll/Steering</string>
-    <string name="pref_roll_subtitle">Change the finer details on roll axis.</string>
-    <string name="pref_roll_invert_title">Invert Roll value</string>
-    <string name="pref_roll_invert_summary">Enable to invert the values.</string>
-    <string name="pref_roll_trim_title">Trim Roll value</string>
-    <string name="pref_roll_trim_summary">
-        Refrain from big trim values try to see if it can be fixed on the source.
-    </string>
-
     <string name="pref_yaw_title">Yaw</string>
     <string name="pref_yaw_summary">Change the finer details on yaw axis.</string>
 
@@ -43,4 +34,20 @@
     <string name="hud_text_pitch_label">Pitch</string>
     <string name="hud_text_roll_label">Roll</string>
     <string name="pref_channel_subtitle">Configure channel specific settings</string>
+    
+    <string name="roll_title">Roll/Steering</string>
+    <string name="roll_title_summary">Change the finer details on roll axis.</string>
+    <string name="roll_trim">Trim</string>
+    <string name="roll_trim_summary">
+        Choose between -100 and 100.
+    </string>
+    <string name="roll_minmax">-</string>
+    <string name="roll_min">Minimum</string>
+    <string name="roll_min_summary">Value must be less than max.</string>
+    <string name="roll_max">Maximum</string>
+    <string name="roll_max_summary">Value must be greater than min.</string>
+    <string name="roll_invert">Invert</string>
+    <string name="roll_invert_summary">
+        Enable to send inverted values to the server.
+    </string>
 </resources>

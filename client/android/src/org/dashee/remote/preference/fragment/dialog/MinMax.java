@@ -46,7 +46,7 @@ public class MinMax extends DialogFragment
     /**
      * Construct our stuff.
      */
-    public MinMax()
+    public MinMax(String tag)
     {
         super();
         this.min = 0;
@@ -66,7 +66,8 @@ public class MinMax extends DialogFragment
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Update min and max values.")
+        builder
+            //.setMessage("Update min and max values.")
             .setView(this.view)
             .setPositiveButton(
                 "Update", 
@@ -230,7 +231,7 @@ public class MinMax extends DialogFragment
 
         try 
         {
-            listener = (MinMaxListener) activity;
+            listener = (MinMaxListener)activity;
         } 
         catch (ClassCastException e) 
         {
