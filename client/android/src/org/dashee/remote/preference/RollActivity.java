@@ -1,13 +1,14 @@
 package org.dashee.remote.preference;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
-import android.view.MenuItem;
-import org.dashee.remote.R;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.content.Intent;
+import android.view.MenuItem;
+
+import org.dashee.remote.R;
  
 /**
  * This will handle our Preference object

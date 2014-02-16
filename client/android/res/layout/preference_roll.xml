@@ -7,7 +7,6 @@
     android:padding="20dp"
     tools:context=".preference.RollActivity" >
     <LinearLayout
-        android:id="@+id/pref_roll_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         >
@@ -30,17 +29,19 @@
                 android:layout_height="fill_parent"
                 android:textColor="#666666"
                 android:text="Choose between -100 to 100. Default value is 0"
-                android:textSize="10sp"
+                android:textSize="14sp"
                 />
         </LinearLayout>
         <EditText
-            android:id="@+id/pref_roll_text_trim"
+            android:id="@+id/trim"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight=".30"
             android:gravity="center"
             android:textSize="18sp"
             android:text="0"
+            android:inputType="number"
+            android:imeOptions="flagNoExtractUi"
             />
     </LinearLayout>
 
@@ -51,16 +52,15 @@
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="#333333"
-        android:padding="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="17dp"
         />
 
     <!--
         The Max and Min value     
     -->
     <LinearLayout
-        android:id="@+id/pref_roll_text"
+        android:id="@+id/minmax"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -68,7 +68,7 @@
         <LinearLayout
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight=".30"
+            android:layout_weight=".40"
             android:layout_marginRight="5dp"
             android:orientation="vertical"
             >
@@ -89,28 +89,19 @@
                 android:gravity="right"
                 />
         </LinearLayout>
-        <EditText
-            android:id="@+id/pref_roll_text_trim"
+        <TextView
+            android:id="@+id/minmax_text"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight=".20"
             android:gravity="center"
-            android:textSize="18sp"
-            android:text="0"
-            />
-        <EditText
-            android:id="@+id/pref_roll_text_trim"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight=".20"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:text="100"
+            android:textSize="23sp"
+            android:text="0-100"
             />
         <LinearLayout
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight=".30"
+            android:layout_weight=".40"
             android:layout_marginLeft="5dp"
             android:orientation="vertical"
             >
@@ -140,19 +131,20 @@
         android:layout_width="fill_parent"
         android:layout_height="0.5dp"
         android:background="#333333"
-        android:padding="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="17dp"
         />
 
     <!--
         The Max and Min value     
     -->
     <LinearLayout
-        android:id="@+id/pref_roll_text"
+        android:id="@+id/invert"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:clickable="true"
+        android:onClick="eventClickInvert"
         >
         <LinearLayout
             android:layout_width="0dip"
@@ -171,17 +163,19 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:textColor="#666666"
-                android:text="Enable to sent inverted values to the server."
-                android:textSize="10sp"
+                android:text="Enable to send inverted values to the server."
+                android:textSize="14sp"
                 />
         </LinearLayout>
         <Switch
+            android:id="@+id/invert_switch"
             android:layout_width="0dip"
             android:layout_weight=".30"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:switchTextOff="Normal"
+            android:switchTextOn="Inverted"
             android:gravity="center"
             />
     </LinearLayout>
-
 </LinearLayout>

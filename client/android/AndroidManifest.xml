@@ -33,6 +33,7 @@
         <activity
             android:name="org.dashee.remote.preference.RollActivity"
             android:label="@string/pref_roll_title"
+            android:screenOrientation="landscape"
             android:parentActivityName="org.dashee.remote.preference.PreferenceActivity">
             <intent-filter>  
                 <action android:name="dashee.action.ROLL"/>  
