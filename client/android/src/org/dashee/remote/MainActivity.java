@@ -175,8 +175,6 @@ public class MainActivity
     {
         try
         {
-            Log.d("dashee", "Setting:: " + key);
-
             if(key.equals("pref_server_ip"))
                 this.config.setIp(
                     prefs.getString("pref_server_ip", "192.168.115")
@@ -192,9 +190,7 @@ public class MainActivity
             else if (key.equals("roll_max"))
                 this.vehicle.setRollMax(prefs.getInt("roll_max", 0));
 
-            this.hud.setIp(
-                prefs.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
-            );
+            this.hud.setIp(this.config.getIp().toString().substring(1));
             this.hud.setRollMin(this.vehicle.getRollMin());
             this.hud.setRollMax(this.vehicle.getRollMax());
         }
