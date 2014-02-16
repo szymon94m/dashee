@@ -19,7 +19,7 @@ public class SendCommands extends Thread
     /**
      * Send commands every nth millisecond
      */
-    static final int TICK_PER_BYTE = 100;
+    static final int TICK_PER_BYTE = 30;
 
     /**
      * DataGram object to send commands over UDP
@@ -87,7 +87,7 @@ public class SendCommands extends Thread
                 // Create a new set of bytes
                 byte[] ar = new byte[3];
                 ar[0] = 0;
-                ar[1] = (byte)vehicle.getYaw();
+                ar[1] = (byte)vehicle.getRoll();
                 ar[2] = (byte)vehicle.getThrottle();
 
                 // Send the commands to th server

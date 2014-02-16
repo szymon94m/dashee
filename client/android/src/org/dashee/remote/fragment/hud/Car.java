@@ -71,29 +71,29 @@ public class Car
     /**
      * Handlers to our text view.
      */
-    private TextView textViewHudIpValue;
-    private TextView textViewHudConnectionValue;
-    private TextView textViewHudBpsValue;
+    private TextView tvIp;
+    private TextView tvConnection;
+    private TextView tvBPS;
 
     /**
      * Throttle TextView handlers.
      */
-    private TextView textViewHudThrottleValue;
-    private TextView textViewHudThrottleMinValue;
-    private TextView textViewHudThrottleMaxValue;
+    private TextView tvThrottle;
+    private TextView tvThrottleMin;
+    private TextView tvThrottleMax;
 
     /**
      * Roll TextView handlers.
      */
-    private TextView textViewHudRollValue;
-    private TextView textViewHudRollMinValue;
-    private TextView textViewHudRollMaxValue;
+    private TextView tvRoll;
+    private TextView tvRollMin;
+    private TextView tvRollMax;
 
     /**
      * Drive and Reverse TextView Handlers
      */
-    private TextView textViewDrive;
-    private TextView textViewReverse;
+    private TextView tvDrive;
+    private TextView tvReverse;
 
     /**
      * To set weather or not we are in reverse
@@ -231,14 +231,14 @@ public class Car
                 if(reverse)
                 {
                     tg.startTone(ToneGenerator.TONE_PROP_ACK);
-                    textViewDrive.setTextColor(Color.parseColor("#444444"));
-                    textViewReverse.setTextColor(Color.parseColor("#D93600"));
+                    tvDrive.setTextColor(Color.parseColor("#444444"));
+                    tvReverse.setTextColor(Color.parseColor("#D93600"));
                 }
                 else
                 {
                     tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                    textViewReverse.setTextColor(Color.parseColor("#444444"));
-                    textViewDrive.setTextColor(Color.parseColor("#2FB900"));
+                    tvReverse.setTextColor(Color.parseColor("#444444"));
+                    tvDrive.setTextColor(Color.parseColor("#2FB900"));
                 }
             }
         });
@@ -288,55 +288,55 @@ public class Car
             );
 
         // Generic values
-        textViewHudIpValue 
+        tvIp 
             = (TextView)view.findViewById(R.id.hud_text_ip_value);
-        textViewHudIpValue.getPaint().setAntiAlias(false);
-        textViewHudIpValue.setTypeface(visitorFont);
+        tvIp.getPaint().setAntiAlias(false);
+        tvIp.setTypeface(visitorFont);
 
-        textViewHudConnectionValue 
+        tvConnection 
             = (TextView)view.findViewById(R.id.hud_text_connection_value);
-        textViewHudConnectionValue.getPaint().setAntiAlias(false);
-        textViewHudConnectionValue.setTypeface(visitorFont);
+        tvConnection.getPaint().setAntiAlias(false);
+        tvConnection.setTypeface(visitorFont);
 
-        textViewHudBpsValue 
+        tvBPS 
             = (TextView)view.findViewById(R.id.hud_text_bps_value);
 
         // Throttle
-        textViewHudThrottleValue 
+        tvThrottle 
             = (TextView)view.findViewById(R.id.hud_text_throttle_value);
-        textViewHudThrottleValue.setTypeface(visitor2Font);
+        tvThrottle.setTypeface(visitor2Font);
 
-        textViewHudThrottleMaxValue 
+        tvThrottleMax 
             = (TextView)view.findViewById(R.id.hud_text_throttle_max_value);
-        textViewHudThrottleMaxValue.setTypeface(novamonoFont);
+        tvThrottleMax.setTypeface(novamonoFont);
 
-        textViewHudThrottleMinValue 
+        tvThrottleMin 
             = (TextView)view.findViewById(R.id.hud_text_throttle_min_value);
-        textViewHudThrottleMinValue.setTypeface(novamonoFont);
+        tvThrottleMin.setTypeface(novamonoFont);
 
         // Roll
-        textViewHudRollValue 
+        tvRoll 
             = (TextView)view.findViewById(R.id.hud_text_roll_value);
-        textViewHudRollValue.setTypeface(visitor2Font);
+        tvRoll.setTypeface(visitor2Font);
 
-        textViewHudRollMinValue 
+        tvRollMin 
             = (TextView)view.findViewById(R.id.hud_text_roll_min_value);
-        textViewHudRollMinValue.setTypeface(novamonoFont);
+        tvRollMin.setTypeface(novamonoFont);
 
-        textViewHudRollMaxValue 
+        tvRollMax 
             = (TextView)view.findViewById(R.id.hud_text_roll_max_value);
-        textViewHudRollMaxValue.setTypeface(novamonoFont);
+        tvRollMax.setTypeface(novamonoFont);
 
         // Drive/Reverse
-        textViewDrive 
+        tvDrive 
             = (TextView)view.findViewById(R.id.hud_text_drive_label);
-        textViewDrive.getPaint().setAntiAlias(false);
-        textViewDrive.setTypeface(visitorFont);
+        tvDrive.getPaint().setAntiAlias(false);
+        tvDrive.setTypeface(visitorFont);
 
-        textViewReverse 
+        tvReverse 
             = (TextView)view.findViewById(R.id.hud_text_reverse_label);
-        textViewReverse.getPaint().setAntiAlias(false);
-        textViewReverse.setTypeface(visitorFont);
+        tvReverse.getPaint().setAntiAlias(false);
+        tvReverse.setTypeface(visitorFont);
 
         // Get the sharedPreferences so the values can be set
         SharedPreferences sp 
@@ -358,10 +358,10 @@ public class Car
      */
     public void setIp(String ip)
     {
-        if (textViewHudIpValue == null)
+        if (tvIp == null)
            return;
 
-        textViewHudIpValue.setText(ip);
+        tvIp.setText(ip);
     }
 
     /**
@@ -371,10 +371,10 @@ public class Car
      */
     public void setConnection(String value)
     {
-        if (textViewHudConnectionValue == null)
+        if (tvConnection == null)
             return;
 
-        textViewHudConnectionValue.setText(value);
+        tvConnection.setText(value);
     }
 
     /**
@@ -384,10 +384,10 @@ public class Car
      */
     public void setRollMin(int value)
     {
-        if (textViewHudRollMinValue == null)
+        if (tvRollMin == null)
             return;
 
-        textViewHudRollMinValue.setText(""+value);
+        tvRollMin.setText(""+value);
     }
 
     /**
@@ -397,10 +397,10 @@ public class Car
      */
     public void setRollMax(int value)
     {
-        if (textViewHudRollMaxValue == null)
+        if (tvRollMax == null)
             return;
 
-        textViewHudRollMaxValue.setText(""+value);
+        tvRollMax.setText(""+value);
     }
 
     /**
@@ -410,13 +410,13 @@ public class Car
      */
     public void setBps(int bps)
     {
-        if (textViewHudBpsValue == null)
+        if (tvBPS == null)
             return;
 
         if (bps < 0)
-            textViewHudBpsValue.setText("Negative?");
+            tvBPS.setText("Negative?");
         else
-            textViewHudBpsValue.setText(Integer.toString(bps));
+            tvBPS.setText(Integer.toString(bps));
     }
 
     /**
@@ -467,12 +467,12 @@ public class Car
                 );
 
 
-            textViewHudRollValue.setText(Math.round(mapped)-50+"");
+            tvRoll.setText(Math.round(mapped)-50+"");
             hud.setTilt(mapped);
         }
         catch (OutOfRange e)    
         {
-            textViewHudRollValue.setText(
+            tvRoll.setText(
                         Html.fromHtml("<font color='#D93600'>---</font>")
                     );
         }
@@ -500,18 +500,7 @@ public class Car
                         50.0f
                     );
 
-            // Set the text value from the actual throttle after considering for
-            // trim, min and max.
-            if (mapped == 50.0)
-                textViewHudThrottleValue.setText(
-                        Html.fromHtml(
-                            "<font color='#D93600'>" + 
-                            Math.round(mapped) + 
-                            "</font>"
-                        )
-                    );
-            else
-                textViewHudThrottleValue.setText(Math.round(mapped) + "");
+            tvThrottle.setText(Math.round(mapped) + "");
 
             // If we are in reverse we go from 0-128 other wise we go from 
             // 128-255. The throttle percentage sent to hud is from 0.0 to 1.0.
@@ -532,7 +521,7 @@ public class Car
         // If throttle fails, set this to the error string
         catch (OutOfRange e)
         {
-            textViewHudThrottleValue.setText(
+            tvThrottle.setText(
                     Html.fromHtml("<font color='#D93600'>---</font>")
                 );
         }

@@ -177,16 +177,16 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="-5dp">
                 <TextView
-                        android:id="@+id/hud_text_tilt_label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="#444444"
-                        android:textSize="13dp"
-                        android:textStyle="bold"
-                        android:typeface="monospace"
-                        android:gravity="center"
-                        android:text="@string/hud_roll"
-                        />
+                    android:id="@+id/hud_text_tilt_label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#444444"
+                    android:textSize="13dp"
+                    android:textStyle="bold"
+                    android:typeface="monospace"
+                    android:gravity="center"
+                    android:text="@string/hud_roll"
+                    />
             </LinearLayout>
         </LinearLayout>
         <LinearLayout

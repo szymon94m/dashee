@@ -32,7 +32,7 @@
     <string name="hud_connection">---</string>
     <string name="hud_reverse">Reverse</string>
     <string name="hud_drive">Drive</string>
-    <string name="hud_roll">Roll</string>
+    <string name="hud_roll">ROLL</string>
     <string name="hud_roll_mid">50</string>
     <string name="hud_roll_min">0</string>
     <string name="hud_roll_max">100</string>

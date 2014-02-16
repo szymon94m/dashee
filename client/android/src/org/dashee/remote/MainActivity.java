@@ -244,41 +244,9 @@ public class MainActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) 
     {
-        //getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
     
-    /**
-     * Handle our menu button clicks. Given the menu item, 
-     * either start an activity or change the fragment view
-     *
-     * @param item - The handler to the item selected
-     *
-     * @return boolean - true if clicked, or super.onOptionsItemSelected(item);
-     */
-    public boolean onOptionsItemSelected(MenuItem item) 
-    {
-    	// Handle item selection
-        switch (item.getItemId())
-        {
-            /*
-            case R.id.action_dot_settings:
-            {
-                Intent preferencesActivity 
-                    = new Intent(
-                            getBaseContext(), 
-                            org.dashee.remote.preference.PreferencesActivity
-                                .class
-                        );
-                startActivity(preferencesActivity);
-                return true;
-            }
-            */
-            default:
-                return super.onOptionsItemSelected(item);
-        }        
-    }
-
     /**
      * App is Resumed from a pause state.
      */
