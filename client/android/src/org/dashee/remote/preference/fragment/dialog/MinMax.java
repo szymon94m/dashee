@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.app.Activity;
 import android.widget.NumberPicker;
 import android.widget.NumberPicker.OnValueChangeListener;
 import android.widget.Toast;
@@ -73,7 +74,8 @@ public class MinMax extends DialogFragment
                 {
                     public void onClick(DialogInterface dialog, int id) 
                     {
-                        handleUpdate();
+                        updateValues();
+                        listener.onMinMaxPositiveClick(MinMax.this);
                     }
                 }
             )
@@ -83,7 +85,7 @@ public class MinMax extends DialogFragment
                 {
                     public void onClick(DialogInterface dialog, int id) 
                     {
-                        // User cancelled the dialog
+                        listener.onMinMaxNegativeClick(MinMax.this);
                     }
                 }
             );
@@ -95,29 +97,10 @@ public class MinMax extends DialogFragment
     /**
      * Actions handled for when the user clicks the update on the alert.
      */
-    private void handleUpdate()
+    private void updateValues()
     {
-        Toast toast = Toast.makeText(
-                getActivity(),
-                "Min and Max updated!", 
-                Toast.LENGTH_SHORT
-        );
-
-        if (nmax.getValue() <= nmin.getValue())
-            toast.setText(
-                "Maximum must be greater than Minimum!"
-            );
-        else if (nmin.getValue() >= nmax.getValue())
-            toast.setText(
-                "Minimum must be less than Maximum!"
-            );
-        else
-        {
-            min = nmin.getValue();
-            max = nmax.getValue();
-        }
-
-        toast.show();
+        min = nmin.getValue();
+        max = nmax.getValue();
     }
 
     /**
@@ -197,6 +180,14 @@ public class MinMax extends DialogFragment
     }
 
     /**
+     * Get the Min value
+     */
+    public int getMin()
+    {
+        return this.min;
+    }
+
+    /**
      * Set the max value.
      *
      * @param max The value to set max to
@@ -204,5 +195,47 @@ public class MinMax extends DialogFragment
     public void setMax(int max)
     {
         this.max = max;
+    }
+
+    /**
+     * Get the Max value
+     */
+    public int getMax()
+    {
+        return this.max;
+    }
+
+    /**
+     * MinMax listener interface to pass events to the outside world
+     */
+    public interface MinMaxListener 
+    {
+        public void onMinMaxPositiveClick(MinMax dialog);
+        public void onMinMaxNegativeClick(MinMax dialog);
+    }
+    
+    /**
+     * Our outside listener handle.
+     */
+    MinMaxListener listener;
+    
+    /**
+     * Override the Fragment.onAttach() method to instantiate 
+     * the MinMaxListener
+     */
+    @Override
+    public void onAttach(Activity activity) 
+    {
+        super.onAttach(activity);
+
+        try 
+        {
+            listener = (MinMaxListener) activity;
+        } 
+        catch (ClassCastException e) 
+        {
+            throw new ClassCastException(activity.toString()
+                    + " must implement MinMaxListener");
+        }
     }
 }

@@ -7,8 +7,13 @@ import android.preference.PreferenceActivity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.widget.Toast;
+import android.app.DialogFragment;
 
 import org.dashee.remote.R;
+import org.dashee.remote.preference.fragment.Roll;
+import org.dashee.remote.preference.fragment.dialog.MinMax;
+import org.dashee.remote.preference.fragment.dialog.MinMax.MinMaxListener;
  
 /**
  * This will handle our Preference object
@@ -18,7 +23,13 @@ import org.dashee.remote.R;
  */
 public class RollActivity 
     extends FragmentActivity
+    implements MinMaxListener
 {
+    /**
+     * Handler to our Fragment
+     */ 
+    private Roll roll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -32,8 +43,12 @@ public class RollActivity
         ab.setHomeButtonEnabled(true);
     	
         //Set the initial view to our HUD
+        roll = new Roll();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.preference_roll, new org.dashee.remote.preference.fragment.Roll());
+        ft.replace(
+                R.id.preference_roll, 
+                roll
+            );
         ft.commit();
     }
 
@@ -56,5 +71,30 @@ public class RollActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * The listener, for the sucessful dialog
+     */
+    @Override
+    public void onMinMaxPositiveClick(MinMax dialog)
+    {
+        Toast toast = Toast.makeText(
+                this,
+                "Min and Max updated!", 
+                Toast.LENGTH_SHORT
+        );
+
+        roll.setMin(dialog.getMin());
+        roll.setMax(dialog.getMax());
+        toast.show();
+    }
+    
+    /**
+     *
+     */
+    @Override
+    public void onMinMaxNegativeClick(MinMax dialog)
+    {
     }
 }
