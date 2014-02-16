@@ -186,13 +186,33 @@ public class MainActivity
                     )
                 );
             else if (key.equals("roll_min"))
-                this.vehicle.setRollMin(prefs.getInt("roll_min", 0));
+                this.vehicle.setRollMin(
+                        Math.round(
+                            RangeMapping.mapValue(
+                                prefs.getInt("roll_min", 0),
+                                0,
+                                100,
+                                0,
+                                255
+                            )
+                        )
+                    );
             else if (key.equals("roll_max"))
-                this.vehicle.setRollMax(prefs.getInt("roll_max", 0));
+                this.vehicle.setRollMax(
+                        Math.round(
+                            RangeMapping.mapValue(
+                                prefs.getInt("roll_max", 0),
+                                0,
+                                100,
+                                0,
+                                255
+                            )
+                        )
+                    );
 
             this.hud.setIp(this.config.getIp().toString().substring(1));
-            this.hud.setRollMin(this.vehicle.getRollMin());
-            this.hud.setRollMax(this.vehicle.getRollMax());
+            this.hud.setRollMin(prefs.getInt("roll_min", 0));
+            this.hud.setRollMax(prefs.getInt("roll_max", 100));
         }
         catch (UnknownHostException e)
         {

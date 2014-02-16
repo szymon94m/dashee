@@ -25,9 +25,13 @@ public class RangeMapping
      * @param curMax - Current range max
      * @param targetMin - Current range min
      * @param targetMax - Current range max
-     * 
      */
-    public RangeMapping(float curMin, float curMax, float targetMin, float targetMax)
+    public RangeMapping(
+            float curMin, 
+            float curMax, 
+            float targetMin, 
+            float targetMax
+        )
     {
     	this.curMin = curMin;
     	this.curMax = curMax;
@@ -46,7 +50,10 @@ public class RangeMapping
      * @param targetMin - Current range min
      * @param targetMax - Current range max
      */
-    public void updateTargets(float targetMin, float targetMax)
+    public void updateTargets(
+            float targetMin, 
+            float targetMax
+        )
     {
     	this.targetMin = targetMin;
     	this.targetMax = targetMax;
@@ -57,8 +64,10 @@ public class RangeMapping
     }
     
     /**
-     * Generic function. Takes a numeric value which is a value in the curMin to curMax range
-     * and converts it to a corresponding value in the targetMin to targetMax range.
+     * Generic function. Takes a numeric value which is a value in the curMin 
+     * to curMax range and converts it to a corresponding value in the 
+     * targetMin to targetMax range.
+     *
      * @param value - The numeric value to be re-mapped
      *
      * @return float - Value mapped to the new target range
@@ -78,8 +87,9 @@ public class RangeMapping
     }
     
     /**
-     * Generic function. Takes a numeric value which is a value in the curMin to curMax range
-     * and converts it to a corresponding value in the targetMin to targetMax range.
+     * Generic function. Takes a numeric value which is a value in the curMin to
+     * curMax range and converts it to a corresponding value in the targetMin to
+     * targetMax range.
      * @param value - The numeric value to be re-mapped
      * @param curMin - Current range min
      * @param curMax - Current range max
@@ -88,7 +98,13 @@ public class RangeMapping
      *
      * @return float - Value mapped to the new target range
      */
-    public static float mapValue(float value, float curMin, float curMax, float targetMin, float targetMax)
+    public static float mapValue(
+            float value, 
+            float curMin, 
+            float curMax, 
+            float targetMin, 
+            float targetMax
+        )
     {
         //Figure out how 'wide' each range is
         float leftSpan = curMax - curMin;
