@@ -177,7 +177,7 @@ public class MainActivity
         {
             if(key.equals("pref_server_ip"))
                 this.config.setIp(
-                    prefs.getString("pref_server_ip", "192.168.115")
+                    prefs.getString("pref_server_ip", "127.0.0.1")
                  );
             else if (key.equals("pref_server_port"))
                 this.config.setPort(

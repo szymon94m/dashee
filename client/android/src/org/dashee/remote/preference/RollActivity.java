@@ -50,7 +50,7 @@ public class RollActivity
         setContentView(R.layout.activity_preference);
         
         ActionBar ab = getActionBar();
-        ab.setSubtitle(R.string.pref_roll_subtitle);
+        ab.setSubtitle(R.string.roll_title_summary);
         ab.setHomeButtonEnabled(true);
     }
 

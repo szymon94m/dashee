@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dashee</string>
-
     <string name="title_activity_main">Dashee</string>
 
     <string name="pref_title">Settings</string>
@@ -12,10 +11,10 @@
     <string name="pref_server_ip_default">127.0.0.1</string>
     <string name="pref_server_port">Port</string>
     <string name="pref_server_port_default">2047</string>
-    <string name="power_joystick_desc">Car power joystick</string>
 
     <string name="pref_channel_title">Vehicle Settings</string>
     <string name="pref_channel_default">Trim, Invert, Min and Max values</string>
+    <string name="pref_channel_subtitle">Configure channel specific settings</string>
 
     <string name="pref_pitch_title">Pitch</string>
     <string name="pref_pitch_summary">Change the finer details on pitch axis.</string>
@@ -28,12 +27,16 @@
 
     <string name="fragment_log_textview">No Data</string>
     
-    <string name="hud_text_ip_label">IP</string>
-    <string name="hud_text_connection_label">Status</string>
-    <string name="hud_text_bps_label">B/s</string>
-    <string name="hud_text_pitch_label">Pitch</string>
-    <string name="hud_text_roll_label">Roll</string>
-    <string name="pref_channel_subtitle">Configure channel specific settings</string>
+    <string name="hud_ip">127.0.0.1</string>
+    <string name="hud_port">2047</string>
+    <string name="hud_connection">---</string>
+    <string name="hud_reverse">Reverse</string>
+    <string name="hud_drive">Drive</string>
+    <string name="hud_roll">Roll</string>
+    <string name="hud_roll_mid">50</string>
+    <string name="hud_roll_min">0</string>
+    <string name="hud_roll_max">100</string>
+
     
     <string name="roll_title">Roll/Steering</string>
     <string name="roll_title_summary">Change the finer details on roll axis.</string>
