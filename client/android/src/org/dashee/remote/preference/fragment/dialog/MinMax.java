@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.NumberPicker.OnValueChangeListener;
 import android.widget.Toast;
 
 import org.dashee.remote.R;
@@ -60,6 +61,7 @@ public class MinMax extends DialogFragment
         // Initialise our inits
         initView();
         initNumberPickers();
+        initNumberPickersHandler();
 
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -146,11 +148,42 @@ public class MinMax extends DialogFragment
 
     /** 
      * Handle the event when the NumberPickers are changed.
-     *
-     * TODO
      */
     private void initNumberPickersHandler()
     {
+        // If min is greater than max, change max to be min+1
+        this.nmin.setOnValueChangedListener(
+            new OnValueChangeListener() 
+            {
+                @Override
+                public void onValueChange(
+                    NumberPicker picker, 
+                    int oldVal, 
+                    int newVal
+                ) 
+                {
+                    if (newVal >= nmax.getValue())
+                        nmax.setValue(nmin.getValue()+1);
+                }
+            }
+        );
+        
+        // If max is less than min change min to be max-1
+        this.nmax.setOnValueChangedListener(
+            new OnValueChangeListener() 
+            {
+                @Override
+                public void onValueChange(
+                    NumberPicker picker, 
+                    int oldVal, 
+                    int newVal
+                ) 
+                {
+                    if (newVal <= nmin.getValue())
+                        nmin.setValue(nmax.getValue()-1);
+                }
+            }
+        );
     }   
 
     /**
