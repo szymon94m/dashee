@@ -46,21 +46,35 @@ public abstract class Hud
      *
      * @param ip - The IP Address
      */
-    public abstract void setHudIp(String ip);
+    public abstract void setIp(String ip);
 
     /**
      * Set the Bytes per second.
      *
      * @param bps - The Bytes per seconds
      */
-    public abstract void setHudBps(int bps);
+    public abstract void setBps(int bps);
 
     /**
      * Set the Connection Status
      *
      * @param connection - The Connection string
      */
-    public abstract void setHudConnection(String connection);
+    public abstract void setConnection(String connection);
+
+    /**
+     * Set the Hud Roll Minimum
+     *
+     * @param value The value to set
+     */
+    public abstract void setRollMin(int value);
+
+    /**
+     * Set the Hud Roll Maximum
+     *
+     * @param value The value to set
+     */
+    public abstract void setRollMax(int value);
 
     /**
      * Assign a reference of vehicle model to the hud

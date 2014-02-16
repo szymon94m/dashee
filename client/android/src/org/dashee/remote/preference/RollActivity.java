@@ -1,14 +1,16 @@
 package org.dashee.remote.preference;
 
 import android.app.ActionBar;
+import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.widget.Toast;
-import android.app.DialogFragment;
 
 import org.dashee.remote.R;
 import org.dashee.remote.preference.fragment.Roll;
@@ -30,18 +32,39 @@ public class RollActivity
      */ 
     private Roll roll;
 
+    /**
+     * Preference editor.
+     */
+    private Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
         
+    	initActivity();
+        initFragment();
+        initPreferenceEditor();
+    }
+
+    /**
+     * Initialize our Activity
+     */
+    public void initActivity()
+    {
         // Set the XML view for this activity
         setContentView(R.layout.activity_preference);
         
         ActionBar ab = getActionBar();
         ab.setSubtitle(R.string.pref_roll_subtitle);
         ab.setHomeButtonEnabled(true);
-    	
+    }
+
+    /**
+     * Initialize our Fragments
+     */
+    public void initFragment()
+    {
         //Set the initial view to our HUD
         roll = new Roll();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -50,6 +73,19 @@ public class RollActivity
                 roll
             );
         ft.commit();
+    }
+
+    /**
+     * Get the preference editor from the SharedPreference
+     */
+    public void initPreferenceEditor()
+    {
+        SharedPreferences sp = PreferenceManager
+            .getDefaultSharedPreferences(this);
+        editor = sp.edit();
+
+        roll.setMin(sp.getInt("roll_min", 0));
+        roll.setMax(sp.getInt("roll_max", 100));
     }
 
     /**
@@ -74,7 +110,7 @@ public class RollActivity
     }
 
     /**
-     * The listener, for the sucessful dialog
+     * The listener, for the successful dialog
      */
     @Override
     public void onMinMaxPositiveClick(MinMax dialog)
@@ -87,11 +123,15 @@ public class RollActivity
 
         roll.setMin(dialog.getMin());
         roll.setMax(dialog.getMax());
+        roll.updateMinMaxTextView();
+        editor.putInt("roll_min", dialog.getMin());
+        editor.putInt("roll_max", dialog.getMax());
+        editor.commit();
         toast.show();
     }
     
     /**
-     *
+     * The listener, for the cancel dialog button.
      */
     @Override
     public void onMinMaxNegativeClick(MinMax dialog)

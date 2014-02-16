@@ -134,7 +134,6 @@ public class Roll
     public void setMin(int min)
     {
         this.min = min;
-        this.updateMinMaxTextView();
     }
 
     /**
@@ -143,6 +142,5 @@ public class Roll
     public void setMax(int max)
     {
         this.max = max;
-        this.updateMinMaxTextView();
     }
 }

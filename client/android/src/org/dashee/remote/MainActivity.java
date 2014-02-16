@@ -187,16 +187,16 @@ public class MainActivity
                         prefs.getString("pref_server_port", "2047")
                     )
                 );
+            else if (key.equals("roll_min"))
+                this.vehicle.setRollMin(prefs.getInt("roll_min", 0));
+            else if (key.equals("roll_max"))
+                this.vehicle.setRollMax(prefs.getInt("roll_max", 0));
 
-            // Change the value of ip and port, as One
-            if (
-                    this.hud != null && ( 
-                    key.equals("pref_server_ip") || 
-                    key.equals("pref_server_port") )
-                )
-                this.hud.setHudIp(
-                    prefs.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
-                );
+            this.hud.setIp(
+                prefs.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
+            );
+            this.hud.setRollMin(this.vehicle.getRollMin());
+            this.hud.setRollMax(this.vehicle.getRollMax());
         }
         catch (UnknownHostException e)
         {

@@ -135,14 +135,6 @@ public class Car
         this.initOptionsButtonListener();
         this.initTextViews();
 
-        this.setHudConnection("unknown");
-
-        // Get the sharedPreferences so the values can be set
-        SharedPreferences sharedPreferences 
-            = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        this.setHudIp(
-                sharedPreferences.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
-            );
 
         return view;
     }
@@ -345,6 +337,18 @@ public class Car
             = (TextView)view.findViewById(R.id.hud_text_reverse_label);
         textViewReverse.getPaint().setAntiAlias(false);
         textViewReverse.setTypeface(visitorFont);
+
+        // Get the sharedPreferences so the values can be set
+        SharedPreferences sp 
+            = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+
+        // Set the text views
+        this.setConnection("unknown");
+        this.setIp(
+                sp.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
+            );
+        this.setRollMin(sp.getInt("roll_min", 0));
+        this.setRollMax(sp.getInt("roll_max", 0));
     }
 
     /**
@@ -352,7 +356,7 @@ public class Car
      *
      * @param ip - the ip address
      */
-    public void setHudIp(String ip)
+    public void setIp(String ip)
     {
         if (textViewHudIpValue == null)
            return;
@@ -365,7 +369,7 @@ public class Car
      *
      * @param value the value to update
      */
-    public void setHudConnection(String value)
+    public void setConnection(String value)
     {
         if (textViewHudConnectionValue == null)
             return;
@@ -374,11 +378,37 @@ public class Car
     }
 
     /**
+     * Set the Minimum Roll
+     *
+     * @param value The value to set
+     */
+    public void setRollMin(int value)
+    {
+        if (textViewHudRollMinValue == null)
+            return;
+
+        textViewHudRollMinValue.setText(""+value);
+    }
+
+    /**
+     * Set the Minimum Roll
+     *
+     * @param value The value to set
+     */
+    public void setRollMax(int value)
+    {
+        if (textViewHudRollMaxValue == null)
+            return;
+
+        textViewHudRollMaxValue.setText(""+value);
+    }
+
+    /**
      * Set our textbox BytesPerSecond value
      *
      * @param bps - the bps value
      */
-    public void setHudBps(int bps)
+    public void setBps(int bps)
     {
         if (textViewHudBpsValue == null)
             return;
