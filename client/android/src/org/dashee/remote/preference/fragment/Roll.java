@@ -148,10 +148,10 @@ public class Roll
         switch (v.getId())
         {
             case R.id.invert:
-                onClickSwitchLayout(swInvert);
+                swInvert.performClick();
                 break;
             case R.id.vibrate:
-                onClickSwitchLayout(swVibrate);
+                swVibrate.performClick();
                 break;
             case R.id.invert_switch:
                 onClickInvertSwitch();
@@ -165,16 +165,6 @@ public class Roll
             default:
                 break;
         }
-    }
-
-    /**
-     * Handle the clicking of the invert value.
-     *
-     * @param sw The switch which this layout belongs to
-     */
-    public void onClickSwitchLayout(Switch sw)
-    {
-        sw.performClick();
     }
 
     /**
@@ -209,8 +199,8 @@ public class Roll
     public void onClickMinMax()
     {
         MinMax minmax = new MinMax("minmax");
-        minmax.setMin(Roll.this.min);
-        minmax.setMax(Roll.this.max);
+        minmax.setMin(this.min);
+        minmax.setMax(this.max);
         minmax.show(getActivity().getFragmentManager(), "minmax");
     }
 
@@ -251,8 +241,8 @@ public class Roll
     public void updateMinMaxTextView()
     {
         TextView tv
-            = (TextView) this.view.findViewById(R.id.minmax_text);
-        tv.setText(this.min + "-" + this.max);
+            = (TextView) this.view.findViewById(R.id.minmax_value);
+        tv.setText(this.min + ":" + this.max);
     }
 
     /**

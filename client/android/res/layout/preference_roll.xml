@@ -1,234 +1,220 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
-    tools:context=".preference.RollActivity" >
-
-    <!--
-        Trim Value
-    -->
+    tools:context=".preference.RollActivity" 
+    >
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         >
+        
+        <!--
+            Trim Value
+        -->
         <LinearLayout
-            android:layout_width="0dip"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".70"
-            android:orientation="vertical"
-            android:padding="0dp"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
             >
-            <TextView
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight=".70"
+                android:orientation="vertical"
+                android:padding="0dp"
+                >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#FFFFFF"
+                    android:text="@string/roll_trim"
+                    android:textSize="18sp"
+                    />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#666666"
+                    android:text="@string/roll_trim_summary"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+            <EditText
+                android:id="@+id/trim"
+                android:layout_width="0dip"
                 android:layout_height="fill_parent"
-                android:textColor="#FFFFFF"
-                android:text="@string/roll_trim"
+                android:layout_weight=".30"
+                android:gravity="center"
                 android:textSize="18sp"
-                />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#666666"
-                android:text="@string/roll_trim_summary"
-                android:textSize="14sp"
+                android:text="0"
+                android:inputType="number"
+                android:imeOptions="flagNoExtractUi"
                 />
         </LinearLayout>
-        <EditText
-            android:id="@+id/trim"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight=".30"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:text="0"
-            android:inputType="number"
-            android:imeOptions="flagNoExtractUi"
+        
+        <!-- 
+             *************
+        -->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="#333333"
             />
-    </LinearLayout>
 
-    <!-- 
-         *************
-    -->
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="#333333"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="17dp"
-        />
-
-    <!--
-        The Max and Min value     
-    -->
-    <LinearLayout
-        android:id="@+id/minmax"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
+        <!--
+             Min Max
+        -->
         <LinearLayout
-            android:layout_width="0dip"
+            android:id="@+id/minmax"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".40"
-            android:layout_marginRight="5dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
             >
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight=".70"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#FFFFFF"
+                    android:text="@string/roll_minmax"
+                    android:textSize="18sp"
+                    />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#666666"
+                    android:text="@string/roll_minmax_summary"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
             <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#FFFFFF"
-                android:text="@string/roll_min"
-                android:textSize="18sp"
+                android:id="@+id/minmax_value"
+                android:layout_width="0dip"
+                android:layout_weight=".30"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:gravity="right"
-                />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#666666"
-                android:text="@string/roll_min_summary"
-                android:textSize="10sp"
-                android:gravity="right"
+                android:textSize="22sp"
+                android:text="@string/roll_minmax_value"
                 />
         </LinearLayout>
-        <TextView
-            android:id="@+id/minmax_text"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight=".20"
-            android:gravity="center"
-            android:textSize="23sp"
-            android:text="@string/roll_minmax"
+
+        <!-- 
+             *************
+        -->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="#333333"
             />
+
+        <!--
+            Invert switch
+        -->
         <LinearLayout
-            android:layout_width="0dip"
+            android:id="@+id/invert"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight=".40"
-            android:layout_marginLeft="5dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
             >
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#FFFFFF"
-                android:text="@string/roll_max"
-                android:textSize="18sp"
-                android:gravity="left"
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight=".70"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#FFFFFF"
+                    android:text="@string/roll_invert"
+                    android:textSize="18sp"
+                    />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#666666"
+                    android:text="@string/roll_invert_summary"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+            <Switch
+                android:id="@+id/invert_switch"
+                android:layout_width="0dip"
+                android:layout_weight=".30"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dip"
+                android:gravity="center"
                 />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#666666"
-                android:text="@string/roll_max_summary"
-                android:textSize="10sp"
-                android:gravity="left"
+        </LinearLayout>
+        
+        <!-- 
+             *************
+        -->
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0.5dp"
+            android:background="#333333"
+            />
+
+        <!--
+             Vibrate on lock
+        -->
+        <LinearLayout
+            android:id="@+id/vibrate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clickable="true"
+            android:paddingTop="17dp"
+            android:paddingBottom="17dp"
+            >
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight=".70"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#FFFFFF"
+                    android:text="@string/roll_vibrate"
+                    android:textSize="18sp"
+                    />
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:textColor="#666666"
+                    android:text="@string/roll_vibrate_summary"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+            <Switch
+                android:id="@+id/vibrate_switch"
+                android:layout_width="0dip"
+                android:layout_weight=".30"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dip"
+                android:gravity="center"
                 />
         </LinearLayout>
     </LinearLayout>
-
-    <!-- 
-         *************
-    -->
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="#333333"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="17dp"
-        />
-
-    <!--
-        Invert switch
-    -->
-    <LinearLayout
-        android:id="@+id/invert"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:clickable="true"
-        >
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight=".70"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#FFFFFF"
-                android:text="@string/roll_invert"
-                android:textSize="18sp"
-                />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#666666"
-                android:text="@string/roll_invert_summary"
-                android:textSize="14sp"
-                />
-        </LinearLayout>
-        <Switch
-            android:id="@+id/invert_switch"
-            android:layout_width="0dip"
-            android:layout_weight=".30"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            />
-    </LinearLayout>
-    
-    <!-- 
-         *************
-    -->
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="0.5dp"
-        android:background="#333333"
-        android:layout_marginTop="17dp"
-        android:layout_marginBottom="17dp"
-        />
-
-    <!--
-         Vibrate on lock
-    -->
-    <LinearLayout
-        android:id="@+id/vibrate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:clickable="true"
-        >
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight=".70"
-            android:orientation="vertical"
-            >
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#FFFFFF"
-                android:text="@string/roll_vibrate"
-                android:textSize="18sp"
-                />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textColor="#666666"
-                android:text="@string/roll_vibrate_summary"
-                android:textSize="14sp"
-                />
-        </LinearLayout>
-        <Switch
-            android:id="@+id/vibrate_switch"
-            android:layout_width="0dip"
-            android:layout_weight=".30"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            />
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -32,6 +32,11 @@ public class RollActivity
      */ 
     private Roll roll;
 
+    /**
+     * Set our Activity, and launch the fragment.
+     *
+     * @param savedInstanceState The Bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
@@ -50,7 +55,6 @@ public class RollActivity
         setContentView(R.layout.activity_preference);
         
         ActionBar ab = getActionBar();
-        ab.setSubtitle(R.string.roll_title_summary);
         ab.setHomeButtonEnabled(true);
     }
 

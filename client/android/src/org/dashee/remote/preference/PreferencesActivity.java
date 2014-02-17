@@ -21,7 +21,6 @@ public class PreferencesActivity
         super.onCreate(savedInstanceState);
         
         ActionBar ab = getActionBar();
-        ab.setSubtitle(R.string.pref_subtitle);
         ab.setHomeButtonEnabled(true);
 
         getFragmentManager()
