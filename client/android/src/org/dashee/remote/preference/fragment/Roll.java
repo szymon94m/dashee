@@ -81,7 +81,8 @@ public class Roll
     }
     
     /**
-     * Get the preference editor from the SharedPreference
+     * Get the preference editor from the SharedPreference. This function will
+     * also set the state of our last known state of all the known values.
      */
     private void initPreferences()
     {
@@ -89,9 +90,15 @@ public class Roll
             .getDefaultSharedPreferences(this.getActivity());
         editor = sp.edit();
 
+        // Set the value of min and max as it was known previously
         this.setMin(sp.getInt("roll_min", 0));
         this.setMax(sp.getInt("roll_max", 100));
         this.updateMinMaxTextView();
+        
+        // Set the value of invert as it was known previously
+        Switch sw
+            = (Switch) this.view.findViewById(R.id.invert_switch);
+        sw.setChecked(sp.getBoolean("roll_invert", false));
     }
 
     /**
@@ -102,6 +109,10 @@ public class Roll
         LinearLayout layout_invert
             = (LinearLayout) this.view.findViewById(R.id.invert);
         layout_invert.setOnClickListener(this);
+        
+        Switch switch_invert
+            = (Switch) this.view.findViewById(R.id.invert_switch);
+        switch_invert.setOnClickListener(this);
         
         LinearLayout layout_minmax
             = (LinearLayout) this.view.findViewById(R.id.minmax);
@@ -121,6 +132,9 @@ public class Roll
             case R.id.invert:
                 onClickInvert();
                 break;
+            case R.id.invert_switch:
+                onClickInvertSwitch();
+                break;
             case R.id.minmax:
                 onClickMinMax();
                 break;
@@ -137,6 +151,22 @@ public class Roll
         Switch sw
             = (Switch) this.view.findViewById(R.id.invert_switch);
         sw.performClick();
+    }
+
+    /**
+     * Handle the inverting of roll.
+     */
+    public void onClickInvertSwitch()
+    {
+        Switch sw
+            = (Switch) this.view.findViewById(R.id.invert_switch);
+
+        if (sw.isChecked())
+            this.editor.putBoolean("roll_invert", true);
+        else
+            this.editor.putBoolean("roll_invert", false);
+
+        this.editor.commit();
     }
 
     /**

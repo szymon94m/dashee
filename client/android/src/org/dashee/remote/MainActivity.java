@@ -209,6 +209,10 @@ public class MainActivity
                             )
                         )
                     );
+            else if (key.equals("roll_invert"))
+                this.vehicle.setRollInverted(
+                        prefs.getBoolean("roll_invert", false)
+                    );
 
             this.hud.setIp(this.config.getIp().toString().substring(1));
             this.hud.setRollMin(prefs.getInt("roll_min", 0));
