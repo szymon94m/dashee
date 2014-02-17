@@ -253,9 +253,10 @@ public class DrawHud
     	this.addArc(this.batteryOuterArc, false);
 
         // Position some xml elements
-        LinearLayout ipInfo = (LinearLayout)view.findViewById(R.id.ip_info);
+        LinearLayout layoutConnection
+            = (LinearLayout)view.findViewById(R.id.connection);
         RelativeLayout.LayoutParams params 
-            = (RelativeLayout.LayoutParams)ipInfo.getLayoutParams();
+            = (RelativeLayout.LayoutParams)layoutConnection.getLayoutParams();
         float textWidth = convertDpToPixel(73.0f, this.context);
         float textHeight = convertDpToPixel(11.0f, this.context);
 
@@ -265,7 +266,7 @@ public class DrawHud
                 10, 
                 0
             );
-        ipInfo.setLayoutParams(params);
+        layoutConnection.setLayoutParams(params);
     }
 
     /**

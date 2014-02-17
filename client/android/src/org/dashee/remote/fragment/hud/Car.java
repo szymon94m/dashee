@@ -72,7 +72,7 @@ public class Car
      * Handlers to our text view.
      */
     private TextView tvIp;
-    private TextView tvConnection;
+    private TextView tvStatus;
     private TextView tvBPS;
 
     /**
@@ -288,53 +288,44 @@ public class Car
             );
 
         // Generic values
-        tvIp 
-            = (TextView)view.findViewById(R.id.hud_text_ip_value);
+        tvIp = (TextView)view.findViewById(R.id.ip);
         tvIp.getPaint().setAntiAlias(false);
         tvIp.setTypeface(visitorFont);
 
-        tvConnection 
-            = (TextView)view.findViewById(R.id.hud_text_connection_value);
-        tvConnection.getPaint().setAntiAlias(false);
-        tvConnection.setTypeface(visitorFont);
+        tvStatus = (TextView)view.findViewById(R.id.status);
+        tvStatus.getPaint().setAntiAlias(false);
+        tvStatus.setTypeface(visitorFont);
 
-        tvBPS 
-            = (TextView)view.findViewById(R.id.hud_text_bps_value);
+        tvBPS = (TextView)view.findViewById(R.id.BPS_value);
+        tvBPS.getPaint().setAntiAlias(false);
+        tvBPS.setTypeface(visitorFont);
 
         // Throttle
-        tvThrottle 
-            = (TextView)view.findViewById(R.id.hud_text_throttle_value);
+        tvThrottle = (TextView)view.findViewById(R.id.throttle);
         tvThrottle.setTypeface(visitor2Font);
 
-        tvThrottleMax 
-            = (TextView)view.findViewById(R.id.hud_text_throttle_max_value);
+        tvThrottleMax = (TextView)view.findViewById(R.id.throttle_max);
         tvThrottleMax.setTypeface(novamonoFont);
 
-        tvThrottleMin 
-            = (TextView)view.findViewById(R.id.hud_text_throttle_min_value);
+        tvThrottleMin = (TextView)view.findViewById(R.id.throttle_min);
         tvThrottleMin.setTypeface(novamonoFont);
 
         // Roll
-        tvRoll 
-            = (TextView)view.findViewById(R.id.hud_text_roll_value);
+        tvRoll = (TextView)view.findViewById(R.id.roll);
         tvRoll.setTypeface(visitor2Font);
 
-        tvRollMin 
-            = (TextView)view.findViewById(R.id.hud_text_roll_min_value);
+        tvRollMin = (TextView)view.findViewById(R.id.roll_min);
         tvRollMin.setTypeface(novamonoFont);
 
-        tvRollMax 
-            = (TextView)view.findViewById(R.id.hud_text_roll_max_value);
+        tvRollMax = (TextView)view.findViewById(R.id.roll_max);
         tvRollMax.setTypeface(novamonoFont);
 
         // Drive/Reverse
-        tvDrive 
-            = (TextView)view.findViewById(R.id.hud_text_drive_label);
+        tvDrive = (TextView)view.findViewById(R.id.drive);
         tvDrive.getPaint().setAntiAlias(false);
         tvDrive.setTypeface(visitorFont);
 
-        tvReverse 
-            = (TextView)view.findViewById(R.id.hud_text_reverse_label);
+        tvReverse = (TextView)view.findViewById(R.id.reverse);
         tvReverse.getPaint().setAntiAlias(false);
         tvReverse.setTypeface(visitorFont);
 
@@ -371,10 +362,10 @@ public class Car
      */
     public void setConnection(String value)
     {
-        if (tvConnection == null)
+        if (tvStatus == null)
             return;
 
-        tvConnection.setText(value);
+        tvStatus.setText(value);
     }
 
     /**
