@@ -37,7 +37,6 @@
     <string name="hud_roll_min">0</string>
     <string name="hud_roll_max">100</string>
 
-    
     <string name="roll_title">Roll/Steering</string>
     <string name="roll_title_summary">Change the finer details on roll axis.</string>
     <string name="roll_trim">Trim</string>
@@ -52,5 +51,9 @@
     <string name="roll_invert">Invert</string>
     <string name="roll_invert_summary">
         Enable to send inverted values to the server.
+    </string>
+    <string name="roll_vibrate">Vibrate on Lock</string>
+    <string name="roll_vibrate_summary">
+        Enable vibrations when the phone is in full lock.
     </string>
 </resources>

@@ -49,6 +49,12 @@ public class Roll
      * Preference editor.
      */
     private Editor editor;
+
+    /**
+     * List of our Switches
+     */
+    Switch swInvert;
+    Switch swVibrate;
     
     /**
      * Do Nothing but define.
@@ -74,12 +80,23 @@ public class Roll
             = inflater.inflate(R.layout.preference_roll, container, false);
         assert this.view != null;
 
+        this.initSwitches();
         this.initPreferences();
         this.initClickListeners();
 
         return this.view;
     }
     
+    /**
+     * Initialize our switches.
+     */
+    private void initSwitches()
+    {
+        // Set the value of invert as it was known previously
+        this.swInvert = (Switch) this.view.findViewById(R.id.invert_switch);
+        this.swVibrate = (Switch) this.view.findViewById(R.id.vibrate_switch);
+    }
+
     /**
      * Get the preference editor from the SharedPreference. This function will
      * also set the state of our last known state of all the known values.
@@ -95,10 +112,8 @@ public class Roll
         this.setMax(sp.getInt("roll_max", 100));
         this.updateMinMaxTextView();
         
-        // Set the value of invert as it was known previously
-        Switch sw
-            = (Switch) this.view.findViewById(R.id.invert_switch);
-        sw.setChecked(sp.getBoolean("roll_invert", false));
+        swInvert.setChecked(sp.getBoolean("roll_invert", false));
+        swVibrate.setChecked(sp.getBoolean("roll_vibrate", false));
     }
 
     /**
@@ -109,14 +124,17 @@ public class Roll
         LinearLayout layout_invert
             = (LinearLayout) this.view.findViewById(R.id.invert);
         layout_invert.setOnClickListener(this);
-        
-        Switch switch_invert
-            = (Switch) this.view.findViewById(R.id.invert_switch);
-        switch_invert.setOnClickListener(this);
+
+        LinearLayout layout_vibrate
+            = (LinearLayout) this.view.findViewById(R.id.vibrate);
+        layout_vibrate.setOnClickListener(this);
         
         LinearLayout layout_minmax
             = (LinearLayout) this.view.findViewById(R.id.minmax);
         layout_minmax.setOnClickListener(this);
+        
+        swInvert.setOnClickListener(this);
+        swVibrate.setOnClickListener(this);
     }
 
     /**
@@ -130,10 +148,16 @@ public class Roll
         switch (v.getId())
         {
             case R.id.invert:
-                onClickInvert();
+                onClickSwitchLayout(swInvert);
+                break;
+            case R.id.vibrate:
+                onClickSwitchLayout(swVibrate);
                 break;
             case R.id.invert_switch:
                 onClickInvertSwitch();
+                break;
+            case R.id.vibrate_switch:
+                onClickVibrateSwitch();
                 break;
             case R.id.minmax:
                 onClickMinMax();
@@ -145,11 +169,11 @@ public class Roll
 
     /**
      * Handle the clicking of the invert value.
+     *
+     * @param sw The switch which this layout belongs to
      */
-    public void onClickInvert()
+    public void onClickSwitchLayout(Switch sw)
     {
-        Switch sw
-            = (Switch) this.view.findViewById(R.id.invert_switch);
         sw.performClick();
     }
 
@@ -158,13 +182,23 @@ public class Roll
      */
     public void onClickInvertSwitch()
     {
-        Switch sw
-            = (Switch) this.view.findViewById(R.id.invert_switch);
-
-        if (sw.isChecked())
+        if (swInvert.isChecked())
             this.editor.putBoolean("roll_invert", true);
         else
             this.editor.putBoolean("roll_invert", false);
+
+        this.editor.commit();
+    }
+
+    /**
+     * Handle our vibrate switch.
+     */
+    public void onClickVibrateSwitch()
+    {
+        if (swVibrate.isChecked())
+            this.editor.putBoolean("roll_vibrate", true);
+        else
+            this.editor.putBoolean("roll_vibrate", false);
 
         this.editor.commit();
     }
