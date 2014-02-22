@@ -64,7 +64,7 @@ public class DrawHud
      * Values to be updated to reflect app state
      */
     float tilt = 50.0f;
-    int throttle = 250;
+    int throttle = 128;
     
     /**
      * Paint for general items
