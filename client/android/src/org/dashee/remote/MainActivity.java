@@ -215,8 +215,6 @@ public class MainActivity
                     );
 
             this.hud.setIp(this.config.getIp().toString().substring(1));
-            this.hud.setRollMin(prefs.getInt("roll_min", 0));
-            this.hud.setRollMax(prefs.getInt("roll_max", 100));
         }
         catch (UnknownHostException e)
         {

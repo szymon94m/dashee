@@ -86,8 +86,6 @@ public class Car
      */
     private TextView tvRoll;
     private TextView tvRollText;
-    private TextView tvRollMin;
-    private TextView tvRollMax;
 
     /**
      * Handle to our Phone schematics. This will return
@@ -256,12 +254,6 @@ public class Car
         tvRollText = (TextView)view.findViewById(R.id.roll_text);
         tvRollText.setTypeface(novamonoFont);
 
-        tvRollMin = (TextView)view.findViewById(R.id.roll_min);
-        tvRollMin.setTypeface(novamonoFont);
-
-        tvRollMax = (TextView)view.findViewById(R.id.roll_max);
-        tvRollMax.setTypeface(novamonoFont);
-
         // Get the sharedPreferences so the values can be set
         SharedPreferences sp 
             = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
@@ -270,8 +262,6 @@ public class Car
         this.setIp(
                 sp.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
             );
-        this.setRollMin(sp.getInt("roll_min", 0));
-        this.setRollMax(sp.getInt("roll_max", 0));
     }
 
     /**
@@ -299,33 +289,7 @@ public class Car
 
         tvStatus.setText(value);
     }
-
-    /**
-     * Set the Minimum Roll
-     *
-     * @param value The value to set
-     */
-    public void setRollMin(int value)
-    {
-        if (tvRollMin == null)
-            return;
-
-        tvRollMin.setText(""+value);
-    }
-
-    /**
-     * Set the Minimum Roll
-     *
-     * @param value The value to set
-     */
-    public void setRollMax(int value)
-    {
-        if (tvRollMax == null)
-            return;
-
-        tvRollMax.setText(""+value);
-    }
-
+    
     /**
      * Set our textbox BytesPerSecond value
      *
@@ -366,8 +330,8 @@ public class Car
 
             // Vibrate and print the text in a color, when min or max is hit
             if (
-                    this.vehicle.getRoll() == this.vehicle.getRollMax() ||
-                    this.vehicle.getRoll() == this.vehicle.getRollMin()
+                    this.vehicle.getActualRoll() == 0 ||
+                    this.vehicle.getActualRoll() == 255
                 )
 
             {
@@ -382,7 +346,7 @@ public class Car
             // Convert the roll value from the vehicle, so min, max is 
             // compensated
             float mapped = RangeMapping.mapValue(
-                    this.vehicle.getRoll(), 
+                    this.vehicle.getActualRoll(), 
                     0,
                     255,
                     0.0f,

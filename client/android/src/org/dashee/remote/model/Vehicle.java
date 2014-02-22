@@ -210,6 +210,16 @@ public abstract class Vehicle
     }
 
     /**
+     * Get the actual roll value
+     *
+     * @return roll
+     */ 
+    public int getActualRoll()
+    {
+        return this.roll;
+    }
+
+    /**
      * Set the roll trim value.
      *
      * @param trim The value to set
@@ -451,6 +461,16 @@ public abstract class Vehicle
             return 255 - trimmed;
         
         return trimmed;
+    }
+
+    /**
+     * Return the value of throttle as set by user.
+     *
+     * @returns the actual value of throttle
+     */ 
+    public int getActualThrottle()
+    {
+        return this.throttle;
     }
 
     /**

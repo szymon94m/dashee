@@ -63,20 +63,6 @@ public abstract class Hud
     public abstract void setConnection(String connection);
 
     /**
-     * Set the Hud Roll Minimum
-     *
-     * @param value The value to set
-     */
-    public abstract void setRollMin(int value);
-
-    /**
-     * Set the Hud Roll Maximum
-     *
-     * @param value The value to set
-     */
-    public abstract void setRollMax(int value);
-
-    /**
      * Assign a reference of vehicle model to the hud
      *
      * @param vehicle The vehicle object

@@ -157,6 +157,7 @@ abstract public class VehicleTest
         {
             this.vehicle.setRoll(x);
             assertEquals(this.vehicle.getRoll(), x);
+            assertEquals(this.vehicle.getActualRoll(), x);
         }
 
         // Try setting the min to more than max
@@ -206,6 +207,7 @@ abstract public class VehicleTest
         for (int x = 0; x < 255; x++)
         {
             this.vehicle.setRoll(x);
+            assertEquals(this.vehicle.getActualRoll(), x);
 
             if (x < 128)
                 assertEquals(this.vehicle.getRoll(), 128);
@@ -224,16 +226,19 @@ abstract public class VehicleTest
         this.vehicle.setRollTrim(10);
         this.vehicle.setRoll(10);
         assertEquals(this.vehicle.getRoll(), 20);
+        assertEquals(this.vehicle.getActualRoll(), 10);
         
         // Make sure any value greater than 255 after trim is calculated
         // as the max value
         this.vehicle.setRoll(250);
         assertEquals(this.vehicle.getRoll(), 255);
+        assertEquals(this.vehicle.getActualRoll(), 250);
 
         // Test the negative value
         this.vehicle.setRollTrim(-10);
         this.vehicle.setRoll(10);
         assertEquals(this.vehicle.getRoll(), 0);
+        assertEquals(this.vehicle.getActualRoll(), 10);
 
         try
         {
@@ -409,6 +414,7 @@ abstract public class VehicleTest
         {
             this.vehicle.setThrottle(x);
             assertEquals(this.vehicle.getThrottle(), x);
+            assertEquals(this.vehicle.getActualThrottle(), x);
         }
 
         // Try setting the min to more than max
@@ -458,6 +464,7 @@ abstract public class VehicleTest
         for (int x = 0; x < 255; x++)
         {
             this.vehicle.setThrottle(x);
+            assertEquals(this.vehicle.getActualThrottle(), x);
 
             if (x < 128)
                 assertEquals(this.vehicle.getThrottle(), 128);
@@ -476,16 +483,19 @@ abstract public class VehicleTest
         this.vehicle.setThrottleTrim(10);
         this.vehicle.setThrottle(10);
         assertEquals(this.vehicle.getThrottle(), 20);
+        assertEquals(this.vehicle.getActualThrottle(), 10);
         
         // Make sure any value greater than 255 after trim is calculated
         // as the max value
         this.vehicle.setThrottle(250);
         assertEquals(this.vehicle.getThrottle(), 255);
+        assertEquals(this.vehicle.getActualThrottle(), 250);
 
         // Test the negative value
         this.vehicle.setThrottleTrim(-10);
         this.vehicle.setThrottle(10);
         assertEquals(this.vehicle.getThrottle(), 0);
+        assertEquals(this.vehicle.getActualThrottle(), 10);
 
         try
         {
@@ -521,6 +531,7 @@ abstract public class VehicleTest
         {
             this.vehicle.setThrottle(x);
             assertEquals(this.vehicle.getThrottle(), 255-x);
+            assertEquals(this.vehicle.getActualThrottle(), x);
         }
     }
 
@@ -531,5 +542,4 @@ abstract public class VehicleTest
     {
         super.tearDown();
     }
-
 }
