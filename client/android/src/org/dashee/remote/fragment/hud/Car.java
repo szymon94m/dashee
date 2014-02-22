@@ -173,7 +173,7 @@ public class Car
                         120, 
                         iv.getHeight()-72, 
                         255, 
-                        128
+                        0
                     );
                 }
 
@@ -388,18 +388,7 @@ public class Car
                     );
 
             tvThrottle.setText(Math.round(mapped) + "");
-
-            // If we are in reverse we go from 0-128 other wise we go from 
-            // 128-255. The throttle percentage sent to hud is from 0.0 to 1.0.
-            //
-            // Therefore when we are in reverse we need to calculate the 
-            // percentage from the range 0-128 other wise we calculate from 
-            // 128-255
-            float percentage = 0.0f;
-            percentage = (this.vehicle.getThrottle() -128) / 128.0f;
-
-            // Change our hud bar value
-            hud.setThrottle(percentage);
+            hud.setThrottle(this.vehicle.getThrottle());
         }
 
         // If throttle fails, set this to the error string

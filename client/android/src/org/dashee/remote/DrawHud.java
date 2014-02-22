@@ -64,7 +64,7 @@ public class DrawHud
      * Values to be updated to reflect app state
      */
     float tilt = 50.0f;
-    float throttle = 0.0f;
+    int throttle = 250;
     
     /**
      * Paint for general items
@@ -651,52 +651,84 @@ public class DrawHud
     /**
      * Draw Power bars.
      *
-     * If the count is less than 3 than we draw reverse
+     * If the throttle is less than 128 we draw the reverse bars. Otherwise
+     * we print the power bars.
+     *
+     * Note for reverse 0-100% is represented by 2-0 as it is inverted when 
+     * reversing. 
      *
      * @param canvas where to draw
      */
     public void drawPowerBars(Canvas canvas)
     {
-        // Draw Power arcs
-        int cutOff = Math.round(this.throttle * 12);
-
-    	for (int count = 0; count < 12; count++)
+        // We are in reverse mode
+        if (throttle < 128)
         {
-            if(this.throttlePaths[count] != null && count < cutOff)
+
+            // Calculate the percentage if the 100% is 0-127, and then
+            // reprsent the percentage by the number of bars
+            float percentage = 1.0f - (this.throttle / 127.0f);
+            int cutOff = Math.round(percentage * 3);
+
+            // Print the reverse bars
+            for (int count = 0; count < 12; count++)
             {
-                if (count < 3)
+                // Inactive bar because we are cutoff or in drive mode
+                //
+                // Note that `2-count >= cutOff` is the inverse, as the power
+                // applied in the reverse goes from 2-0 instead of 0-2 so we 
+                // need to invert by using `2-count >= cutOff`
+                if (count >= 3 || 2-count >= cutOff)
                 {
-                    canvas.drawPath(
-                            this.throttlePaths[count], 
-                            activeReverseBar
-                        );
+                    canvas.drawPath(this.throttlePaths[count], inactiveBar);
                     canvas.drawPath(
                             this.throttlePathsInner[count], 
-                            activeReverseBarInset
+                            inactiveBarInset
                         );
+                    continue;
                 }
-                else
-                {
-                    canvas.drawPath(this.throttlePaths[count], activePowerBar);
-                    canvas.drawPath(
-                            this.throttlePathsInner[count], 
-                            activePowerBarInset
-                        );
-                }
-            }
-            else
-            {
-                canvas.drawPath(this.throttlePaths[count], inactiveBar);
+
+                canvas.drawPath(this.throttlePaths[count], activeReverseBar);
                 canvas.drawPath(
                         this.throttlePathsInner[count], 
-                        inactiveBarInset
+                        activeReverseBarInset
                     );
             }
-    	}
+        }
+
+        // Power mode
+        else
+        {
+            // Generate the percentage from throttle, and represents
+            // it in the number of bars which should be active. As throttle
+            // is represented by the top 9 bars and there are total 12, we need
+            // to calculate the percentage then add 3.
+            float percentage = ((this.throttle-128) / 128.0f);
+            int cutOff = Math.round(percentage * 9) + 3;
+
+            for (int count = 0; count < 12; count++)
+            {
+                if (count < 3 || count >= cutOff)
+                {
+                    canvas.drawPath(this.throttlePaths[count], inactiveBar);
+                    canvas.drawPath(
+                            this.throttlePathsInner[count], 
+                            inactiveBarInset
+                        );
+                    continue;
+                }
+
+                canvas.drawPath(this.throttlePaths[count], activePowerBar);
+                canvas.drawPath(
+                        this.throttlePathsInner[count], 
+                        activePowerBarInset
+                    );
+            }
+        }
     }
 
     /**
-     * Draw battery bars
+     * Draw battery bars.
      *
      * @param canvas where to draw
      */
@@ -724,17 +756,12 @@ public class DrawHud
     }
 
     /**
-     * Set the value of power in percentage
+     * Set the value of power as they are set on the model.
      *
-     * @param percentage The value in percentage
+     * @param throttle The value from 0-255
      */
-    public void setThrottle(float percentage)
+    public void setThrottle(int throttle)
     {
-        if (percentage < 0.0f || percentage > 1.0f)
-            throw new OutOfRange(
-                    "Percentage value for throttle must be within 0.0-1.0"
-                );
-
-    	this.throttle = percentage;
+    	this.throttle = throttle;
     }
 }
