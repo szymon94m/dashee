@@ -67,32 +67,32 @@ public class DrawHud
     float throttle = 0.0f;
     
     /**
-     * Style elements go here
+     * Paint for general items
      */
     Paint steerLine;
     Paint horizonLine;
     Paint steerLineLock;
-    Paint activePowerBar;
-    Paint inactiveBarInset;
-    Paint activeBarPowerInset;
-    Paint activeBatteryInset;
-    Paint inactivePowerBar;
-    Paint activeBatteryBar;
     Paint powerArc;
     Paint batteryArc;
 
     /**
-     * Color values.
+     * Paint for Bars
      */
-    int lineColor = 0x666666;
+    Paint activePowerBar;
+    Paint activePowerBarInset;
+    Paint activeReverseBar;
+    Paint activeReverseBarInset;
+    Paint activeBatteryBar;
+    Paint activeBatteryBarInset;
+    Paint inactiveBar;
+    Paint inactiveBarInset;
+
+    /**
+     * Line values
+     */
     int horizonLineColor = 0x333333;
+    int lineColor = 0x666666;
     int lockColor = 0xD93600;
-    int activeBarColor = 0xD96D00;
-    int inactiveBarColor = 0x20202F;
-    int activeBattery = 0xEEEEEE;
-    int inactiveBarInsetColor = 0x444450;
-    int activePowerInsetColor = 0xDF8429;
-    int activeBatterInsetColor = 0xC8C8C8;
 
     /**
      * Store the view variable. Used for other classes to call
@@ -132,41 +132,11 @@ public class DrawHud
         steerLineLock.setStrokeWidth(5.0f);
         steerLineLock.setStyle(Paint.Style.STROKE);
         
-        activePowerBar = new Paint();
-        activePowerBar.setAntiAlias(true);
-        activePowerBar.setColor(activeBarColor);
-        activePowerBar.setAlpha(255);
-        activePowerBar.setStyle(Paint.Style.FILL);
-        
-        inactivePowerBar = new Paint();
-        inactivePowerBar.setAntiAlias(true);
-        inactivePowerBar.setColor(inactiveBarColor);
-        inactivePowerBar.setAlpha(255);
-        inactivePowerBar.setStyle(Paint.Style.FILL);
-        
-        activeBatteryBar = new Paint();
-        activeBatteryBar.setAntiAlias(true);
-        activeBatteryBar.setColor(activeBattery);
-        activeBatteryBar.setAlpha(255);
-        activeBatteryBar.setStyle(Paint.Style.FILL);
-        
-        inactiveBarInset = new Paint();
-        inactiveBarInset.setAntiAlias(true);
-        inactiveBarInset.setColor(inactiveBarInsetColor);
-        inactiveBarInset.setAlpha(255);
-        inactiveBarInset.setStyle(Paint.Style.FILL);
-        
-        activeBarPowerInset = new Paint();
-        activeBarPowerInset.setAntiAlias(true);
-        activeBarPowerInset.setColor(activePowerInsetColor);
-        activeBarPowerInset.setAlpha(255);
-        activeBarPowerInset.setStyle(Paint.Style.FILL);
-        
-        activeBatteryInset = new Paint();
-        activeBatteryInset.setAntiAlias(true);
-        activeBatteryInset.setColor(activeBatterInsetColor);
-        activeBatteryInset.setAlpha(255);
-        activeBatteryInset.setStyle(Paint.Style.FILL);
+        initPowerBar();
+        initReverseBar();
+        initBatteryBar();
+        initInactiveBar();
+
         
         powerArc = new Paint();
         powerArc.setAntiAlias(true);
@@ -181,6 +151,90 @@ public class DrawHud
         batteryArc.setAlpha(255);
         batteryArc.setStrokeWidth(3.0f);
         batteryArc.setStyle(Paint.Style.STROKE);
+    }
+
+    /**
+     * Initialize the View
+     */
+    private void initPowerBar()
+    {
+        int activePowerBarColor = 0xD96D00;
+        int activePowerBarInsetColor = 0xDF8429;
+
+        activePowerBar = new Paint();
+        activePowerBar.setAntiAlias(true);
+        activePowerBar.setColor(activePowerBarColor);
+        activePowerBar.setAlpha(255);
+        activePowerBar.setStyle(Paint.Style.FILL);
+        
+        activePowerBarInset = new Paint();
+        activePowerBarInset.setAntiAlias(true);
+        activePowerBarInset.setColor(activePowerBarInsetColor);
+        activePowerBarInset.setAlpha(255);
+        activePowerBarInset.setStyle(Paint.Style.FILL);
+    }
+
+    /**
+     * Initialize the reverse Bar
+     */
+    private void initReverseBar()
+    {
+        int activeReverseBarColor = 0x8C0000;
+        int activeReverseBarInsetColor = 0x9E2929;
+
+        activeReverseBar = new Paint();
+        activeReverseBar.setAntiAlias(true);
+        activeReverseBar.setColor(activeReverseBarColor);
+        activeReverseBar.setAlpha(255);
+        activeReverseBar.setStyle(Paint.Style.FILL);
+        
+        activeReverseBarInset = new Paint();
+        activeReverseBarInset.setAntiAlias(true);
+        activeReverseBarInset.setColor(activeReverseBarInsetColor);
+        activeReverseBarInset.setAlpha(255);
+        activeReverseBarInset.setStyle(Paint.Style.FILL);
+    }
+
+    /**
+     * Initialize the battery bar.
+     */
+    private void initBatteryBar()
+    {
+        int activeBatteryBarColor = 0xEEEEEE;
+        int activeBatterBarInsetColor = 0xC8C8C8;
+
+        activeBatteryBar = new Paint();
+        activeBatteryBar.setAntiAlias(true);
+        activeBatteryBar.setColor(activeBatteryBarColor);
+        activeBatteryBar.setAlpha(255);
+        activeBatteryBar.setStyle(Paint.Style.FILL);
+        
+        activeBatteryBarInset = new Paint();
+        activeBatteryBarInset.setAntiAlias(true);
+        activeBatteryBarInset.setColor(activeBatterBarInsetColor);
+        activeBatteryBarInset.setAlpha(255);
+        activeBatteryBarInset.setStyle(Paint.Style.FILL);
+    }
+
+    /**
+     * Initialize the inactive bar values
+     */
+    private void initInactiveBar()
+    {
+        int inactiveBarColor = 0x20202F;
+        int inactiveBarInsetColor = 0x444450;
+
+        inactiveBar = new Paint();
+        inactiveBar.setAntiAlias(true);
+        inactiveBar.setColor(inactiveBarColor);
+        inactiveBar.setAlpha(255);
+        inactiveBar.setStyle(Paint.Style.FILL);
+
+        inactiveBarInset = new Paint();
+        inactiveBarInset.setAntiAlias(true);
+        inactiveBarInset.setColor(inactiveBarInsetColor);
+        inactiveBarInset.setAlpha(255);
+        inactiveBarInset.setStyle(Paint.Style.FILL);
     }
     
     /**
@@ -453,9 +507,9 @@ public class DrawHud
         // If start angle is in 4th quarter and endAngle is in 3rd quarter
         // we will end up drawing almost a full circle want to avoid this
         // and sweep closest distance.
-        if(startAngle < -270 && endAngle > -90){
-        	sweepAngle = (sweepAngle + 360);
-        }
+        if(startAngle < -270 && endAngle > -90)
+            sweepAngle = (sweepAngle + 360);
+
         float[] returnArray = { 
             startAngle, 
             sweepAngle, 
@@ -585,36 +639,77 @@ public class DrawHud
 
         canvas.restore();
         
-        // Draw Power arcs
-        int cutOff = Math.round(this.throttle * 12);
-            
-    	for (int count = 0; count < 12; count++)
-        {
-            if(this.throttlePaths[count] != null && count < cutOff)
-            {
-                canvas.drawPath(this.throttlePaths[count], activePowerBar);
-                canvas.drawPath(
-                        this.throttlePathsInner[count], 
-                        activeBarPowerInset
-                    );
-            }
-            else
-            {
-                canvas.drawPath(this.throttlePaths[count], inactivePowerBar);
-                canvas.drawPath(
-                        this.throttlePathsInner[count], 
-                        inactiveBarInset
-                    );
-            }
-
-            canvas.drawPath(this.batteryPaths[count], activeBatteryBar);
-            canvas.drawPath(this.batteryPathsInner[count], activeBatteryInset);
-    	}
+        drawPowerBars(canvas);
+        drawBatteryBars(canvas);
     	
     	canvas.drawPath(this.throttleOuterArc, powerArc);
     	canvas.drawPath(this.batteryOuterArc, batteryArc);
     	
         invalidate();
+    }
+
+    /**
+     * Draw Power bars.
+     *
+     * If the count is less than 3 than we draw reverse
+     *
+     * @param canvas where to draw
+     */
+    public void drawPowerBars(Canvas canvas)
+    {
+        // Draw Power arcs
+        int cutOff = Math.round(this.throttle * 12);
+
+    	for (int count = 0; count < 12; count++)
+        {
+            if(this.throttlePaths[count] != null && count < cutOff)
+            {
+                if (count < 3)
+                {
+                    canvas.drawPath(
+                            this.throttlePaths[count], 
+                            activeReverseBar
+                        );
+                    canvas.drawPath(
+                            this.throttlePathsInner[count], 
+                            activeReverseBarInset
+                        );
+                }
+                else
+                {
+                    canvas.drawPath(this.throttlePaths[count], activePowerBar);
+                    canvas.drawPath(
+                            this.throttlePathsInner[count], 
+                            activePowerBarInset
+                        );
+                }
+            }
+            else
+            {
+                canvas.drawPath(this.throttlePaths[count], inactiveBar);
+                canvas.drawPath(
+                        this.throttlePathsInner[count], 
+                        inactiveBarInset
+                    );
+            }
+    	}
+    }
+
+    /**
+     * Draw battery bars
+     *
+     * @param canvas where to draw
+     */
+    public void drawBatteryBars(Canvas canvas)
+    {
+    	for (int count = 0; count < 12; count++)
+        {
+            canvas.drawPath(this.batteryPaths[count], activeBatteryBar);
+            canvas.drawPath(
+                    this.batteryPathsInner[count], 
+                    activeBatteryBarInset
+                );
+        }
     }
 
     /**
