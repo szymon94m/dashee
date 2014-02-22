@@ -168,13 +168,38 @@ public class Car
                 // will the mapValue change
                 if (event.getAction() != MotionEvent.ACTION_UP) 
                 {
-                    mapVal = RangeMapping.mapValue(
-                        event.getY(), 
-                        120, 
-                        iv.getHeight()-72, 
-                        255, 
-                        0
-                    );
+                    android.util.Log.e("dashee","event: " + event.getY());
+
+                    // Reverse mode
+                    if (event.getY() > 530)
+                    {
+                        // Set the value to max reverse when greater than the 
+                        // range
+                        if (event.getY() > 700)
+                            mapVal = Car.this.vehicle.getThrottleMin();
+                        else
+                            mapVal = RangeMapping.mapValue(
+                                event.getY(), 
+                                531, 
+                                700, 
+                                127,
+                                Car.this.vehicle.getThrottleMin()
+                            );
+                    }
+                    else
+                    {
+                        // Anything past less than 70 on touch is full power
+                        if (event.getY() < 70)
+                            mapVal = Car.this.vehicle.getThrottleMax();
+                        else
+                            mapVal = RangeMapping.mapValue(
+                                event.getY(), 
+                                70,
+                                529, 
+                                Car.this.vehicle.getThrottleMax(),
+                                128
+                            );
+                    }
                 }
 
                 setThrottle((int)mapVal);
