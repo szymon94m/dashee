@@ -237,19 +237,6 @@ public class MainActivity
             toast.show();
         }
     }
-
-    /**
-     * Set our menu on the top bar. This will add the HUD, LOG and the ... icon
-     * to the top of our menu bar
-     *
-     * @param menu - The menu object to load
-     * @return boolean - Always true
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) 
-    {
-        return true;
-    }
     
     /**
      * App is Resumed from a pause state.

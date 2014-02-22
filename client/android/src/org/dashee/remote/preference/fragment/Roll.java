@@ -15,6 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 
 import org.dashee.remote.R;
 import org.dashee.remote.preference.fragment.dialog.MinMax;
@@ -76,17 +79,42 @@ public class Roll
             Bundle savedInstanceState
         ) 
     {
-        this.view 
-            = inflater.inflate(R.layout.preference_roll, container, false);
+        this.view = inflater.inflate(
+                R.layout.preference_roll, 
+                container, 
+                false
+            );
         assert this.view != null;
 
+        this.initMenue();
         this.initSwitches();
         this.initPreferences();
         this.initClickListeners();
 
         return this.view;
     }
-    
+
+    /**
+     * Set our menu item field
+     *
+     * @param menue
+     * @param infrater
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) 
+    {
+        inflater.inflate(R.menu.preference_roll, menu);
+    }
+
+    /**
+     * Set our menu
+     */
+    private void initMenue()
+    {
+        // Set the action bar option menu
+        setHasOptionsMenu(true);
+    }
+
     /**
      * Initialize our switches.
      */
@@ -117,7 +145,7 @@ public class Roll
     }
 
     /**
-     * Set all of our click listeners
+     * Set all of our click listeners.
      */
     private void initClickListeners()
     {
@@ -165,6 +193,25 @@ public class Roll
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) 
+    {
+       // handle item selection
+       switch (item.getItemId()) 
+       {
+            case R.id.default_settings:
+                Toast toast = Toast.makeText(
+                        this.getActivity(),
+                        "Yay! I click", 
+                        Toast.LENGTH_SHORT
+                );
+                toast.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+       }
     }
 
     /**

@@ -79,26 +79,15 @@ public class Car
      * Throttle TextView handlers.
      */
     private TextView tvThrottle;
-    private TextView tvThrottleMin;
-    private TextView tvThrottleMax;
+    private TextView tvThrottleKPH;
 
     /**
      * Roll TextView handlers.
      */
     private TextView tvRoll;
+    private TextView tvRollText;
     private TextView tvRollMin;
     private TextView tvRollMax;
-
-    /**
-     * Drive and Reverse TextView Handlers
-     */
-    private TextView tvDrive;
-    private TextView tvReverse;
-
-    /**
-     * To set weather or not we are in reverse
-     */
-    private boolean reverse = false;
 
     /**
      * Handle to our Phone schematics. This will return
@@ -131,7 +120,6 @@ public class Car
         this.initHud();
         this.initModels();
         this.initThrottleListener();
-        this.initDriveTypeListener();
         this.initOptionsButtonListener();
         this.initTextViews();
 
@@ -182,64 +170,18 @@ public class Car
                 // will the mapValue change
                 if (event.getAction() != MotionEvent.ACTION_UP) 
                 {
-                    if(reverse)
-                    {
-                        mapVal = RangeMapping.mapValue(
-                            event.getY(), 
-                            120, 
-                            iv.getHeight()-72, 
-                            0, 
-                            128
-                        );
-                    }
-                    else
-                    {
-                        mapVal = RangeMapping.mapValue(
-                            event.getY(), 
-                            120, 
-                            iv.getHeight()-72, 
-                            255, 
-                            128
-                        );
-                    }
+                    mapVal = RangeMapping.mapValue(
+                        event.getY(), 
+                        120, 
+                        iv.getHeight()-72, 
+                        255, 
+                        128
+                    );
                 }
 
                 setThrottle((int)mapVal);
 
                 return true;
-            }
-        });
-    }
-
-    /**
-     * Every time the Power HUD value is clicked the car can go from drive to 
-     * reverse. This handler deals with creating tones and highlighting the 
-     * current state
-     */
-    public void initDriveTypeListener()
-    {
-        LinearLayout powerToggle = (LinearLayout) view.findViewById(
-                R.id.power_direction_toggle
-            );
-        powerToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) 
-            {
-                reverse = !reverse;
-                final ToneGenerator tg 
-                    = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-                if(reverse)
-                {
-                    tg.startTone(ToneGenerator.TONE_PROP_ACK);
-                    tvDrive.setTextColor(Color.parseColor("#444444"));
-                    tvReverse.setTextColor(Color.parseColor("#D93600"));
-                }
-                else
-                {
-                    tg.startTone(ToneGenerator.TONE_PROP_BEEP2);
-                    tvReverse.setTextColor(Color.parseColor("#444444"));
-                    tvDrive.setTextColor(Color.parseColor("#2FB900"));
-                }
             }
         });
     }
@@ -303,16 +245,16 @@ public class Car
         // Throttle
         tvThrottle = (TextView)view.findViewById(R.id.throttle);
         tvThrottle.setTypeface(visitor2Font);
-
-        tvThrottleMax = (TextView)view.findViewById(R.id.throttle_max);
-        tvThrottleMax.setTypeface(novamonoFont);
-
-        tvThrottleMin = (TextView)view.findViewById(R.id.throttle_min);
-        tvThrottleMin.setTypeface(novamonoFont);
+        
+        tvThrottleKPH = (TextView)view.findViewById(R.id.throttle_kph);
+        tvThrottleKPH.setTypeface(novamonoFont);
 
         // Roll
         tvRoll = (TextView)view.findViewById(R.id.roll);
         tvRoll.setTypeface(visitor2Font);
+
+        tvRollText = (TextView)view.findViewById(R.id.roll_text);
+        tvRollText.setTypeface(novamonoFont);
 
         tvRollMin = (TextView)view.findViewById(R.id.roll_min);
         tvRollMin.setTypeface(novamonoFont);
@@ -320,21 +262,11 @@ public class Car
         tvRollMax = (TextView)view.findViewById(R.id.roll_max);
         tvRollMax.setTypeface(novamonoFont);
 
-        // Drive/Reverse
-        tvDrive = (TextView)view.findViewById(R.id.drive);
-        tvDrive.getPaint().setAntiAlias(false);
-        tvDrive.setTypeface(visitorFont);
-
-        tvReverse = (TextView)view.findViewById(R.id.reverse);
-        tvReverse.getPaint().setAntiAlias(false);
-        tvReverse.setTypeface(visitorFont);
-
         // Get the sharedPreferences so the values can be set
         SharedPreferences sp 
             = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 
         // Set the text views
-        this.setConnection("unknown");
         this.setIp(
                 sp.getString("pref_server_ip", "xxx.xxx.xxx.xxx")
             );
@@ -500,10 +432,7 @@ public class Car
             // percentage from the range 0-128 other wise we calculate from 
             // 128-255
             float percentage = 0.0f;
-            if (reverse) 
-                percentage = (this.vehicle.getThrottle() / -128.0f) + 1.0f;
-            else
-                percentage = (this.vehicle.getThrottle() -128) / 128.0f;
+            percentage = (this.vehicle.getThrottle() -128) / 128.0f;
 
             // Change our hud bar value
             hud.setThrottle(percentage);

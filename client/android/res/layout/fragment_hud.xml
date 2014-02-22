@@ -40,79 +40,30 @@
             >
         </LinearLayout>
         <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                >
-            <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/throttle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_gravity="center"
-                android:id="@+id/power_direction_toggle"
-                >
-                <TextView
-                    android:id="@+id/throttle_min"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center"
-                    android:textColor="#444444"
-                    android:textSize="18dp"
-                    android:typeface="monospace"
-                    android:text="000"
-                    />
-                <TextView
-                    android:id="@+id/throttle"
-                    android:layout_width="100dp"
-                    android:layout_height="65dp"
-                    android:textColor="#FFFFFF"
-                    android:textSize="55dp"
-                    android:text="50"
-                    android:gravity="center"
-                    android:padding="0dp"
-                    android:layout_marginBottom="0dp"
-                    />
-                <TextView
-                    android:id="@+id/throttle_max"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center"
-                    android:textColor="#444444"
-                    android:textSize="18dp"
-                    android:typeface="monospace"
-                    android:text="000"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="-12dp">
-                <TextView
-                    android:id="@+id/drive"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#2FB900"
-                    android:textSize="10dp"
-                    android:gravity="center"
-                    android:typeface="monospace"
-                    android:text="@string/hud_drive"
-                    android:layout_marginRight="2sp" 
-                    />
-                <TextView
-                    android:id="@+id/reverse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#444444"
-                    android:textSize="10dp"
-                    android:gravity="center"
-                    android:typeface="monospace"
-                    android:text="@string/hud_reverse"
-                    android:layout_marginLeft="2sp" 
-                    />
-            </LinearLayout>
+                android:textColor="#FFFFFF"
+                android:textSize="80dp"
+                android:text="@string/hud_throttle_mid"
+                />
+            <TextView
+                android:id="@+id/throttle_kph"
+                android:layout_marginTop="-10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#444444"
+                android:textSize="20dp"
+                android:text="@string/hud_throttle_kph"
+                />
         </LinearLayout>
         <LinearLayout
                 android:id="@+id/hud_logo_layout"
@@ -181,7 +132,7 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="-5dp">
                 <TextView
-                    android:id="@+id/hud_text_tilt_label"
+                    android:id="@+id/roll_text"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#444444"
@@ -222,9 +173,8 @@
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:padding="0dp"
-                android:textColor="#444444"
+                android:textColor="#A60000"
                 android:textSize="10sp"
-                android:typeface="monospace"
                 android:text="@string/hud_connection"
                 android:textAlignment="textEnd"
                 android:gravity="right"
@@ -238,7 +188,7 @@
                 android:textColor="#444444"
                 android:textSize="10sp"
                 android:typeface="monospace"
-                android:text="@string/hud_ip"
+                android:text="@string/ip"
                 android:gravity="right"
                 android:layout_marginTop="2sp" 
                 />

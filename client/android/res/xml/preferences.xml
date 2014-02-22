@@ -4,16 +4,16 @@
     android:title="@string/pref_title" >
     <PreferenceCategory android:title="@string/pref_server" >
         <EditTextPreference
-            android:defaultValue="@string/pref_server_ip_default"
             android:key="pref_server_ip"
-            android:summary="@string/pref_server_ip_default"
+            android:summary="@string/ip"
             android:title="@string/pref_server_ip" 
+            android:defaultValue="@string/ip"
             />
         <EditTextPreference
-            android:defaultValue="@string/pref_server_port_default"
             android:key="pref_server_port"
-            android:summary="@string/pref_server_port_default"
+            android:summary="@string/port"
             android:title="@string/pref_server_port" 
+            android:defaultValue="@string/port"
             />
         <SwitchPreference
             android:defaultValue="0"
