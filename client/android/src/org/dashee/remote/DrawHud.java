@@ -33,8 +33,13 @@ public class DrawHud
     Path[] batteryPaths = new Path[12];
     Path[] throttlePathsInner = new Path[12];
     Path[] batteryPathsInner = new Path[12];
-    Path throttleOuterArc = new Path();
-    Path batteryOuterArc = new Path();
+
+    /**
+     * Arc paths
+     */
+    Path powerArcPath = new Path();
+    Path batteryArcPath = new Path();
+    Path reverseArcPath = new Path();
     
     /**
      * Steer arc is  at the center of the design
@@ -44,11 +49,9 @@ public class DrawHud
     float innerGaugeRadius;
     float innerGaugeRadius2;
     float outerGaugeRadius;
-	
-    final RectF steerOval = new RectF();
     
     /**
-     *  Track positions on the grid.
+     * The center points of the canvas
      */
     float centerX = 0.0f;
     float centerY = 0.0f;
@@ -72,8 +75,13 @@ public class DrawHud
     Paint steerLine;
     Paint horizonLine;
     Paint steerLineLock;
+
+    /**
+     * Arc paints
+     */
     Paint powerArc;
     Paint batteryArc;
+    Paint reverseArc;
 
     /**
      * Paint for Bars
@@ -86,13 +94,6 @@ public class DrawHud
     Paint activeBatteryBarInset;
     Paint inactiveBar;
     Paint inactiveBarInset;
-
-    /**
-     * Line values
-     */
-    int horizonLineColor = 0x333333;
-    int lineColor = 0x666666;
-    int lockColor = 0xD93600;
 
     /**
      * Store the view variable. Used for other classes to call
@@ -110,6 +111,23 @@ public class DrawHud
 
         this.context = context;
         this.view = view;
+        
+        initSteerLinePaint();
+        initPowerBarPaint();
+        initReverseBarPaint();
+        initBatteryBarPaint();
+        initInactiveBarPaint();
+        initArcsPaint();
+    }
+
+    /**
+     * Initialize the steer line paint.
+     */
+    private void initSteerLinePaint()
+    {
+        int horizonLineColor = 0x333333;
+        int lineColor = 0x666666;
+        int lockColor = 0xD93600;
 
         steerLine = new Paint();
         steerLine.setAntiAlias(true);
@@ -117,14 +135,7 @@ public class DrawHud
         steerLine.setAlpha(255);
         steerLine.setStrokeWidth(2.0f);
         steerLine.setStyle(Paint.Style.STROKE);
-        
-        horizonLine = new Paint();
-        horizonLine.setAntiAlias(true);
-        horizonLine.setColor(horizonLineColor);
-        horizonLine.setAlpha(255);
-        horizonLine.setStrokeWidth(2.0f);
-        horizonLine.setStyle(Paint.Style.STROKE);
-        
+
         steerLineLock = new Paint();
         steerLineLock.setAntiAlias(true);
         steerLineLock.setColor(lockColor);
@@ -132,44 +143,28 @@ public class DrawHud
         steerLineLock.setStrokeWidth(5.0f);
         steerLineLock.setStyle(Paint.Style.STROKE);
         
-        initPowerBar();
-        initReverseBar();
-        initBatteryBar();
-        initInactiveBar();
-
-        
-        powerArc = new Paint();
-        powerArc.setAntiAlias(true);
-        powerArc.setColor(0xD96D00);
-        powerArc.setAlpha(255);
-        powerArc.setStrokeWidth(3.0f);
-        powerArc.setStyle(Paint.Style.STROKE);
-        
-        batteryArc = new Paint();
-        batteryArc.setAntiAlias(true);
-        batteryArc.setColor(0xFFFFFF);
-        batteryArc.setAlpha(255);
-        batteryArc.setStrokeWidth(3.0f);
-        batteryArc.setStyle(Paint.Style.STROKE);
+        horizonLine = new Paint();
+        horizonLine.setAntiAlias(true);
+        horizonLine.setColor(horizonLineColor);
+        horizonLine.setAlpha(255);
+        horizonLine.setStrokeWidth(2.0f);
+        horizonLine.setStyle(Paint.Style.STROKE);
     }
 
     /**
      * Initialize the View
      */
-    private void initPowerBar()
+    private void initPowerBarPaint()
     {
-        int activePowerBarColor = 0xD96D00;
-        int activePowerBarInsetColor = 0xDF8429;
-
         activePowerBar = new Paint();
         activePowerBar.setAntiAlias(true);
-        activePowerBar.setColor(activePowerBarColor);
+        activePowerBar.setColor(0xD96D00);
         activePowerBar.setAlpha(255);
         activePowerBar.setStyle(Paint.Style.FILL);
         
         activePowerBarInset = new Paint();
         activePowerBarInset.setAntiAlias(true);
-        activePowerBarInset.setColor(activePowerBarInsetColor);
+        activePowerBarInset.setColor(0xDF8429);
         activePowerBarInset.setAlpha(255);
         activePowerBarInset.setStyle(Paint.Style.FILL);
     }
@@ -177,20 +172,17 @@ public class DrawHud
     /**
      * Initialize the reverse Bar
      */
-    private void initReverseBar()
+    private void initReverseBarPaint()
     {
-        int activeReverseBarColor = 0x8C0000;
-        int activeReverseBarInsetColor = 0x9E2929;
-
         activeReverseBar = new Paint();
         activeReverseBar.setAntiAlias(true);
-        activeReverseBar.setColor(activeReverseBarColor);
+        activeReverseBar.setColor(0x8C0000);
         activeReverseBar.setAlpha(255);
         activeReverseBar.setStyle(Paint.Style.FILL);
         
         activeReverseBarInset = new Paint();
         activeReverseBarInset.setAntiAlias(true);
-        activeReverseBarInset.setColor(activeReverseBarInsetColor);
+        activeReverseBarInset.setColor(0x9E2929);
         activeReverseBarInset.setAlpha(255);
         activeReverseBarInset.setStyle(Paint.Style.FILL);
     }
@@ -198,20 +190,17 @@ public class DrawHud
     /**
      * Initialize the battery bar.
      */
-    private void initBatteryBar()
+    private void initBatteryBarPaint()
     {
-        int activeBatteryBarColor = 0xEEEEEE;
-        int activeBatterBarInsetColor = 0xC8C8C8;
-
         activeBatteryBar = new Paint();
         activeBatteryBar.setAntiAlias(true);
-        activeBatteryBar.setColor(activeBatteryBarColor);
+        activeBatteryBar.setColor(0xEEEEEE);
         activeBatteryBar.setAlpha(255);
         activeBatteryBar.setStyle(Paint.Style.FILL);
         
         activeBatteryBarInset = new Paint();
         activeBatteryBarInset.setAntiAlias(true);
-        activeBatteryBarInset.setColor(activeBatterBarInsetColor);
+        activeBatteryBarInset.setColor(0xC8C8C8);
         activeBatteryBarInset.setAlpha(255);
         activeBatteryBarInset.setStyle(Paint.Style.FILL);
     }
@@ -219,22 +208,46 @@ public class DrawHud
     /**
      * Initialize the inactive bar values
      */
-    private void initInactiveBar()
+    private void initInactiveBarPaint()
     {
-        int inactiveBarColor = 0x20202F;
-        int inactiveBarInsetColor = 0x444450;
-
         inactiveBar = new Paint();
         inactiveBar.setAntiAlias(true);
-        inactiveBar.setColor(inactiveBarColor);
+        inactiveBar.setColor(0x20202F);
         inactiveBar.setAlpha(255);
         inactiveBar.setStyle(Paint.Style.FILL);
 
         inactiveBarInset = new Paint();
         inactiveBarInset.setAntiAlias(true);
-        inactiveBarInset.setColor(inactiveBarInsetColor);
+        inactiveBarInset.setColor(0x444450);
         inactiveBarInset.setAlpha(255);
         inactiveBarInset.setStyle(Paint.Style.FILL);
+    }
+
+    /**
+     * Initialize all the arcs.
+     */
+    private void initArcsPaint()
+    {
+        powerArc = new Paint();
+        powerArc.setAntiAlias(true);
+        powerArc.setColor(0xD96D00);
+        powerArc.setAlpha(255);
+        powerArc.setStrokeWidth(3.0f);
+        powerArc.setStyle(Paint.Style.STROKE);
+
+        reverseArc = new Paint();
+        reverseArc.setAntiAlias(true);
+        reverseArc.setColor(0x6D0000);
+        reverseArc.setAlpha(255);
+        reverseArc.setStrokeWidth(3.0f);
+        reverseArc.setStyle(Paint.Style.STROKE);
+        
+        batteryArc = new Paint();
+        batteryArc.setAntiAlias(true);
+        batteryArc.setColor(0xFFFFFF);
+        batteryArc.setAlpha(255);
+        batteryArc.setStrokeWidth(3.0f);
+        batteryArc.setStyle(Paint.Style.STROKE);
     }
     
     /**
@@ -257,7 +270,7 @@ public class DrawHud
         )
     {
     	// Noticed it sometimes runs with 0 values, not sure why.
-    	if(canvasWidth ==0 || canvasHeight==0) return;
+    	if(canvasWidth == 0 || canvasHeight == 0) return;
     	
     	this.centerX = canvasWidth/2;
     	this.centerY = canvasHeight/2;
@@ -303,8 +316,10 @@ public class DrawHud
                 this.innerGaugeRadius2, 
                 this.outerGaugeRadius
             );
-    	this.addArc(this.throttleOuterArc, true);
-    	this.addArc(this.batteryOuterArc, false);
+
+        this.setBatteryArc();
+        this.setPowerArc();
+        this.setReverseArc();
 
         // Position some xml elements
         LinearLayout layoutConnection
@@ -349,14 +364,15 @@ public class DrawHud
     	float steerArcSweepAngle = 280.0f;
         float steerArcStartAngle = -180.0f;
         
+        final RectF steerRect = new RectF();
         float p1x = this.centerX - this.steerArcRadius;
         float p1y = this.centerY - this.steerArcRadius;
         float p2x = this.centerX + this.steerArcRadius;
         float p2y = this.centerY + this.steerArcRadius;
-        
-        this.steerOval.set(p1x, p1y, p2x, p2y);
+        steerRect.set(p1x, p1y, p2x, p2y);
+
         this.steerPath.arcTo(
-                this.steerOval, 
+                steerRect, 
                 steerArcStartAngle, 
                 -steerArcSweepAngle, 
                 true
@@ -364,31 +380,79 @@ public class DrawHud
     }
     
     /**
-     * Build the outer long arcs on either side of the 
-     * hud.
-     *
-     * @param inPath
-     * @param leftHandSide
+     * Draw the battery arc.
      */
-    private void addArc(Path inPath, boolean leftHandSide)
+    private void setBatteryArc()
     {
-    	final RectF outerOval = new RectF();
     	float radius = this.steerArcRadius*1.39f;
 
+    	final RectF outerOval = new RectF();
         float p1x = this.centerX - radius;
         float p1y = this.centerY - radius;
         float p2x = this.centerX + radius;
         float p2y = this.centerY + radius;
-        
         outerOval.set(p1x, p1y, p2x, p2y);
+
         float[] outerArcParams = this.getArcParams(
                 this.gaugeBottomY, 
                 this.gaugeTopY, 
                 radius, 
-                false, 
-                leftHandSide
+                false,
+                false
             );
-        inPath.arcTo(outerOval, outerArcParams[0], -outerArcParams[1], true);
+        this.batteryArcPath
+            .arcTo(outerOval, outerArcParams[0], -outerArcParams[1], true);
+    }
+
+    /**
+     * Draw the throttle arc.
+     */
+    private void setPowerArc()
+    {
+    	float radius = this.steerArcRadius*1.39f;
+
+    	final RectF outerOval = new RectF();
+        float p1x = this.centerX - radius;
+        float p1y = this.centerY - radius;
+        float p2x = this.centerX + radius;
+        float p2y = this.centerY + radius;
+        outerOval.set(p1x, p1y, p2x, p2y);
+
+        float[] outerArcParams = this.getArcParams(
+                this.gaugeBottomY-158, 
+                this.gaugeTopY, 
+                radius, 
+                false,
+                true
+            );
+        this.powerArcPath
+            .arcTo(outerOval, outerArcParams[0], -outerArcParams[1], true);
+    }
+
+    /**
+     * Set the reverse arc.
+     */
+    private void setReverseArc()
+    {
+    	float radius = this.steerArcRadius*1.39f;
+
+    	final RectF outerOval = new RectF();
+        float p1x = this.centerX - radius;
+        float p1y = this.centerY - radius;
+        float p2x = this.centerX + radius;
+        float p2y = this.centerY + radius;
+        outerOval.set(p1x, p1y, p2x, p2y);
+
+        float[] outerArcParams = this.getArcParams(
+                this.gaugeBottomY, 
+                this.gaugeTopY+476, 
+                radius, 
+                false,
+                true
+            );
+        this.reverseArcPath
+            .arcTo(outerOval, outerArcParams[0], -outerArcParams[1], true);
+
     }
     
     /**
@@ -515,10 +579,11 @@ public class DrawHud
             sweepAngle, 
             (float)startXCoor[xcoordinateSide]
         };
-        if(reverse){
-        	returnArray[0] = endAngle;
-        	returnArray[1] = -sweepAngle;
-        	returnArray[2] = (float) endXCoor[xcoordinateSide];
+        if(reverse)
+        {
+            returnArray[0] = endAngle;
+            returnArray[1] = -sweepAngle;
+            returnArray[2] = (float) endXCoor[xcoordinateSide];
         }
         return returnArray;
     }
@@ -590,6 +655,24 @@ public class DrawHud
      */
     protected void onDraw(Canvas canvas)
     {
+        drawSteerLine(canvas);   
+        drawPowerBars(canvas);
+        drawBatteryBars(canvas);
+    	
+    	canvas.drawPath(this.powerArcPath, powerArc);
+    	canvas.drawPath(this.reverseArcPath, reverseArc);
+    	canvas.drawPath(this.batteryArcPath, batteryArc);
+    	
+        invalidate();
+    }
+
+    /**
+     * Draw the steer line.
+     *
+     * @param canvas where to draw
+     */
+    private void drawSteerLine(Canvas canvas)
+    {
     	boolean leftLock = Math.floor(this.tilt) == 0;
     	boolean rightLock = Math.ceil(this.tilt) == 100;
         
@@ -638,14 +721,6 @@ public class DrawHud
             canvas.drawPath(this.steerPath, steerLine);
 
         canvas.restore();
-        
-        drawPowerBars(canvas);
-        drawBatteryBars(canvas);
-    	
-    	canvas.drawPath(this.throttleOuterArc, powerArc);
-    	canvas.drawPath(this.batteryOuterArc, batteryArc);
-    	
-        invalidate();
     }
 
     /**
