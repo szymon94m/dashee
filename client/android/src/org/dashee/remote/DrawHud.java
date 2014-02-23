@@ -94,6 +94,8 @@ public class DrawHud
     Paint activeBatteryBarInset;
     Paint inactiveBar;
     Paint inactiveBarInset;
+    Paint inactiveReverseBar;
+    Paint inactiveReverseBarInset;
 
     /**
      * Store the view variable. Used for other classes to call
@@ -185,6 +187,18 @@ public class DrawHud
         activeReverseBarInset.setColor(0x9E2929);
         activeReverseBarInset.setAlpha(255);
         activeReverseBarInset.setStyle(Paint.Style.FILL);
+
+        inactiveReverseBar = new Paint();
+        inactiveReverseBar.setAntiAlias(true);
+        inactiveReverseBar.setColor(0x11111A);
+        inactiveReverseBar.setAlpha(255);
+        inactiveReverseBar.setStyle(Paint.Style.FILL);
+
+        inactiveReverseBarInset = new Paint();
+        inactiveReverseBarInset.setAntiAlias(true);
+        inactiveReverseBarInset.setColor(0x37373F);
+        inactiveReverseBarInset.setAlpha(255);
+        inactiveReverseBarInset.setStyle(Paint.Style.FILL);
     }
 
     /**
@@ -658,11 +672,10 @@ public class DrawHud
         drawSteerLine(canvas);   
         drawPowerBars(canvas);
         drawBatteryBars(canvas);
-    	
-    	canvas.drawPath(this.powerArcPath, powerArc);
-    	canvas.drawPath(this.reverseArcPath, reverseArc);
-    	canvas.drawPath(this.batteryArcPath, batteryArc);
-    	
+
+        drawThrottleArc(canvas);
+        canvas.drawPath(this.batteryArcPath, batteryArc);
+
         invalidate();
     }
 
@@ -673,11 +686,11 @@ public class DrawHud
      */
     private void drawSteerLine(Canvas canvas)
     {
-    	boolean leftLock = Math.floor(this.tilt) == 0;
-    	boolean rightLock = Math.ceil(this.tilt) == 100;
-        
-    	//Mid line right
-    	if(rightLock)
+        boolean leftLock = Math.floor(this.tilt) == 0;
+        boolean rightLock = Math.ceil(this.tilt) == 100;
+
+        //Mid line right
+        if(rightLock)
             canvas.drawLine(
                     this.centerX + this.steerArcRadius - this.lockLineWidth,
                     this.centerY, 
@@ -685,14 +698,15 @@ public class DrawHud
                     this.centerY, 
                     steerLineLock
                 );
-    	else
+        else
             canvas.drawLine(
                     this.centerX + this.steerArcRadius - this.lockLineWidth, 
                     this.centerY,
-    		    this.centerX + this.steerArcRadius, 
+                    this.centerX + this.steerArcRadius, 
                     this.centerY, 
                     horizonLine
                 );
+
         
         //Mid line left
     	if(leftLock)
@@ -741,33 +755,53 @@ public class DrawHud
         {
 
             // Calculate the percentage if the 100% is 0-127, and then
-            // reprsent the percentage by the number of bars
+            // represent the percentage by the number of bars
             float percentage = 1.0f - (this.throttle / 127.0f);
             int cutOff = Math.round(percentage * 3);
 
             // Print the reverse bars
             for (int count = 0; count < 12; count++)
             {
-                // Inactive bar because we are cutoff or in drive mode
-                //
-                // Note that `2-count >= cutOff` is the inverse, as the power
-                // applied in the reverse goes from 2-0 instead of 0-2 so we 
-                // need to invert by using `2-count >= cutOff`
-                if (count >= 3 || 2-count >= cutOff)
+                // Draw the power inactive bars
+                if (count >= 3)
                 {
-                    canvas.drawPath(this.throttlePaths[count], inactiveBar);
+                    canvas.drawPath(
+                            this.throttlePaths[count], 
+                            inactiveBar
+                        );
                     canvas.drawPath(
                             this.throttlePathsInner[count], 
                             inactiveBarInset
                         );
                     continue;
                 }
-
-                canvas.drawPath(this.throttlePaths[count], activeReverseBar);
-                canvas.drawPath(
-                        this.throttlePathsInner[count], 
-                        activeReverseBarInset
-                    );
+                // Draw the inactive reverse bars
+                //
+                // Note that `2-count >= cutOff` is the inverse, as the power
+                // applied in the reverse goes from 2-0 instead of 0-2 so we 
+                // need to invert by using `2-count >= cutOff`
+                else if (2-count >= cutOff)
+                {
+                    canvas.drawPath(
+                            this.throttlePaths[count], 
+                            inactiveReverseBar
+                        );
+                    canvas.drawPath(
+                            this.throttlePathsInner[count], 
+                            inactiveReverseBarInset
+                        );
+                }
+                else
+                {
+                    canvas.drawPath(
+                            this.throttlePaths[count], 
+                            activeReverseBar
+                        );
+                    canvas.drawPath(
+                            this.throttlePathsInner[count], 
+                            activeReverseBarInset
+                        );
+                }
             }
         }
 
@@ -783,21 +817,33 @@ public class DrawHud
 
             for (int count = 0; count < 12; count++)
             {
-                if (count < 3 || count >= cutOff)
+                if (count < 3)
+                {
+                    canvas.drawPath(
+                            this.throttlePaths[count], 
+                            inactiveReverseBar
+                        );
+                    canvas.drawPath(
+                            this.throttlePathsInner[count], 
+                            inactiveReverseBarInset
+                        );
+                }
+                else if (count >= cutOff)
                 {
                     canvas.drawPath(this.throttlePaths[count], inactiveBar);
                     canvas.drawPath(
                             this.throttlePathsInner[count], 
                             inactiveBarInset
                         );
-                    continue;
                 }
-
-                canvas.drawPath(this.throttlePaths[count], activePowerBar);
-                canvas.drawPath(
-                        this.throttlePathsInner[count], 
-                        activePowerBarInset
-                    );
+                else
+                {
+                    canvas.drawPath(this.throttlePaths[count], activePowerBar);
+                    canvas.drawPath(
+                            this.throttlePathsInner[count], 
+                            activePowerBarInset
+                        );
+                }
             }
         }
     }
@@ -820,6 +866,17 @@ public class DrawHud
     }
 
     /**
+     * Draw the power and reverse arcs.
+     *
+     * @param Canvas where to draw
+     */
+    public void drawThrottleArc(Canvas canvas)
+    {
+        canvas.drawPath(this.powerArcPath, powerArc);
+        canvas.drawPath(this.reverseArcPath, reverseArc);
+    }
+
+    /**
      * Set the values of tilt in degrees
      *
      * @param radians The value in degrees
@@ -827,7 +884,6 @@ public class DrawHud
     public void setTilt(float radians)
     {
         this.tilt = radians;
-   // 	this.tilt = (float)Math.toDegrees(radians);
     }
 
     /**
@@ -837,6 +893,6 @@ public class DrawHud
      */
     public void setThrottle(int throttle)
     {
-    	this.throttle = throttle;
+        this.throttle = throttle;
     }
 }
