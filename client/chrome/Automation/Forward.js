@@ -17,6 +17,7 @@
             if (proximitySensor.read() == 0 && !goBack)
             {
                 vehicle.setThrottle(255); 
+                vehicle.setYaw(128); 
             }
             else
             {
@@ -27,6 +28,7 @@
                     },1000);
                 }
                 vehicle.setThrottle(0);
+                vehicle.setYaw(128);
             }
 
             vehicle.update();

@@ -1,4 +1,4 @@
 // Bootstrap the app.
 window.addEventListener("load", function() {
-    Controller();
+    cntr = Controller();
 });

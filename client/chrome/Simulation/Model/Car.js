@@ -44,7 +44,7 @@
             setTimeout(function(){
                 that.body.SetType(b2Body.b2_dynamicBody);
                 run = true;
-            },100);
+            },1000);
         })();
 
         // Create car body.

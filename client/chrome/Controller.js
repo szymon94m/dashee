@@ -15,7 +15,7 @@
         console.log(" --- Starting Simulator");
         var simulator = Simulator();
         var vehicle = VehicleCar({simulator:simulator});
-        var automation = AutomationParty({vehicle:vehicle, proximitySensor:simulator.getSensorProximity()});
+        var automation = AutomationForward({vehicle:vehicle, proximitySensor:simulator.getSensorProximity()});
         
         console.log(" --- Start Main Animation Loop");
 
@@ -56,6 +56,14 @@
         };
 
         animloop();
+
+        that.setAutomationMode = function( type ){
+            if(type == 1){
+                automation = AutomationForward({vehicle:vehicle, proximitySensor:simulator.getSensorProximity()});
+            }else{
+                automation = AutomationParty({vehicle:vehicle, proximitySensor:simulator.getSensorProximity()});
+            }
+        }
 
         return that;
       };
