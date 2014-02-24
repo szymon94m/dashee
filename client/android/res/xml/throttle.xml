@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <org.dashee.remote.preference.dialog.SeekBarPreference
+        android:key="throttle_trim"
+        android:title="@string/throttle_trim"
+        android:max="100"
+        android:defaultValue="20"
+        android:summary="@string/throttle_trim_summary"
+        />
+    <SwitchPreference
+        android:key="throttle_invert"
+        android:title="@string/throttle_invert"
+        android:summary="@string/throttle_invert_summary_off"
+        />
+</PreferenceScreen>
+

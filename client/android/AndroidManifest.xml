@@ -38,5 +38,14 @@
                 <category android:name="android.intent.category.DEFAULT" />  
             </intent-filter>  
         </activity>
+        <activity
+            android:name="org.dashee.remote.preference.ThrottleActivity"
+            android:label="@string/throttle_title"
+            android:parentActivityName="org.dashee.remote.preference.PreferenceActivity">
+            <intent-filter>  
+                <action android:name="dashee.action.THROTTLE"/>  
+                <category android:name="android.intent.category.DEFAULT" />  
+            </intent-filter>  
+        </activity>
     </application>
 </manifest>

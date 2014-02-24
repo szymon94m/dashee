@@ -53,4 +53,17 @@
     <string name="roll_vibrate_summary">
         Enable vibrations when the phone is in full lock.
     </string>
+
+    <string name="throttle_title">Throttle</string>
+    <string name="throttle_summary">Change the values of forward and reverse.</string>
+    <string name="throttle_trim">Trim</string>
+    <string name="throttle_trim_summary">Fine grain your throttle trim.</string>
+    <string name="throttle_trim_default">0</string>
+    <string name="throttle_invert">Invert</string>
+    <string name="throttle_invert_summary_on">
+        Disable to send normal values to the server.
+    </string>
+    <string name="throttle_invert_summary_off">
+        Enable to send inverted values to the server.
+    </string>
 </resources>

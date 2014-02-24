@@ -30,9 +30,16 @@
             >
             <intent android:action="dashee.action.ROLL"/>
         </Preference>
+        <Preference
+            android:key="pref_power"
+            android:title="@string/throttle_title" 
+            android:summary="@string/throttle_summary"
+            >
+            <intent android:action="dashee.action.THROTTLE"/>
+        </Preference>
         <PreferenceScreen
             android:key="pref_throttle"
-            android:summary="@string/pref_throttle_summary"
+            android:summary="@string/throttle_summary"
             android:title="@string/pref_throttle_title" >
         	<EditTextPreference
                 android:defaultValue="0"
