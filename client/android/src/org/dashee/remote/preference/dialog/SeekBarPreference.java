@@ -21,15 +21,16 @@ public class SeekBarPreference
     implements SeekBar.OnSeekBarChangeListener, OnClickListener
 {
     private SeekBar seekBar;
-    private TextView mSplashText;
-    private TextView mValueText;
+    private TextView tvMessage;
+    private TextView tvValue;
     private Context context;
 
-    private String mDialogMessage;
+    private String message;
     private String mSuffix;
-    private int mDefault = 0;
-    private int mMax = 0;
-    private int mValue = 0;
+
+    private int defaultValue = 0;
+    private int max = 0;
+    private int value = 0;
     
     /**
      * Create the preference
@@ -42,13 +43,13 @@ public class SeekBarPreference
         String androidns = "http://schemas.android.com/apk/res/android";
 
         // Get string value for dialogMessage :
-        int mDialogMessageId 
+        int messageId 
             = attrs.getAttributeResourceValue(androidns, "dialogMessage", 0);
-        if(mDialogMessageId == 0) 
-            mDialogMessage 
+        if(messageId == 0) 
+            this.message 
                 = attrs.getAttributeValue(androidns, "dialogMessage");
         else 
-            mDialogMessage = this.context.getString(mDialogMessageId);
+            this.message = this.context.getString(messageId);
 
         // Get string value for suffix (text attribute in xml file) :
         int mSuffixId = attrs.getAttributeResourceValue(androidns, "text", 0);
@@ -58,51 +59,59 @@ public class SeekBarPreference
             = this.context.getString(mSuffixId);
 
         // Get default and max seekbar values :
-        mDefault = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
-        mMax = attrs.getAttributeIntValue(androidns, "max", 100);
+        defaultValue = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
+        max = attrs.getAttributeIntValue(androidns, "max", 100);
     }
 
     /**
      * Create the view dynamically.
+     *
+     * First create the encapsulating LinearLayout which will be the returned 
+     * view from the function.
+     *
+     * Secondly, add the SpashText. A helpful summary of what this seek bar is 
+     * about.
+     *
+     * TODO
+     * Thirdly add another linearlayout which will encapsulate the seekbar and 
+     * the textview representing the value of the seekbar.
+     *
+     * Finally add the seekbar and the text representing the seekbar value.
+     *
+     * @return The new view created dynamicly
      */
     @Override 
     protected View onCreateDialogView() 
     {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            );
 
-        LinearLayout.LayoutParams params;
         LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(6,6,6,6);
 
-        mSplashText = new TextView(context);
-        mSplashText.setPadding(30, 10, 30, 10);
-        if (mDialogMessage != null)
-            mSplashText.setText(mDialogMessage);
-        layout.addView(mSplashText);
+        this.tvMessage = new TextView(context);
+        this.tvMessage.setPadding(30, 10, 30, 10);
+        if (this.message != null)
+            this.tvMessage.setText(this.message);
+        layout.addView(this.tvMessage);
 
-        mValueText = new TextView(context);
-        mValueText.setGravity(Gravity.CENTER_HORIZONTAL);
-        mValueText.setTextSize(32);
-        params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, 
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        layout.addView(mValueText, params);
+        this.tvValue = new TextView(context);
+        this.tvValue.setGravity(Gravity.CENTER_HORIZONTAL);
+        this.tvValue.setTextSize(32);
+        layout.addView(this.tvValue, params);
 
-        seekBar = new SeekBar(context);
-        seekBar.setOnSeekBarChangeListener(this);
-        layout.addView(
-                seekBar, 
-                new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-            );
+        this.seekBar = new SeekBar(context);
+        this.seekBar.setOnSeekBarChangeListener(this);
+        layout.addView(this.seekBar, params);
 
         if (shouldPersist())
-            mValue = getPersistedInt(mDefault);
+            this.value = getPersistedInt(this.defaultValue);
 
-        seekBar.setMax(mMax);
-        seekBar.setProgress(mValue);
+        this.seekBar.setMax(max);
+        this.seekBar.setProgress(value);
 
         return layout;
     }
@@ -111,53 +120,76 @@ public class SeekBarPreference
     protected void onBindDialogView(View v) 
     {
         super.onBindDialogView(v);
-        seekBar.setMax(mMax);
-        seekBar.setProgress(mValue);
+        seekBar.setMax(max);
+        seekBar.setProgress(value);
     }
 
     @Override
-    protected void onSetInitialValue(boolean restore, Object defaultValue)  
+    protected void onSetInitialValue(boolean restore, Object defaultValue)
     {
         super.onSetInitialValue(restore, defaultValue);
         if (restore) 
-            mValue = shouldPersist() ? getPersistedInt(mDefault) : 0;
+            value = shouldPersist() ? getPersistedInt(this.defaultValue) : 0;
         else 
-            mValue = (Integer)defaultValue;
+            value = (Integer)defaultValue;
     }
     
     /**
+     * Update our textview which represents the value.
      *
+     * @param seek The seekbar changed
+     * @param value The value that the seekbar represents
+     * @param fromTouch The boolean representing weather or not the value was 
+     *  changed using touch
      */
     @Override
-    public void onProgressChanged(SeekBar seek, int value, boolean fromTouch)
+    public void onProgressChanged(SeekBar seek, int val, boolean fromTouch)
     {
-        String t = String.valueOf(value);
-        mValueText.setText(mSuffix == null ? t : t.concat(" " + mSuffix));
+        String t = String.valueOf(val);
+        this.tvValue.setText(mSuffix == null ? t : t.concat(" " + mSuffix));
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void onStartTrackingTouch(SeekBar seek) {}
+
+    /**
+     * Not used.
+     */ 
     @Override
     public void onStopTrackingTouch(SeekBar seek) {}
 
+    /**
+     * Set the max value of the seek
+     *
+     * @param max The max value to set it to
+     */
     public void setMax(int max) 
     { 
-        mMax = max; 
+        this.max = max; 
     }
+
+    /**
+     * Get the max value set.
+     *
+     * @return The maximum value of current max
+     */
     public int getMax() 
     { 
-        return mMax; 
+        return max; 
     }
 
     public void setProgress(int progress) 
     { 
-        mValue = progress;
+        this.value = progress;
         if (seekBar != null)
             seekBar.setProgress(progress); 
     }
     public int getProgress() 
     { 
-        return mValue; 
+        return value; 
     }
 
     @Override
@@ -175,7 +207,7 @@ public class SeekBarPreference
     {
         if (shouldPersist()) 
         {
-            mValue = seekBar.getProgress();
+            this.value = seekBar.getProgress();
             persistInt(seekBar.getProgress());
             callChangeListener(Integer.valueOf(seekBar.getProgress()));
         }
