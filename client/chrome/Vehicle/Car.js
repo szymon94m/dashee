@@ -6,7 +6,6 @@
         var that = Vehicle(opts);
 
         var simCar = that.getSimVehicle();
-        console.log(simCar);
         
         that.read = function(commands){
             that.setThrottle(commands[2]);
