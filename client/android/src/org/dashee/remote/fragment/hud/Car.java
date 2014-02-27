@@ -132,7 +132,7 @@ public class Car
     private void initHud()
     {
         LinearLayout layout = (LinearLayout)view.findViewById(R.id.hud_canvas);
-        hud = new DrawHud (this.getActivity(), view);
+        this.hud = new DrawHud (this.getActivity(), view);
         layout.addView(hud);
     }
 
@@ -171,34 +171,25 @@ public class Car
                     android.util.Log.e("dashee","event: " + event.getY());
 
                     // Reverse mode
-                    if (event.getY() > 530)
+                    if (event.getY() > Math.round(Car.this.hud.getPowerGaugeBottomY()))
                     {
-                        // Set the value to max reverse when greater than the 
-                        // range
-                        if (event.getY() > 700)
-                            mapVal = Car.this.vehicle.getThrottleMin();
-                        else
-                            mapVal = RangeMapping.mapValue(
-                                event.getY(), 
-                                531, 
-                                700, 
-                                127,
-                                Car.this.vehicle.getThrottleMin()
-                            );
+                        mapVal = RangeMapping.mapValue(
+                            event.getY(), 
+                            Math.round(Car.this.hud.getPowerGaugeBottomY()), 
+                            Math.round(Car.this.hud.getReverseGaugeBottomY()), 
+                            127,
+                            Car.this.vehicle.getThrottleMin()
+                        );
                     }
                     else
                     {
-                        // Anything past less than 70 on touch is full power
-                        if (event.getY() < 70)
-                            mapVal = Car.this.vehicle.getThrottleMax();
-                        else
-                            mapVal = RangeMapping.mapValue(
-                                event.getY(), 
-                                70,
-                                529, 
-                                Car.this.vehicle.getThrottleMax(),
-                                128
-                            );
+                        mapVal = RangeMapping.mapValue(
+                            event.getY(), 
+                            Math.round(Car.this.hud.getPowerGaugeTopY()),
+                            Math.round(Car.this.hud.getPowerGaugeBottomY()),
+                            Car.this.vehicle.getThrottleMax(),
+                            128
+                        );
                     }
                 }
 

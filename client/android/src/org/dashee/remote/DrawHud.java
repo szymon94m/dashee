@@ -59,6 +59,11 @@ public class DrawHud
     // Top and bottom of the gauge paths
     double gaugeTopY;
     double gaugeBottomY;
+    double powerGaugeTopY;
+    double powerGaugeBottomY;
+    double reverseGaugeTopY;
+    double reverseGaugeBottomY;
+
     double gaugeBarHieght;
     double gaugeBarGap;
     float lockLineWidth;
@@ -303,6 +308,14 @@ public class DrawHud
     	this.gaugeBarGap = Math.round(canvasHeight*0.015);
     	this.gaugeTopY 
             = gaugeBottomY - (12*this.gaugeBarHieght) -(11*this.gaugeBarGap);
+
+        this.powerGaugeTopY = this.gaugeTopY;
+        this.powerGaugeBottomY
+            = gaugeBottomY - (3*this.gaugeBarHieght) -(3*this.gaugeBarGap);
+
+        this.reverseGaugeTopY
+            = gaugeBottomY - (3*this.gaugeBarHieght) -(2*this.gaugeBarGap);
+        this.reverseGaugeBottomY = this.gaugeBottomY;
     	
     	// Start Building Our HUD paths.
     	this.buildSteerPath();
@@ -433,8 +446,8 @@ public class DrawHud
         outerOval.set(p1x, p1y, p2x, p2y);
 
         float[] outerArcParams = this.getArcParams(
-                this.gaugeBottomY-158, 
-                this.gaugeTopY, 
+                this.powerGaugeBottomY, 
+                this.powerGaugeTopY, 
                 radius, 
                 false,
                 true
@@ -458,15 +471,14 @@ public class DrawHud
         outerOval.set(p1x, p1y, p2x, p2y);
 
         float[] outerArcParams = this.getArcParams(
-                this.gaugeBottomY, 
-                this.gaugeTopY+476, 
+                this.reverseGaugeBottomY, 
+                this.reverseGaugeTopY, 
                 radius, 
                 false,
                 true
             );
         this.reverseArcPath
             .arcTo(outerOval, outerArcParams[0], -outerArcParams[1], true);
-
     }
     
     /**
@@ -894,5 +906,25 @@ public class DrawHud
     public void setThrottle(int throttle)
     {
         this.throttle = throttle;
+    }
+
+    public double getPowerGaugeBottomY()
+    {
+        return this.powerGaugeBottomY;
+    }
+    
+    public double getPowerGaugeTopY()
+    {
+        return this.powerGaugeTopY;
+    }
+
+    public double getReverseGaugeBottomY()
+    {
+        return this.reverseGaugeBottomY;
+    }
+    
+    public double getReverseGaugeTopY()
+    {
+        return this.reverseGaugeTopY;
     }
 }
