@@ -31,6 +31,9 @@ public class SendCommands extends Thread
      */
     private long resetTime = 0;
     private long currentTime = 0;
+
+    private boolean pause = false;
+    private Object lockPause = new Object();
     
     /**
      * The config which holds configuration of our application. We use the 
@@ -92,6 +95,20 @@ public class SendCommands extends Thread
 
                 // Send the commands to th server
                 this.sendCommandBytes(ar);
+
+                synchronized (lockPause)
+                {
+                    while (pause)
+                    {
+                        try
+                        {
+                            lockPause.wait();
+                        }
+                        catch(InterruptedException e)
+                        {
+                        }
+                    }
+                }
             }
             catch (InterruptedException e) 
             {
@@ -141,6 +158,26 @@ public class SendCommands extends Thread
         catch (Exception e)
         {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Make sure when the phone is in background we stop sending the data.
+     */
+    public void onPause()
+    {
+        synchronized (lockPause)
+        {
+            this.pause = true;
+        }
+    }
+
+    public void onResume()
+    {
+        synchronized (lockPause)
+        {
+            this.pause = false;
+            lockPause.notifyAll();
         }
     }
 }

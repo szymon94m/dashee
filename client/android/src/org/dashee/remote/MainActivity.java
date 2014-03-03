@@ -45,10 +45,9 @@ public class MainActivity
     private org.dashee.remote.fragment.Hud hud;
     
     /**
-     * A list of running threads. Easy to contain them in a list as we
-     * start them and leave them running.
+     * Thread to send commands to the server.
      */
-    private java.util.List<Thread> threads;
+    private org.dashee.remote.thread.SendCommands threadSendCommand;
     
     /**
      * Hold the state of our Server. This will notify our
@@ -134,17 +133,11 @@ public class MainActivity
      */
     private void initThreads()
     {
-        threads = new java.util.ArrayList<Thread>();
-
         // Initialise our thread
-        threads.add(
-            new org.dashee.remote.thread.SendCommands(
+        threadSendCommand = new org.dashee.remote.thread.SendCommands(
                 this.config, 
                 this.vehicle
-            )
-        );
-        
-        for (Thread t : threads) { t.start(); }
+            );
     }
 
     /**
@@ -243,7 +236,7 @@ public class MainActivity
     protected void onResume() 
     {
         super.onResume();
-        //for (Thread t : this.threads) { t.onResume(); }
+        threadSendCommand.onResume();
     }
     
     /**
@@ -253,7 +246,7 @@ public class MainActivity
     protected void onPause() 
     {
         super.onPause();
-        //for (Thread t : this.threads) { t.onPause(); }
+        threadSendCommand.onPause();
     }
 
     /**
