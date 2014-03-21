@@ -213,7 +213,7 @@ public class MainActivity
         {
             Toast toast = Toast.makeText(
                 getApplicationContext(), 
-                e.getMessage(), 
+                e.getMessage() + "poop", 
                 Toast.LENGTH_SHORT
             );
             toast.show();
@@ -222,7 +222,7 @@ public class MainActivity
         {
             Toast toast = Toast.makeText(
                 getApplicationContext(), 
-                e.getMessage(), 
+                e.getMessage() + "", 
                 Toast.LENGTH_SHORT
             );
             toast.show();
