@@ -154,6 +154,14 @@ public class Main
             toastError("The IP address '" + value + "' is invalid!");
             return false;
         }
+        
+        // The port KEY should also be valid
+        if(preference.equals(etpPort) && !this.validPort(value))
+        {
+            toastError("A valid port is between 1500-3000 range and must " + 
+                    "be numeric");
+            return false;
+        }
 
         return true;
     }
@@ -178,6 +186,32 @@ public class Main
         catch (android.os.NetworkOnMainThreadException e) {}
 
         return false;
+    }
+
+    /**
+     * Valid the PORT number
+     *
+     * @param port The port as string
+     *
+     * @return True if port is valid and is within the range
+     */
+    private boolean validPort(String port)
+    {
+        try 
+        { 
+            int temp = Integer.parseInt(port);
+
+            if (temp < 1500)
+                return false;
+            else if (temp > 3000)
+                return false;
+        } 
+        catch(NumberFormatException e) 
+        { 
+            return false; 
+        }
+        // only got here if we didn't return false
+        return true;
     }
 
     /**
