@@ -17,4 +17,15 @@ public class CarTest
         super.vehicle = new Car();
         super.setUp();
     }
+    
+    /**
+     * Test the set and get of throttle
+     */
+    @Override
+    public void testSetAndGetThrottle()
+    {
+        assertEquals(this.vehicle.getThrottle(), 128);
+        this.vehicle.setThrottle(0);
+        super.testSetAndGetThrottle();
+    }
 }

@@ -10,5 +10,6 @@ public class Car extends Vehicle
         this.setPitch(128);
         this.setRoll(128);
         this.setYaw(128);
+        this.setThrottle(128);
     }
 }

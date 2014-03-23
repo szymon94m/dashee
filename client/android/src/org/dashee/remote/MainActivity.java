@@ -138,6 +138,7 @@ public class MainActivity
                 this.config, 
                 this.vehicle
             );
+        threadSendCommand.start();
     }
 
     /**
