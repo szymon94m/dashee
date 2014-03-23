@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,48 +21,62 @@ public class SeekBarPreference
     extends DialogPreference 
     implements SeekBar.OnSeekBarChangeListener, OnClickListener
 {
+    /**
+     * Store the context in the class as OnCreateView function
+     * will use the context.
+     */
+    private Context context;
+
+    /**
+     * The message string read from attribute
+     */
+    private String attributeMessage;
+    private int attributeDefault;
+    private int attributeMax;
+
+    /**
+     * Main View items used in our dialog
+     */ 
     private SeekBar seekBar;
     private TextView tvMessage;
     private TextView tvValue;
-    private Context context;
-
-    private String message;
-    private String mSuffix;
-
-    private int defaultValue = 0;
-    private int max = 0;
-    private int value = 0;
     
     /**
-     * Create the preference
+     * Create the preference.
+     *
+     * @param context The context to create view in
+     * @param attrs The attributes from the XML file
      */
-    public SeekBarPreference(Context context, AttributeSet attrs) {
-
-        super(context,attrs); 
+    public SeekBarPreference(Context context, AttributeSet attrs) 
+    {
+        super(context,attrs);
         this.context = context;
+        this.initValuesFromAttributes(attrs);
+    }
 
+    /**
+     * Initialize values from attributes.
+     *
+     * @param attrs The attribute object
+     */
+    private void initValuesFromAttributes(AttributeSet attrs)
+    {
         String androidns = "http://schemas.android.com/apk/res/android";
-
+        
         // Get string value for dialogMessage :
         int messageId 
             = attrs.getAttributeResourceValue(androidns, "dialogMessage", 0);
-        if(messageId == 0) 
-            this.message 
+        if (messageId == 0) 
+            this.attributeMessage 
                 = attrs.getAttributeValue(androidns, "dialogMessage");
         else 
-            this.message = this.context.getString(messageId);
-
-        // Get string value for suffix (text attribute in xml file) :
-        int mSuffixId = attrs.getAttributeResourceValue(androidns, "text", 0);
-        if(mSuffixId == 0) 
-            mSuffix = attrs.getAttributeValue(androidns, "text");
-        else mSuffix 
-            = this.context.getString(mSuffixId);
-
-        // Get default and max seekbar values :
-        defaultValue = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
-        max = attrs.getAttributeIntValue(androidns, "max", 100);
+            this.attributeMessage = this.context.getString(messageId);
+        
+        this.attributeDefault 
+            = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
+        this.attributeMax = attrs.getAttributeIntValue(androidns, "max", 100);
     }
+
 
     /**
      * Create the view dynamically.
@@ -72,66 +87,76 @@ public class SeekBarPreference
      * Secondly, add the SpashText. A helpful summary of what this seek bar is 
      * about.
      *
-     * TODO
-     * Thirdly add another linearlayout which will encapsulate the seekbar and 
-     * the textview representing the value of the seekbar.
-     *
      * Finally add the seekbar and the text representing the seekbar value.
      *
-     * @return The new view created dynamicly
+     * @return The new view created dynamically
      */
     @Override 
     protected View onCreateDialogView() 
     {
+        this.initTvMessage();
+        this.initSeekBar();
+        this.initTvValue();
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 
                 LinearLayout.LayoutParams.WRAP_CONTENT
             );
 
-        LinearLayout layout = new LinearLayout(context);
+        LinearLayout layout = new LinearLayout(this.context);
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(6,6,6,6);
 
-        this.tvMessage = new TextView(context);
-        this.tvMessage.setPadding(30, 10, 30, 10);
-        if (this.message != null)
-            this.tvMessage.setText(this.message);
+        LinearLayout layoutBar = new LinearLayout(this.context);
+        layoutBar.setOrientation(LinearLayout.VERTICAL);
+        
+        layoutBar.addView(this.seekBar, params);
+        layoutBar.addView(this.tvValue, params);
         layout.addView(this.tvMessage);
+        layout.addView(layoutBar, params);
 
-        this.tvValue = new TextView(context);
-        this.tvValue.setGravity(Gravity.CENTER_HORIZONTAL);
-        this.tvValue.setTextSize(32);
-        layout.addView(this.tvValue, params);
-
-        this.seekBar = new SeekBar(context);
-        this.seekBar.setOnSeekBarChangeListener(this);
-        layout.addView(this.seekBar, params);
-
+        // If we are allowed to persist, set the seek bar to the last known 
+        // value, other wise set return the persisted value as the current value
         if (shouldPersist())
-            this.value = getPersistedInt(this.defaultValue);
-
-        this.seekBar.setMax(max);
-        this.seekBar.setProgress(value);
+            this.setProgress(getPersistedInt(this.seekBar.getProgress()));
 
         return layout;
     }
-
-    @Override 
-    protected void onBindDialogView(View v) 
+    
+    /**
+     * Initialize the message.
+     */
+    private void initTvMessage()
     {
-        super.onBindDialogView(v);
-        seekBar.setMax(max);
-        seekBar.setProgress(value);
+        this.tvMessage = new TextView(this.context);
+        this.tvMessage.setText(this.attributeMessage);
+        this.tvMessage.setPadding(30, 10, 40, 10);
+        this.tvMessage.setTextSize(12);
     }
 
-    @Override
-    protected void onSetInitialValue(boolean restore, Object defaultValue)
+    /**
+     * Initialize the seek bar.
+     */
+    private void initSeekBar()
     {
-        super.onSetInitialValue(restore, defaultValue);
-        if (restore) 
-            value = shouldPersist() ? getPersistedInt(this.defaultValue) : 0;
-        else 
-            value = (Integer)defaultValue;
+        String androidns = "http://schemas.android.com/apk/res/android";
+
+        // Get default and max seekbar values :
+        this.seekBar = new SeekBar(this.context);
+        this.seekBar.setProgress(this.attributeDefault);
+        this.seekBar.setMax(this.attributeMax);
+        this.seekBar.setOnSeekBarChangeListener(this);
+    }
+
+    /**
+     * Initialize the text view value.
+     */
+    private void initTvValue()
+    {
+        this.tvValue = new TextView(this.context);
+        this.tvValue.setTextSize(25);
+        this.tvValue.setGravity(Gravity.CENTER);
+        this.tvValue.setPadding(0,10,10,10);
     }
     
     /**
@@ -146,72 +171,73 @@ public class SeekBarPreference
     public void onProgressChanged(SeekBar seek, int val, boolean fromTouch)
     {
         String t = String.valueOf(val);
-        this.tvValue.setText(mSuffix == null ? t : t.concat(" " + mSuffix));
+        this.tvValue.setText(t);
     }
 
     /**
      * Not used.
      */
     @Override
-    public void onStartTrackingTouch(SeekBar seek) {}
+    public void onStartTrackingTouch(SeekBar seek) 
+    {
+    }
 
     /**
      * Not used.
      */ 
     @Override
-    public void onStopTrackingTouch(SeekBar seek) {}
-
-    /**
-     * Set the max value of the seek
-     *
-     * @param max The max value to set it to
-     */
-    public void setMax(int max) 
-    { 
-        this.max = max; 
+    public void onStopTrackingTouch(SeekBar seek) 
+    {
     }
 
     /**
-     * Get the max value set.
+     * Show the dialog and change the event listener to this.
      *
-     * @return The maximum value of current max
+     * @param state
      */
-    public int getMax() 
-    { 
-        return max; 
-    }
-
-    public void setProgress(int progress) 
-    { 
-        this.value = progress;
-        if (seekBar != null)
-            seekBar.setProgress(progress); 
-    }
-    public int getProgress() 
-    { 
-        return value; 
-    }
-
     @Override
     public void showDialog(Bundle state) 
     {
         super.showDialog(state);
 
         Button positiveButton 
-            = ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE);
+            = ((AlertDialog) this.getDialog())
+                .getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(this);
     }
 
+    /**
+     * When clicked, make sure the value is persisted.
+     */
     @Override
     public void onClick(View v) 
     {
         if (shouldPersist()) 
         {
-            this.value = seekBar.getProgress();
-            persistInt(seekBar.getProgress());
-            callChangeListener(Integer.valueOf(seekBar.getProgress()));
+            persistInt(this.seekBar.getProgress());
+            callChangeListener(Integer.valueOf(this.seekBar.getProgress()));
         }
 
         ((AlertDialog) getDialog()).dismiss();
+    }
+
+    /**
+     * Set the progress value of the seek bar from the outside world.
+     *
+     * @param progress the Value to set
+     */
+    public void setProgress(int progress)
+    {
+        this.seekBar.setProgress(progress);
+    }
+
+    /**
+     * Interface to allow the outside world to set the message
+     *
+     * @param message The string to set the message
+     */
+    public void setMessage(String message)
+    {
+        this.tvMessage.setText(message);
     }
 }

@@ -33,7 +33,10 @@ public class ConfigTest
             this.config.setPort(x);
             assertEquals(this.config.getPort(), x);
         }
+    }
 
+    public void testSettingInvalidPorts()
+    {
         try
         {
             this.config.setPort(1499);
@@ -42,7 +45,7 @@ public class ConfigTest
         catch (OutOfRange e)
         {
             assertSame(e.getMessage(), "Port value must be between 1500-3000");
-            assertEquals(this.config.getPort(), 3000);
+            assertEquals(this.config.getPort(), 2047);
         }
         
         try
@@ -53,7 +56,7 @@ public class ConfigTest
         catch (OutOfRange e)
         {
             assertSame(e.getMessage(), "Port value must be between 1500-3000");
-            assertEquals(this.config.getPort(), 3000);
+            assertEquals(this.config.getPort(), 2047);
         }
     }
 
@@ -66,9 +69,13 @@ public class ConfigTest
         assertEquals(this.config.getIp().getHostAddress(), "127.0.0.1");
         this.config.setIp("192.168.1.10");
         assertEquals(this.config.getIp().getHostAddress(), "192.168.1.10");
+    }
 
+    public void testSettingInvalidIpAddressFails()
+    {
         try
         {
+            this.config.setIp("192.168.1.10");
             this.config.setIp("1111.1.1.1.1");
             TestCase.fail("Invalid IP");
         }

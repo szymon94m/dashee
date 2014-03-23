@@ -201,9 +201,7 @@ public class Main
         { 
             int temp = Integer.parseInt(port);
 
-            if (temp < 1500)
-                return false;
-            else if (temp > 3000)
+            if (temp < 1500 || temp > 3000)
                 return false;
         } 
         catch(NumberFormatException e) 
