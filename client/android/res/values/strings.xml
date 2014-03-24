@@ -54,18 +54,29 @@
         Enable vibrations when the phone is in full lock.
     </string>
 
+    <!-- THROTTLE -->
     <string name="throttle_title">Throttle</string>
     <string name="throttle_summary">Change the values of forward and reverse.</string>
+
     <string name="throttle_trim">Trim</string>
+    <string name="throttle_trim_default">0</string>
     <string name="throttle_trim_summary">Fine grain your throttle trim.</string>
     <string name="throttle_trim_message">
-        Modifying your trim values causes you to lose range, if possible try physically trimming the throttle before resorting to changing it digitally.
+        Modifying your trim values causes you to lose range, if possible try physically trimming the throttle before changing it digitally.
     </string>
-    <string name="throttle_trim_default">0</string>
+
+    <string name="throttle_max">Maximum Throttle</string>
+    <string name="throttle_max_default">0</string>
+    <string name="throttle_max_summary">Set the maximum value of throttle allowed.</string>
+    <string name="throttle_max_message">
+        Helps you control the maximum throttle values sent to the server
+    </string>
+
     <string name="throttle_invert">Invert</string>
     <string name="throttle_invert_summary">
         Enable to send inverted values to the server.
     </string>
+
     <string name="throttle_pitch">Use phone pitch for throttle</string>
     <string name="throttle_pitch_summary">
         Enable to use pitch to change throttle.

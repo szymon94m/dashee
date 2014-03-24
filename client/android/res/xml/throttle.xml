@@ -10,6 +10,14 @@
         android:dialogMessage="@string/throttle_trim_message"
         android:summary="@string/throttle_trim_summary"
         />
+    <org.dashee.remote.preference.dialog.SeekBarPreference
+        android:key="throttle_max"
+        android:title="@string/throttle_max"
+        android:max="100"
+        android:defaultValue="100"
+        android:dialogMessage="@string/throttle_max_message"
+        android:summary="@string/throttle_max_summary"
+        />
     <SwitchPreference
         android:key="throttle_invert"
         android:title="@string/throttle_invert"

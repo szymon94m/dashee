@@ -77,7 +77,6 @@ public class SeekBarPreference
         this.attributeMax = attrs.getAttributeIntValue(androidns, "max", 100);
     }
 
-
     /**
      * Create the view dynamically.
      *
@@ -157,6 +156,7 @@ public class SeekBarPreference
         this.tvValue.setTextSize(25);
         this.tvValue.setGravity(Gravity.CENTER);
         this.tvValue.setPadding(0,10,10,10);
+        this.setValue(this.seekBar.getProgress());
     }
     
     /**
@@ -170,8 +170,7 @@ public class SeekBarPreference
     @Override
     public void onProgressChanged(SeekBar seek, int val, boolean fromTouch)
     {
-        String t = String.valueOf(val);
-        this.tvValue.setText(t);
+        this.setValue(val);
     }
 
     /**
@@ -229,6 +228,18 @@ public class SeekBarPreference
     public void setProgress(int progress)
     {
         this.seekBar.setProgress(progress);
+    }
+
+    /**
+     * Set the value of the text box, which represents the current state of the
+     * seekbar.
+     *
+     * @param value The value to set
+     */
+    private void setValue(int value)
+    {
+        String t = String.valueOf(value);
+        this.tvValue.setText(t);
     }
 
     /**
