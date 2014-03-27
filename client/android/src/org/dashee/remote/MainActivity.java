@@ -207,6 +207,8 @@ public class MainActivity
                 this.vehicle.setRollInverted(
                         prefs.getBoolean("roll_invert", false)
                     );
+            else if (key.equals("throttle_max"))
+                this.vehicle.setThrottleMaxPerc(prefs.getInt("throttle_max", 100));
 
             this.hud.setIp(this.config.getIp().toString().substring(1));
         }

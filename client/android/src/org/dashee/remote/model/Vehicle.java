@@ -1,6 +1,7 @@
 package org.dashee.remote.model;
 
 import org.dashee.remote.exception.OutOfRange;
+import org.dashee.remote.RangeMapping;
 
 /**
  * This class holds all the values used for all vehicles. A nice way to 
@@ -546,6 +547,21 @@ public abstract class Vehicle
             throw new OutOfRange("Max value must be less than min");
 
         this.throttleMax = max;
+    }
+
+    /**
+     * Set the throttle max as a percentage.
+     *
+     * @param value The value from 0 to 100%
+     */
+    public void setThrottleMaxPerc(int value)
+    {
+      //  if (value < 0.0)
+      //      throw new OutOfR
+
+        this.setThrottleMax(
+            Math.round(RangeMapping.mapValue(value, 1, 100, 1, 255))
+        );
     }
 
     /**

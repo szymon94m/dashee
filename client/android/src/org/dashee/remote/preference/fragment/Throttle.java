@@ -9,7 +9,7 @@ import org.dashee.remote.R;
  * The fragment for our throttle.
  */
 public class Throttle 
-	extends PreferenceFragment
+    extends PreferenceFragment
 {
     /**
      * The things to fix when on create is run.

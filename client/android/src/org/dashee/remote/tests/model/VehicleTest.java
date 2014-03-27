@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 import org.dashee.remote.model.Vehicle;
 import org.dashee.remote.exception.OutOfRange;
 
+import org.dashee.remote.RangeMapping;
+
 abstract public class VehicleTest
     extends TestCase
 {
@@ -472,6 +474,25 @@ abstract public class VehicleTest
                 assertEquals(this.vehicle.getThrottle(), 130);
             else 
                 assertEquals(this.vehicle.getThrottle(), x);
+        }
+    }
+
+    public void testSetThrottleMaxPerc()
+    {
+        this.vehicle.setThrottleMaxPerc(50);
+
+        for (int x = 0; x < 255; x++)
+        {
+            this.vehicle.setThrottle(x);
+
+            if (x < 128) 
+            {
+                assertEquals(this.vehicle.getThrottle(), x);
+            }
+            else
+            {
+                assertEquals(this.vehicle.getThrottle(), 127);
+            }
         }
     }
 

@@ -28,4 +28,17 @@ public class CarTest
         this.vehicle.setThrottle(0);
         super.testSetAndGetThrottle();
     }
+
+    public void testSetThrottleMaxPerc()
+    {
+        this.vehicle.setThrottleMaxPerc(50);
+
+        for (int x = 128; x < 255; x++)
+        {
+            this.vehicle.setThrottle(x);
+
+            if (x < 192) { assertEquals(this.vehicle.getThrottle(), x); }
+            else { assertEquals(this.vehicle.getThrottle(), 191); }
+        }
+    }
 }

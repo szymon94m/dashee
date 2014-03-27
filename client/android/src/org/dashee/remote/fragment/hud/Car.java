@@ -168,8 +168,6 @@ public class Car
                 // will the mapValue change
                 if (event.getAction() != MotionEvent.ACTION_UP) 
                 {
-                    android.util.Log.e("dashee","event: " + event.getY());
-
                     // Reverse mode
                     if (event.getY() > Math.round(Car.this.hud.getPowerGaugeBottomY()))
                     {
@@ -178,7 +176,7 @@ public class Car
                             Math.round(Car.this.hud.getPowerGaugeBottomY()), 
                             Math.round(Car.this.hud.getReverseGaugeBottomY()), 
                             127,
-                            Car.this.vehicle.getThrottleMin()
+                            0
                         );
                     }
                     else
@@ -187,7 +185,7 @@ public class Car
                             event.getY(), 
                             Math.round(Car.this.hud.getPowerGaugeTopY()),
                             Math.round(Car.this.hud.getPowerGaugeBottomY()),
-                            Car.this.vehicle.getThrottleMax(),
+                            255,
                             128
                         );
                     }
@@ -404,7 +402,7 @@ public class Car
                     );
 
             tvThrottle.setText(Math.round(mapped) + "");
-            hud.setThrottle(this.vehicle.getThrottle());
+            hud.setThrottle(this.vehicle.getActualThrottle());
         }
 
         // If throttle fails, set this to the error string
