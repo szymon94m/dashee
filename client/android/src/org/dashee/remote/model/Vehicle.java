@@ -11,37 +11,41 @@ import org.dashee.remote.RangeMapping;
  */
 public abstract class Vehicle
 {
+    public static final int MAX = 255;
+    public static final int MID = 128;
+    public static final int MIN = 0;
+
     /**
      * Main flight control sets.
      */
-    private int pitch = 0;
-    private int roll = 0;
-    private int yaw = 0;
-    private int throttle = 0;
+    private int pitch = MIN;
+    private int roll = MIN;
+    private int yaw = MIN;
+    private int throttle = MIN;
  
     /**
      * The trim values for the vehicle
      */    
-    private int pitchTrim = 0;
-    private int rollTrim = 0;
-    private int yawTrim = 0;
-    private int throttleTrim = 0;
+    private int pitchTrim = MIN;
+    private int rollTrim = MIN;
+    private int yawTrim = MIN;
+    private int throttleTrim = MIN;
 
     /**
      * The max value for flight controls
      */
-    private int pitchMin = 0;
-    private int rollMin = 0;
-    private int yawMin = 0;
-    private int throttleMin = 0;
+    private int pitchMin = MIN;
+    private int rollMin = MIN;
+    private int yawMin = MIN;
+    private int throttleMin = MIN;
 
     /**
      * The max value for flight controls
      */
-    private int pitchMax = 255;
-    private int rollMax = 255;
-    private int yawMax = 255;
-    private int throttleMax = 255;
+    private int pitchMax = MAX;
+    private int rollMax = MAX;
+    private int yawMax = MAX;
+    private int throttleMax = MAX;
 
     /**
      * Flag to determine the inversion of the flight controls.
@@ -60,7 +64,7 @@ public abstract class Vehicle
      */ 
     public void setPitch(int pitch)
     {
-        if (pitch < 0 || pitch > 255)
+        if (pitch < MIN || pitch > MAX)
             throw new OutOfRange("Invalid range of Pitch");
 
         this.pitch = pitch;
@@ -83,7 +87,7 @@ public abstract class Vehicle
 
         // Reverse the value when in invert
         if (pitchInverted)
-            return 255 - trimmed;
+            return MAX - trimmed;
         
         return trimmed;
     }
@@ -97,7 +101,7 @@ public abstract class Vehicle
      */
     public void setPitchTrim(int trim)
     {
-        if (trim < -128 || trim > 128)
+        if (trim < -MID || trim > MID)
             throw new OutOfRange("Invalid range value for Pitch trim");
 
         this.pitchTrim = trim;
@@ -182,7 +186,7 @@ public abstract class Vehicle
      */ 
     public void setRoll(int roll)
     {
-        if (roll < 0 || roll > 255)
+        if (roll < MIN || roll > MAX)
             throw new OutOfRange("Invalid range of Roll");
 
         this.roll = roll;
@@ -205,7 +209,7 @@ public abstract class Vehicle
 
         // Reverse the value when in invert
         if (rollInverted)
-            return 255 - trimmed;
+            return MAX - trimmed;
         
         return trimmed;
     }
@@ -229,7 +233,7 @@ public abstract class Vehicle
      */
     public void setRollTrim(int trim)
     {
-        if (trim < -128 || trim > 128)
+        if (trim < -MID || trim > MID)
             throw new OutOfRange("Invalid range value for Roll trim");
 
         this.rollTrim = trim;
@@ -314,7 +318,7 @@ public abstract class Vehicle
      */ 
     public void setYaw(int yaw)
     {
-        if (yaw < 0 || yaw > 255)
+        if (yaw < MIN || yaw > MAX)
             throw new OutOfRange("Invalid range of Yaw");
 
         this.yaw = yaw;
@@ -337,7 +341,7 @@ public abstract class Vehicle
         
         // Reverse the value when in invert
         if (yawInverted)
-            return 255 - trimmed;
+            return MAX - trimmed;
         
         return trimmed;
     }
@@ -351,7 +355,7 @@ public abstract class Vehicle
      */
     public void setYawTrim(int trim)
     {
-        if (trim < -128 || trim > 128)
+        if (trim < -MID || trim > MID)
             throw new OutOfRange("Invalid range value for Yaw trim");
 
         this.yawTrim = trim;
@@ -436,7 +440,7 @@ public abstract class Vehicle
      */ 
     public void setThrottle(int throttle)
     {
-        if (throttle < 0 || throttle > 255)
+        if (throttle < MIN || throttle > MAX)
             throw new OutOfRange("Invalid range of Throttle");
 
         this.throttle = throttle;
@@ -459,7 +463,7 @@ public abstract class Vehicle
 
         // Reverse the value when in invert
         if (throttleInverted)
-            return 255 - trimmed;
+            return MAX - trimmed;
         
         return trimmed;
     }
@@ -483,7 +487,7 @@ public abstract class Vehicle
      */
     public void setThrottleTrim(int trim)
     {
-        if (trim < -128 || trim > 128)
+        if (trim < -MID || trim > MID)
             throw new OutOfRange("Invalid range value for Throttle trim");
 
         this.throttleTrim = trim;
@@ -560,7 +564,7 @@ public abstract class Vehicle
       //      throw new OutOfR
 
         this.setThrottleMax(
-            Math.round(RangeMapping.mapValue(value, 1, 100, 1, 255))
+            Math.round(RangeMapping.mapValue(value, 1, 100, MIN+1, MAX))
         );
     }
 
