@@ -59,16 +59,6 @@ public class Car
     private View view;
 
     /**
-     * Assign area for current steer value
-     */
-    private float steer;
-
-    /**
-     * Dont update steer UI if it's same as last time.
-     */
-    private int prevSteer = -1;
-
-    /**
      * Handlers to our text view.
      */
     private TextView tvIp;
