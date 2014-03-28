@@ -162,7 +162,7 @@ public class Car
             @Override
             public boolean onTouch(View v, MotionEvent event) 
             {
-                float mapVal = 128.0f;
+                float mapVal = (float)org.dashee.remote.model.vehicle.Car.MID;
 
                 // Only if the user is still touching the screen
                 // will the mapValue change
@@ -175,8 +175,8 @@ public class Car
                             event.getY(), 
                             Math.round(Car.this.hud.getPowerGaugeBottomY()), 
                             Math.round(Car.this.hud.getReverseGaugeBottomY()), 
-                            127,
-                            0
+                            org.dashee.remote.model.vehicle.Car.MID-1,
+                            org.dashee.remote.model.vehicle.Car.MIN
                         );
                     }
                     else
@@ -185,13 +185,13 @@ public class Car
                             event.getY(), 
                             Math.round(Car.this.hud.getPowerGaugeTopY()),
                             Math.round(Car.this.hud.getPowerGaugeBottomY()),
-                            255,
-                            128
+                            org.dashee.remote.model.vehicle.Car.MAX,
+                            org.dashee.remote.model.vehicle.Car.MID
                         );
                     }
                 }
 
-                setThrottle((int)mapVal);
+                Car.this.setThrottle((int)mapVal);
 
                 return true;
             }
@@ -285,10 +285,10 @@ public class Car
      */
     public void setIp(String ip)
     {
-        if (tvIp == null)
+        if (this.tvIp == null)
            return;
 
-        tvIp.setText(ip);
+        this.tvIp.setText(ip);
     }
 
     /**
@@ -298,10 +298,10 @@ public class Car
      */
     public void setConnection(String value)
     {
-        if (tvStatus == null)
+        if (this.tvStatus == null)
             return;
 
-        tvStatus.setText(value);
+        this.tvStatus.setText(value);
     }
     
     /**
@@ -311,13 +311,13 @@ public class Car
      */
     public void setBps(int bps)
     {
-        if (tvBPS == null)
+        if (this.tvBPS == null)
             return;
 
         if (bps < 0)
-            tvBPS.setText("Negative?");
+            this.tvBPS.setText("Negative?");
         else
-            tvBPS.setText(Integer.toString(bps));
+            this.tvBPS.setText(Integer.toString(bps));
     }
 
     /**
@@ -368,12 +368,12 @@ public class Car
                 );
 
 
-            tvRoll.setText(Math.round(mapped)-50+"");
+            this.tvRoll.setText(Math.round(mapped)-50+"");
             hud.setTilt(mapped);
         }
         catch (OutOfRange e)    
         {
-            tvRoll.setText(
+            this.tvRoll.setText(
                         Html.fromHtml("<font color='#D93600'>---</font>")
                     );
         }
@@ -401,14 +401,14 @@ public class Car
                         50.0f
                     );
 
-            tvThrottle.setText(Math.round(mapped) + "");
+            this.tvThrottle.setText(Math.round(mapped) + "");
             hud.setThrottle(this.vehicle.getActualThrottle());
         }
 
         // If throttle fails, set this to the error string
         catch (OutOfRange e)
         {
-            tvThrottle.setText(
+            this.tvThrottle.setText(
                     Html.fromHtml("<font color='#D93600'>---</font>")
                 );
         }

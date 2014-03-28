@@ -31,36 +31,5 @@
             >
             <intent android:action="dashee.action.THROTTLE"/>
         </Preference>
-        <PreferenceScreen
-            android:key="pref_throttle"
-            android:summary="@string/throttle_summary"
-            android:title="@string/pref_throttle_title" >
-        	<EditTextPreference
-                android:defaultValue="0"
-                android:key="pref_throttle_trim"
-                android:title="Trim" 
-                android:summary="0"
-                />
-            <SwitchPreference
-                android:defaultValue="0"
-                android:key="pref_throttle_invert"
-                android:title="Invert" 
-                android:summary="Reverse the controls"
-                />
-            <EditTextPreference
-                android:defaultValue="255"
-                android:key="pref_throttle_max"
-                android:title="Max"
-                android:summary="0"
-                android:numeric="decimal"
-                />
-            <EditTextPreference
-                android:defaultValue="0"
-                android:key="pref_throttle_min"
-                android:title="Min"
-                android:summary="0"
-                android:numeric="decimal"
-                />
-        </PreferenceScreen>
     </PreferenceCategory>
 </PreferenceScreen>

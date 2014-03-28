@@ -169,16 +169,16 @@ public class MainActivity
     {
         try
         {
-            if(key.equals("pref_server_ip"))
-                this.config.setIp(
-                    prefs.getString("pref_server_ip", "127.0.0.1")
-                 );
+            if (key.equals("pref_server_ip"))
+                this.config.setIp(prefs.getString("pref_server_ip", "127.0.0.1"));
+
             else if (key.equals("pref_server_port"))
                 this.config.setPort(
                     Integer.parseInt(
                         prefs.getString("pref_server_port", "2047")
                     )
                 );
+
             else if (key.equals("roll_min"))
                 this.vehicle.setRollMin(
                         Math.round(
@@ -208,7 +208,9 @@ public class MainActivity
                         prefs.getBoolean("roll_invert", false)
                     );
             else if (key.equals("throttle_max"))
-                this.vehicle.setThrottleMaxPerc(prefs.getInt("throttle_max", 100));
+                this.vehicle.setThrottleMaxPerc(
+                        prefs.getInt("throttle_max", 100)
+                    );
 
             this.hud.setIp(this.config.getIp().toString().substring(1));
         }

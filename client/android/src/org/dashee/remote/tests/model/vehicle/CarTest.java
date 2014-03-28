@@ -29,6 +29,10 @@ public class CarTest
         super.testSetAndGetThrottle();
     }
 
+    /**
+     * Overwrite the parent values, as throttle is set from 128 to 255
+     * for Car type
+     */
     public void testSetThrottleMaxPerc()
     {
         this.vehicle.setThrottleMaxPerc(50);
