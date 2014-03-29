@@ -181,31 +181,7 @@ public class MainActivity
                     )
                 );
 
-            // Roll Values
-            else if (key.equals("roll_min"))
-                this.vehicle.setRollMin(
-                        Math.round(
-                            RangeMapping.mapValue(
-                                prefs.getInt("roll_min", 0),
-                                0,
-                                100,
-                                0,
-                                255
-                            )
-                        )
-                    );
-            else if (key.equals("roll_max"))
-                this.vehicle.setRollMax(
-                        Math.round(
-                            RangeMapping.mapValue(
-                                prefs.getInt("roll_max", 0),
-                                0,
-                                100,
-                                0,
-                                255
-                            )
-                        )
-                    );
+            // Roll
             else if (key.equals("roll_invert"))
                 this.vehicle.setRollInverted(
                         prefs.getBoolean("roll_invert", false)

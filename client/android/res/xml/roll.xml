@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <org.dashee.remote.preference.dialog.SeekBarPreference
+        android:key="roll_trim"
+        android:title="@string/roll_trim"
+        android:max="100"
+        android:defaultValue="50"
+        android:dialogMessage="@string/roll_trim_message"
+        android:summary="@string/roll_trim_summary"
+        />
+    <SwitchPreference
+        android:key="roll_invert"
+        android:title="@string/roll_invert"
+        android:summary="@string/roll_invert_summary"
+        />
+    <SwitchPreference
+        android:key="roll_vibrate"
+        android:title="@string/roll_vibrate"
+        android:summary="@string/roll_vibrate_summary"
+        />
+</PreferenceScreen>
+

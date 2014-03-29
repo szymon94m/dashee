@@ -36,15 +36,14 @@
     <string name="hud_roll_min">0</string>
     <string name="hud_roll_max">100</string>
 
-    <string name="pref_roll_default">Reset</string>
-
     <string name="roll_title">Roll/Steering</string>
     <string name="roll_title_summary">Change the finer details on roll axis.</string>
     <string name="roll_trim">Trim</string>
     <string name="roll_trim_summary">Choose between -100 and 100.</string>
-    <string name="roll_minmax">Minimum and Maximum</string>
-    <string name="roll_minmax_summary">Control the contraints of your roll axis.</string>
-    <string name="roll_minmax_value">-</string>
+    <string name="roll_trim_message">
+        Alway try to trim physically on the device, before resorting to fine tuning 
+        the digital trim.
+    </string>
     <string name="roll_invert">Invert</string>
     <string name="roll_invert_summary">
         Enable to send inverted values to the server.

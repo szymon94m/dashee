@@ -1,76 +1,34 @@
 package org.dashee.remote.preference;
 
 import android.app.ActionBar;
-import android.app.DialogFragment;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import android.preference.PreferenceActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
-
 import org.dashee.remote.R;
-import org.dashee.remote.preference.fragment.Roll;
-import org.dashee.remote.preference.fragment.dialog.MinMax;
-import org.dashee.remote.preference.fragment.dialog.MinMax.MinMaxListener;
  
 /**
- * This will handle our Preference object
- * 
- * @author David Buttar
- * @author Shahmir Javaid
+ * Roll Preference Activity.
+ *
+ * Used to set the properties specific to our throttle
  */
 public class RollActivity 
-    extends FragmentActivity
-    implements MinMaxListener
+    extends PreferenceActivity 
 {
-    /**
-     * Handler to our Fragment
-     */ 
-    private Roll roll;
-
-    /**
-     * Set our Activity, and launch the fragment.
-     *
-     * @param savedInstanceState The Bundle
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
         
-    	initActivity();
-        initFragment();
-    }
-
-    /**
-     * Initialize our Activity
-     */
-    public void initActivity()
-    {
-        // Set the XML view for this activity
-        setContentView(R.layout.activity_preference);
-        
         ActionBar ab = getActionBar();
         ab.setHomeButtonEnabled(true);
-    }
 
-    /**
-     * Initialize our Fragments
-     */
-    public void initFragment()
-    {
-        //Set the initial view to our HUD
-        roll = new Roll();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(
-                R.id.preference_roll, 
-                roll
-            );
-        ft.commit();
+        getFragmentManager()
+            .beginTransaction()
+            .replace(
+                    android.R.id.content, 
+                    new org.dashee.remote.preference.fragment.Roll()
+                )
+            .commit();
     }
 
     /**
@@ -92,27 +50,5 @@ public class RollActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    
-    /**
-     * Override the Positive click
-     *
-     * @param dialog The dialog fragment in question
-     */ 
-    @Override
-    public void onMinMaxPositiveClick(MinMax dialog)
-    {
-        roll.onMinMaxPositiveClick(dialog);
-    }
-
-    /**
-     * Override the Negative click
-     *
-     * @param dialog The dialog fragment in question
-     */ 
-    @Override
-    public void onMinMaxNegativeClick(MinMax dialog)
-    {
-        roll.onMinMaxNegativeClick(dialog);
     }
 }
