@@ -3,11 +3,15 @@
 <head>
     <meta charset="utf-8">
     <title>Hello World</title>
-    <!--script src="SendCommands.js"></script>
-    <script src="Load.js"></script-->
+    
+    <script src="lib/jquery-2.1.0.min.js"></script>
+    <script src="lib/angular.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+
     <script src="lib/mapping.js"></script>
     <script src="lib/Vector2D.js"></script>
     <script src="lib/Box2dWeb-2.1.a.3.js"></script>
+    <script src="Angular/Controllers/ControlPanelCtrl.js"></script>
     <script src="Simulation/Simulator.js"></script>
     <script src="Simulation/Worlds/World1.js"></script>
     <script src="Simulation/Model/Tire.js"></script>
@@ -23,14 +27,41 @@
     <script src="Controller.js"></script>
     <script src="load.js"></script>
     
+    <link href="styles/twitter-bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/twitter-bootstrap/bootstrap-theme.min.css" rel="stylesheet">
     <link href="styles/main.css" rel="stylesheet">
+    <link href="styles/twitter-skin.css" rel="stylesheet">
 </head>
-<body>
-    <header>
+
+<body ng-app>
+    <div id="control-panel" ng-controller="ControlPanelCtrl">
         <div id="logo">
         </div>
-        <h1>Simulator</h1>
-    </header>
+         <div class="control-panel-box">
+            <div>
+                <h3 class="control-panel-hd">World</h3>
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#" class="control-panel-selector">{{world}}</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a ng-click="setWorld('Empty Room')">Empty Room</a></li>
+                        <li><a ng-click="setWorld('Office')">Office</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="control-panel-box">
+            <div>
+                <h3 class="control-panel-hd">Automation</h3>
+                <div class="dropdown">
+                    <a data-toggle="dropdown" href="#" class="control-panel-selector">{{automationMode}}</a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a ng-click="setAutomationMode('Forward')">Forward</a></li>
+                        <li><a ng-click="setAutomationMode('Party Mode')">Party Mode</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="simulator-container">
         <canvas id="world1" width="900" height="600" style="margin:0 auto;">
         </canvas>

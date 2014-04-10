@@ -1,9 +1,12 @@
 body{
+  font-family: 'consolas', 'sans-serif';
 	text-align: left;
   background: #000;
   color:#fff;
   padding:0;
   margin: 0;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 h1 {
@@ -34,16 +37,46 @@ header{
 }
 
 #logo{
-  width:61px;
-  height:63px; 
-  position:relative; 
-  top:20px; left:26px;
-  float:left;
-  background:transparent url(dashee_options_pressed.png) no-repeat 0 0;
+  height:100px; 
+  position:relative;
+  background:transparent url(dashee_options_pressed.png) no-repeat center center;
 }
 
 #status-info{
   float:right;
   padding:10px;
   overflow: hidden;
+}
+
+/* Main Control Panel */
+
+#control-panel{
+  position: absolute;
+  top: 0;
+  right: 30px;
+  z-index: 1;
+  width: 200px;
+}
+
+.control-panel-box{
+  border-top:1px #3A3C3C solid;
+  padding:12px 0 12px 5px;
+}
+
+.control-panel-hd{
+  color:#848482;
+  font-size:12px;
+  margin: 0;
+}
+
+.control-panel-selector{
+  font-size:18px;
+}
+
+.control-panel-selector:hover{
+  text-decoration: none;
+}
+
+.dropdown-menu:hover a {
+  text-decoration: none;
 }

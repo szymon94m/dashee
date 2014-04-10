@@ -1,0 +1,25 @@
+/* Twitter Boostrap overrides */
+
+.dropdown-menu{
+	background: #2C3539;
+	border-radius: 3px;
+	color: #fff;
+	width: 100%;
+	border-top: solid #504F4F 5px;
+}
+
+.dropdown-menu>li>a{
+	background:#2C3539;
+	color:#fff;
+	cursor: pointer;
+}
+
+.dropdown-menu>li>a:hover{
+	background:#25383C;
+	color:#fff;
+}
+
+.dropdown-menu>li>a:hover:after{
+	content:"    \0000BB";
+	display:inline;
+}
